@@ -1,9 +1,9 @@
 # FFXIV Teamcraft
 
-[![GitHub Release Date](https://img.shields.io/github/release-date/Jaehyuk-Lee/ffxiv-teamcraft.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft/releases)
-![GitHub Downloads](https://img.shields.io/github/downloads/Jaehyuk-Lee/ffxiv-teamcraft/latest/total.svg)
-[![GitHub issues](https://img.shields.io/github/issues/Jaehyuk-Lee/ffxiv-teamcraft.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft/issues)
-[![GitHub pull requests](https://img.shields.io/github/issues-pr/Jaehyuk-Lee/ffxiv-teamcraft.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft/pulls)
+[![GitHub Release Date](https://img.shields.io/github/release-date/Jaehyuk-Lee/ffxiv-teamcraft-kr.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft-kr/releases)
+![GitHub Downloads](https://img.shields.io/github/downloads/Jaehyuk-Lee/ffxiv-teamcraft-kr/latest/total.svg)
+[![GitHub issues](https://img.shields.io/github/issues/Jaehyuk-Lee/ffxiv-teamcraft-kr.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft-kr/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/Jaehyuk-Lee/ffxiv-teamcraft-kr.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft-kr/pulls)
 [![Discord](https://img.shields.io/discord/355013337748209665.svg)](https://discord.gg/r6qxt6P)
 
 Collaborative crafting tool for Final Fantasy XIV
@@ -17,9 +17,9 @@ Discord for support, bugs discussion and contributors: https://discord.gg/r6qxt6
 
 ## Development
 
-[![Codecov](https://img.shields.io/codecov/c/github/Jaehyuk-Lee/ffxiv-teamcraft.svg?branch=staging)](https://codecov.io/github/Jaehyuk-Lee/ffxiv-teamcraft?branch=staging)
+[![Codecov](https://img.shields.io/codecov/c/github/Jaehyuk-Lee/ffxiv-teamcraft.svg?branch=staging)](https://codecov.io/github/Jaehyuk-Lee/ffxiv-teamcraft-kr?branch=staging)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
-[![GitHub license](https://img.shields.io/github/license/Jaehyuk-Lee/ffxiv-teamcraft.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft/blob/staging/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/Jaehyuk-Lee/ffxiv-teamcraft-kr.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft-kr/blob/staging/LICENSE)
 
 ## License
 
@@ -33,4 +33,4 @@ https://github.com/angular/flex-layout/wiki/Responsive-API
 
 ## Contribute
 
-Contributions guidelines can be found inside [CONTRIBUTING.md](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft/blob/staging/CONTRIBUTING.md) file.
+Contributions guidelines can be found inside [CONTRIBUTING.md](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft-kr/blob/staging/CONTRIBUTING.md) file.
