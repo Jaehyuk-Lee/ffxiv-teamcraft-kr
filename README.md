@@ -1,4 +1,4 @@
-# FFXIV Teamcraft
+# FFXIV Teamcraft KR
 
 [![GitHub Release Date](https://img.shields.io/github/release-date/Jaehyuk-Lee/ffxiv-teamcraft-kr.svg)](https://github.com/Jaehyuk-Lee/ffxiv-teamcraft-kr/releases)
 ![GitHub Downloads](https://img.shields.io/github/downloads/Jaehyuk-Lee/ffxiv-teamcraft-kr/latest/total.svg)
