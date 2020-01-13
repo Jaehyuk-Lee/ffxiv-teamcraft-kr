@@ -1,0 +1,31 @@
+<div class="tooltip-container">
+  <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="10px">
+    <div class="icon">
+      <img alt="{{action.ID | actionName | i18n}}" src="https://xivapi.com{{action.Icon}}">
+    </div>
+    <div class="name">
+      <p>{{action.ID | actionName | i18n}}</p>
+    </div>
+  </div>
+  <div class="description">
+    <span [innerHtml]="action | xivapiI18n: 'Description' | xivUIText"></span>
+  </div>
+  <div class="details">
+    <div *ngFor="let row of details" nz-row nzGutter="10">
+      <div [nzXs]="12" nz-col>
+        <p class="detail-name">
+          {{row.name | translate}}
+        </p>
+      </div>
+      <div [nzXs]="12" nz-col>
+        <p *ngIf="!row.requiresPipe" class="detail-value">
+          {{row.value}}
+        </p>
+        <p *ngIf="row.requiresPipe" class="detail-value">
+          {{row.value | xivapiI18n}}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="xivapi">xivapi.com</div>
+</div>

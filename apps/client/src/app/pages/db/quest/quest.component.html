@@ -1,0 +1,322 @@
+<ng-container *ngIf="gtData$ | async as gtData; else loader">
+  <div *ngIf="xivapiQuest$ | async as xivapiQuest" [style.padding]="'0 50px' | ifMobile: '0'"
+       fxLayout="column" fxLayoutGap="10px">
+    <div class="top-bar" fxFlex="1 1 auto" fxLayout="row" fxLayout.lt-md="column"
+         fxLayoutAlign="flex-start flex-start" fxLayoutGap="5px" fxLayoutGap.lt-md="10px">
+      <div class="top-left-block" fxFlex="0 0 300px" fxFlex.lt-md="1 1 auto" fxLayout="column"
+           fxLayoutAlign="space-between" fxLayoutGap="10px">
+        <div class="icon-block" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img [src]="xivapiQuest.Icon | xivapiIcon" alt="{{xivapiQuest.ID | questName | i18n}}"
+               class="img-icon">
+          <div fxLayout="column" fxLayoutAlign="flex-start flex-start">
+            <h2 class="item-name">{{xivapiQuest.ID | questName | i18n}}</h2>
+            <div *ngIf="xivapiQuest.JournalGenre" class="item-kind">{{xivapiQuest.JournalGenre | xivapiI18n}}</div>
+            <div *ngIf="xivapiQuest.GamePatch" class="patch">
+              {{xivapiQuest.GamePatch | xivapiI18n}}
+              <app-db-button [id]="xivapiQuest.GamePatch.ID" type="patch"></app-db-button>
+            </div>
+          </div>
+        </div>
+        <img *ngIf="xivapiQuest.Banner && xivapiQuest.Banner !== '/071000/071221.png'"
+             [src]="xivapiQuest.Banner | xivapiIcon" alt="" class="instance-banner">
+        <div *ngIf="links$ | async as links" class="links" fxLayout="row" fxLayoutAlign="flex-start center"
+             fxLayoutGap="5px">
+          <a *ngFor="let link of links" [href]="link.url" [nzTitle]="link.title" nz-tooltip target="_blank">
+            <img [alt]="link.title" [src]="link.icon" class="link-icon">
+          </a>
+        </div>
+      </div>
+      <div fxFlex="1 1 auto">
+        <p *ngIf="textData$ | async as textData"
+           [innerHTML]="textData.Journal && textData.Journal[0].Text | xivUIText"></p>
+      </div>
+      <div fxFlex="0 0 300px" fxFlex.lt-md="1 1 auto" fxLayout="column" fxLayoutGap="5px">
+        <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img alt="EN" class="language-flag" src="./assets/icons/english.png">
+          <div [innerHTML]="xivapiQuest.Name_en | xivUIText"></div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img alt="DE" class="language-flag" src="./assets/icons/german.png">
+          <div [innerHTML]="xivapiQuest.Name_de | xivUIText"></div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img alt="FR" class="language-flag" src="./assets/icons/french.png">
+          <div [innerHTML]="xivapiQuest.Name_fr | xivUIText"></div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img alt="JA" class="language-flag" src="./assets/icons/japanese.png">
+          <div [innerHTML]="xivapiQuest.Name_ja | xivUIText"></div>
+        </div>
+      </div>
+    </div>
+    <div class="details-container" fxLayout="row wrap" fxLayoutGap="5px">
+      <div class="details-block">
+        <div class="detail-value">{{xivapiQuest.ClassJobCategory0 | xivapiI18n}}</div>
+      </div>
+      <div *ngIf="xivapiQuest.IsRepeatable === 1" class="details-block">
+        <div class="detail-value">{{'DB.QUEST.Repeatable' | translate}}</div>
+      </div>
+      <div class="details-block">
+        <div class="detail-name">{{'DB.Level' | translate}}</div>
+        <div class="detail-value">{{xivapiQuest.ClassJobLevel0}}</div>
+      </div>
+      <div *ngIf="xivapiQuest.BeastReputationRank" class="details-block">
+        <div class="detail-name">{{'DB.QUEST.Beast_tribe_rank' | translate}}</div>
+        <div class="detail-value">{{xivapiQuest.BeastReputationRank | xivapiI18n}}</div>
+      </div>
+      <div *ngIf="startingPoint$ | async as startingPoint" class="details-block">
+        <div class="detail-value">
+          <app-map-position [mapId]="startingPoint.map"
+                            [marker]="{x: startingPoint.x, y: startingPoint.y}"
+                            [showZoneName]="true"
+                            [zoneId]="startingPoint.zoneid"
+                            flex="row"></app-map-position>
+        </div>
+      </div>
+      <div *ngIf="xivapiQuest.chainLength !== undefined" class="details-block">
+        <div class="detail-name">{{'DB.QUEST.Chain_length' | translate}}</div>
+        <div class="detail-value">{{xivapiQuest.chainLength}}<span *ngIf="xivapiQuest.chainLength >= 99">+</span></div>
+      </div>
+    </div>
+    <app-db-comments *ngIf="settings.dbCommentsPosition === 'TOP'" [id]="xivapiQuest.ID" type="quest"></app-db-comments>
+    <nz-divider [nzText]="'DB.Details' | translate" nzOrientation="left"></nz-divider>
+    <div fxLayout="column" fxLayoutGap="10px">
+      <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="10px">
+        <nz-card *ngIf="textData$ | async as textData" [nzTitle]="title" class="details-card" fxFlex="1 1 auto"
+                 nzBordered="false">
+          <ng-template #title>
+            <div class="card-header" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+              <div>
+                {{'DB.QUEST.Steps' | translate}}
+              </div>
+            </div>
+          </ng-template>
+          <nz-list
+            [nzDataSource]="textData.ToDo"
+            [nzItemLayout]="'horizontal'"
+            [nzRenderItem]="todoTemplate">
+            <ng-template #todoTemplate let-index="index" let-todo>
+              <nz-list-item>
+                <nz-list-item-meta [nzDescription]="description"
+                                   [nzTitle]="stepTitle">
+                  <ng-template #stepTitle>
+                    <span [innerHTML]="todo.Text | xivUIText"></span>
+                  </ng-template>
+                  <ng-template #description>
+                    <div *ngIf="xivapiQuest['ToDoMainLocation'+index]">
+                      {{xivapiQuest['ToDoMainLocation' + index].Map.PlaceName.ID | placeName | i18n}}
+                    </div>
+                  </ng-template>
+                </nz-list-item-meta>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-card>
+        <nz-card *ngIf="gtData.quest.reqs && gtData.quest.reqs.quests && gtData.quest.reqs.quests.length > 0" [nzTitle]="title" class="details-card" fxFlex="1 1 auto"
+                 nzBordered="false">
+          <ng-template #title>
+            <div class="card-header" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+              <div>
+                {{'DB.QUEST.Unlocked_by' | translate}}
+              </div>
+            </div>
+          </ng-template>
+          <nz-list
+            [nzDataSource]="gtData.quest.reqs.quests"
+            [nzItemLayout]="'horizontal'"
+            [nzRenderItem]="questTemplate">
+            <ng-template #questTemplate let-quest>
+              <nz-list-item [nzContent]="more">
+                <nz-list-item-meta
+                  [nzAvatar]="questAvatar"
+                  [nzTitle]="quest | questName | i18n">
+                  <ng-template #questAvatar>
+                    <a routerLink="/db/{{translate.currentLang}}/quest/{{quest}}">
+                      <img [src]="quest | questIcon | xivapiIcon" class="img-icon round-icon">
+                    </a>
+                  </ng-template>
+                  <ng-template #more>
+                    <app-db-button [id]="quest" type="quest"></app-db-button>
+                  </ng-template>
+                </nz-list-item-meta>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-card>
+        <nz-card *ngIf="gtData.quest.next" [nzTitle]="title" class="details-card" fxFlex="1 1 auto" nzBordered="false">
+          <ng-template #title>
+            <div class="card-header" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+              <div>
+                {{'DB.QUEST.Next_quests' | translate}}
+              </div>
+            </div>
+          </ng-template>
+          <nz-list [nzDataSource]="gtData.quest.next" [nzItemLayout]="'horizontal'"
+                   [nzRenderItem]="questTemplate">
+            <ng-template #questTemplate let-quest>
+              <nz-list-item [nzContent]="more">
+                <nz-list-item-meta
+                  [nzAvatar]="questAvatar"
+                  [nzTitle]="quest | questName | i18n">
+                  <ng-template #questAvatar>
+                    <a routerLink="/db/{{translate.currentLang}}/quest/{{quest}}">
+                      <img [src]="quest | questIcon | xivapiIcon" class="img-icon round-icon">
+                    </a>
+                  </ng-template>
+                  <ng-template #more>
+                    <app-db-button [id]="quest" type="quest"></app-db-button>
+                  </ng-template>
+                </nz-list-item-meta>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-card>
+        <nz-card [nzTitle]="npcsTitle" class="details-card" fxFlex="1 1 auto" nzBordered="false">
+          <ng-template #npcsTitle>
+            <div class="card-header" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+              <div>
+                {{'DB.QUEST.Involved_npcs' | translate}}
+              </div>
+            </div>
+          </ng-template>
+          <nz-list [nzDataSource]="involvedNpcs$ | async" [nzItemLayout]="'horizontal'"
+                   [nzRenderItem]="npcTemplate">
+            <ng-template #npcTemplate let-npc>
+              <nz-list-item [nzContent]="more">
+                <nz-list-item-meta
+                  [nzAvatar]="npcAvatar"
+                  [nzTitle]="npc | npcName | i18n">
+                  <ng-template #npcAvatar>
+                    <a routerLink="/db/{{translate.currentLang}}/npc/{{npc}}">
+                      <img class="img-icon round-icon" src="./assets/icons/npc.png">
+                    </a>
+                  </ng-template>
+                  <ng-template #more>
+                    <nz-tag *ngIf="npc === xivapiQuest.IssuerStart">{{'DB.QUEST.Start' | translate}}</nz-tag>
+                    <nz-tag *ngIf="npc === xivapiQuest.TargetEnd">{{'DB.QUEST.End' | translate}}</nz-tag>
+                    <app-db-button [id]="npc" type="npc"></app-db-button>
+                  </ng-template>
+                </nz-list-item-meta>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-card>
+        <nz-card [nzTitle]="rewardsTitle" class="details-card" fxFlex="1 1 auto" nzBordered="false">
+          <ng-template #rewardsTitle>
+            <div class="card-header" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+              <div>
+                {{'DB.QUEST.Rewards' | translate}}
+              </div>
+            </div>
+          </ng-template>
+          <nz-list [nzDataSource]="rewards$ | async" [nzItemLayout]="'horizontal'"
+                   [nzRenderItem]="rewardTemplate">
+            <ng-template #rewardTemplate let-reward>
+              <nz-list-item
+                [nzContent]="(reward.type==='item' || reward.type == 'instance' || reward.type === 'action')?more:null">
+                <nz-list-item-meta
+                  [nzAvatar]="rewardAvatar"
+                  [nzTitle]="rewardTitle">
+                  <ng-template #rewardAvatar>
+                    <app-item-icon *ngIf="reward.type === 'item'" [hq]="reward.hq"
+                                   [icon]="reward.id | lazyIcon"
+                                   [itemId]="reward.id" [width]="32"></app-item-icon>
+                    <img *ngIf="reward.type === 'exp'" alt="exp" class="img-icon" src="./assets/icons/exp.png">
+                    <img *ngIf="reward.type === 'instance'" alt="exp" class="img-icon" routerLink="/db/{{translate.currentLang}}/instance/{{reward.id}}"
+                         src="./assets/icons/instance.png">
+                    <img *ngIf="reward.type === 'action'" [appXivdbActionTooltip]="reward.id" [src]="reward.id | actionIcon | xivapiIcon"
+                         alt="">
+                  </ng-template>
+                  <ng-template #rewardTitle>
+                    <div *ngIf="reward.type === 'item'" [appItemRarity]="reward.id">
+                      {{reward.id | itemName | i18n}} x{{reward.amount}}
+                    </div>
+                    <div *ngIf="reward.type === 'exp'">
+                      {{'DB.Experience_points' | translate}} x{{reward.amount}}
+                    </div>
+                    <div *ngIf="reward.type === 'instance'">
+                      {{reward.id | instanceName | i18n}}
+                    </div>
+                    <div *ngIf="reward.type === 'action'">
+                      {{reward.id | actionName | i18n}}
+                    </div>
+                    <div *ngIf="reward.type === 'rep'">
+                      {{'DB.Reputation_points' | translate}} x{{reward.amount}}
+                    </div>
+                  </ng-template>
+                  <ng-template #more>
+                    <app-db-button *ngIf="reward.id > 1"
+                                   [id]="reward.id"
+                                   [type]="reward.type"></app-db-button>
+                  </ng-template>
+                </nz-list-item-meta>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-card>
+      </div>
+    </div>
+
+    <nz-divider [nzText]="'DB.RP_Details' | translate" nzOrientation="left"></nz-divider>
+    <div fxLayout="column" fxLayoutGap="10px">
+      <nz-card *ngIf="textData$ | async as textData" [nzTitle]="title" class="details-card" fxFlex="1 1 100%"
+               nzBordered="false">
+        <ng-template #title>
+          <div class="card-header" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+            <img alt="" class="img-icon" src="./assets/icons/journal.png">
+            <div>
+              {{'DB.QUEST.Journal_entries' | translate}}
+            </div>
+          </div>
+        </ng-template>
+        <nz-list
+          [nzDataSource]="textData.Journal"
+          [nzItemLayout]="'horizontal'"
+          [nzRenderItem]="journalTemplate">
+          <ng-template #journalTemplate let-entry>
+            <nz-list-item [nzContent]="content">
+              <ng-template #content>
+                <span [innerHtml]="entry.Text | xivUIText"></span>
+              </ng-template>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-card>
+      <nz-card *ngIf="textData$ | async as textData" [nzTitle]="title" class="details-card" fxFlex="1 1 100%"
+               nzBordered="false">
+        <ng-template #title>
+          <div class="card-header" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+            <img alt="" class="img-icon" src="./assets/icons/dialogues.png">
+            <div>
+              {{'DB.QUEST.Dialogues' | translate}}
+            </div>
+          </div>
+        </ng-template>
+        <nz-list
+          [nzDataSource]="textData.Dialogue"
+          [nzItemLayout]="'horizontal'"
+          [nzRenderItem]="dialogTemplate">
+          <ng-template #dialogTemplate let-dialogue>
+            <nz-list-item>
+              <nz-list-item-meta [nzDescription]="description"
+                                 [nzTitle]="title">
+                <ng-template #title>
+                  <a
+                    routerLink="/db/{{translate.currentLang}}/npc/{{dialogue.Npc[0]}}">{{dialogue.Npc[0] | npcName | i18n}}</a>
+                </ng-template>
+                <ng-template #description>
+                  <span [innerHtml]="dialogue.Text | xivUIText"></span>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-card>
+    </div>
+  </div>
+  <app-db-comments *ngIf="settings.dbCommentsPosition === 'BOTTOM'" [id]="xivapiQuest.ID"
+                   type="quest"></app-db-comments>
+</ng-container>
+<ng-template #loader>
+  <app-page-loader></app-page-loader>
+</ng-template>

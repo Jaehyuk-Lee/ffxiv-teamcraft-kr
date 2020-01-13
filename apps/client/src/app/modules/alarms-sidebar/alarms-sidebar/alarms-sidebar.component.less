@@ -1,0 +1,76 @@
+@import "../../../../common";
+
+.alarms-container {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: 100%;
+
+  &.sidebar {
+    max-height: ~'calc(100vh - 88px)';
+  }
+
+  .ant-divider {
+    margin: 0;
+  }
+
+  .alarm-row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px 5px;
+
+    .item-icon {
+      position: relative;
+
+      .node-type {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &.spawned {
+      background-color: fade(@primary-color, 50%);
+    }
+
+    &.played {
+      background-color: fade(@highlight-color, 50%);
+    }
+
+    .delete-icon {
+      position: absolute;
+      top: 0;
+      right: 0;
+      cursor: pointer;
+    }
+
+    .folder-icon {
+      margin-right: 5px;
+    }
+
+    .note-icon {
+      margin-left: 5px;
+    }
+
+    .ephemeral {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+    }
+  }
+}
+
+:host ::ng-deep h2 {
+  font-size: 2rem !important;
+}
+

@@ -1,0 +1,45 @@
+<div *ngIf="servers$ | async as availableServers; else loading">
+  <nz-form-item>
+    <nz-form-label nzFor="serverName" nzRequired>{{'Server_name' | translate}}</nz-form-label>
+    <input [formControl]="selectedServer" [nzAutocomplete]="auto" id="serverName" nz-input type="text">
+    <nz-autocomplete #auto>
+      <nz-auto-option *ngFor="let server of autoCompleteRows$ | async" [nzValue]="server">
+        {{server}}
+      </nz-auto-option>
+    </nz-autocomplete>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label nzFor="fcName" nzRequired>{{'FC_name' | translate}}
+    </nz-form-label>
+    <input [formControl]="fcName" id="fcName" nz-input type="text">
+  </nz-form-item>
+</div>
+
+<div class="results">
+  <nz-list [nzDataSource]="result$ | async"
+           [nzItemLayout]="'horizontal'"
+           [nzLoading]="loadingResults"
+           [nzRenderItem]="fcTemplate">
+    <ng-template #fcTemplate let-fc>
+      <nz-list-item [nzActions]="[selectAction]">
+        <ng-template #selectAction>
+          <button (click)="pickFc(fc)" nz-button nzType="primary">{{'COMMON.Select' | translate}}</button>
+        </ng-template>
+        <nz-list-item-meta
+          [nzAvatar]="crest"
+          [nzTitle]="fc.Name">
+          <ng-template #crest>
+            <div class="crest-container">
+              <img *ngFor="let layer of fc.Crest" alt="" class="crest-layer" src="{{layer}}">
+            </div>
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+    </ng-template>
+  </nz-list>
+</div>
+
+<ng-template #loading>
+  <nz-spin></nz-spin>
+</ng-template>

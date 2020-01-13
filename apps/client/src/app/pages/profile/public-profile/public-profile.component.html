@@ -1,0 +1,45 @@
+<div *ngIf="characterEntry$ | async as characterEntry">
+  <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="flex-start flex-start" fxLayoutAlign.lt-md="center center"
+       fxLayoutGap="10px">
+    <img [class.avatar]="false |ifMobile:true" [class.portrait]="true | ifMobile: false"
+         [src]="characterEntry.character.Portrait | ifMobile: characterEntry.character.Avatar " alt="">
+    <div fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign.lt-md="center center">
+      <h2>
+        {{characterEntry.character.Name}}
+        <i *ngIf="!characterEntry.verified" [nzTitle]="'Not_verified' | translate" nz-icon nz-tooltip
+           type="exclamation-circle"></i>
+      </h2>
+      <span>{{characterEntry.character.Server}}</span>
+      <div *ngIf="user$ | async as user" fxLayout="row wrap" fxLayoutGap="5px">
+        <nz-tag *ngIf="user.admin" [nzColor]="'magenta'">{{'COMMON.Admin' | translate}}</nz-tag>
+        <nz-tag *ngIf="user.patron" [nzColor]="'purple'">{{'PROFILE.Patreon_supporter' | translate}}</nz-tag>
+        <nz-tag *ngIf="user.stats?.listsCreated > 100"
+                [nzColor]="'orange'">{{'PROFILE.More_than_100_lists_created' | translate}}</nz-tag>
+        <!-- Yup, this is one year in seconds-->
+        <nz-tag *ngIf="now - user.createdAt?.getTime()/1000 > 365.25 * 86400"
+                [nzColor]="'geekblue'">{{'PROFILE.Veteran' | translate}}</nz-tag>
+      </div>
+      <div *ngIf="gearSets$ | async as sets" fxLayout="row wrap" fxLayoutAlign="space-evenly">
+        <div *ngFor="let set of sets" class="stat-row" fxLayout="column" fxLayoutAlign="center center">
+          <img alt="" class="job-icon" src="https://garlandtools.org/db/images/{{(set.jobId | jobAbbr)?.en}}.png">
+          <div>{{set.level}}</div>
+        </div>
+      </div>
+      <nz-list [nzDataSource]="communityLists$ | async" [nzHeader]="'Public_lists' | translate" [nzRenderItem]="list">
+        <ng-template #list let-list>
+          <app-list-panel [hideAvatar]="true" [list]="list" [publicDisplay]="true"></app-list-panel>
+        </ng-template>
+      </nz-list>
+      <nz-list [nzDataSource]="communityRotations$ | async"
+               [nzHeader]="'SIMULATOR.COMMUNITY_ROTATIONS.Title' | translate"
+               [nzRenderItem]="rotation">
+        <ng-template #rotation let-rotation>
+          <app-rotation-panel [publicDisplay]="true" [rotation]="rotation"></app-rotation-panel>
+        </ng-template>
+      </nz-list>
+    </div>
+  </div>
+</div>
+<app-fullpage-message *ngIf="notFound">
+  {{'Character_not_found' | translate}}
+</app-fullpage-message>

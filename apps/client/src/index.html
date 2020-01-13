@@ -1,0 +1,131 @@
+<!doctype html>
+<html xmlns:og="http://ogp.me/ns#">
+<head>
+  <title>FFXIV Teamcraft</title>
+  <meta name="description" content="Create FINAL FANTASY XIV crafting lists and collaborate with others, set gathering alarms, simulate crafting rotations, and more..."/>
+  <meta charset="utf-8">
+  <base href="/">
+
+  <!-- Open Graph meta -->
+  <meta property="og:title" content="FFXIV Teamcraft"/>
+  <meta property="og:description" content="Create crafting lists and collaborate with others, set gathering alarms, simulate crafting rotations, and more..."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://cdn.ffxivteamcraft.com/"/>
+  <meta property="og:image" content="https://cdn.ffxivteamcraft.com/assets/logo.png" />
+
+  <meta name="twitter:title" content="FFXIV Teamcraft"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:description" content="Create crafting lists and collaborate with others, set gathering alarms, simulate crafting rotations, and more..."/>
+  <meta name="twitter:site" content="@FFXIVTeamcraft"/>
+  <meta name="twitter:image" content="https://cdn.ffxivteamcraft.com/assets/logo.png" />
+
+  <meta name="viewport" content="width=device-width,user-scalable=no">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link href="./assets/opensearch.xml" rel="search" title="FFXIV Teamcraft" type="application/opensearchdescription+xml">
+
+  <script>
+    window.renderComplete = false;
+    window.renderStart = Date.now();
+  </script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-104948571-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-104948571-1');
+  </script>
+  <script>
+    //Garland tools data skeleton
+    gt = {
+      patch: {},
+      xp: [],
+      jobs: [],
+      node: {},
+      fishing: {},
+      mob: {},
+      location: {},
+      skywatcher: {},
+      quest: {},
+      venture: {},
+      npc: {},
+      action: {},
+      leve: {},
+      achievement: {},
+      instance: {},
+      fate: {},
+      item: {
+        index: []
+      },
+      bell: {
+        nodes: [],
+        fish: []
+      }
+    };
+  </script>
+  <script src="https://www.garlandtools.org/bell/nodes.js"></script>
+  <script src="https://www.garlandtools.org/bell/fish.js"></script>
+</head>
+<body>
+<app-root>
+  <div class="init-loader-container">
+    <div id="logo">
+      <img src="./assets/logo.png" alt="FFXIV Teamcraft" class="logo">
+    </div>
+    <div class="brought-to-you">
+      Brought to you by <span id="random-patron"></span>
+    </div>
+    <a href="https://www.patreon.com/bePatron?u=702160" class="patreon-widget" target="_blank">
+      <img src="./assets/become_a_patron_button@2x.png" alt="Become a patron">
+    </a>
+  </div>
+  <script>
+    const patrons = [
+      'Tataru Taru',
+      'Baked Popoto',
+      'Erys Night',
+      'Killagouge',
+      'chiya',
+      'DaiSuki2U (Leviathan)',
+      'Maie Arania',
+      'Peppermint Cordial Inc',
+      'Okashii Kazegane',
+      'Akurosia',
+      'C\'elosia Arcanine',
+      'Coconut Koala (Diabolos)',
+      'Pumpkin Spice Lattes',
+      'Pint Sized Mafia',
+      'Nunosi Ior',
+      'Arik Dazkar',
+      'latenightwreck',
+      'uSmol',
+      'S\'irle Alythia',
+      'Alban Ashcroft',
+      'Nachtiyrn Thosinsyn',
+      'Midori Dragon',
+      'Erwan Fairclough @ Moogle',
+      'Izeyash Konturaen',
+      'Morphean Knights @ Ultros',
+      'Qih "Kweh" Mewrilah',
+      'Jihn Molkoh',
+      'Toi Toi Toi',
+      'Walnut Bread Trading Co',
+      'Kouya Hoshino',
+      'Sahjah Majime',
+      'Uzari Azari',
+      'Forgiven Ignorance | Cerberus',
+      'Saga, de L\'Ordre des ombres',
+      'Victoria Valyntara',
+      'Scrapper Spart',
+      'Icknickl Lodien',
+      'Glanyx'
+    ];
+    const randomPatron = patrons[Math.floor(Math.random() * patrons.length)];
+    document.getElementById('random-patron').innerText = randomPatron;
+  </script>
+</app-root>
+</body>
+</html>

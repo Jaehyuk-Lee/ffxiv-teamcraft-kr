@@ -1,0 +1,96 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <h2>{{'SIMULATOR.COMMUNITY_ROTATIONS.Title' | translate}}</h2>
+  <input (ngModelChange)="nameFilter$.next($event)" [ngModel]="nameFilter$ | async" [placeholder]="'SIMULATOR.COMMUNITY_ROTATIONS.Name_filter_placeholder' | translate"
+         autofocus
+         class="filter-input" nz-input type="text">
+  <div class="filter-input" fxLayout="row" fxLayoutAlign="center flex-start" fxLayoutGap="10px">
+    <div fxFlex="1 1 auto" fxLayout="column" fxLayoutGap="10px">
+      <nz-select (ngModelChange)="tagsFilter$.next($event)" [ngModel]="tagsFilter$ | async"
+                 [nzPlaceHolder]="'SIMULATOR.COMMUNITY_ROTATIONS.Tags_filter_placeholder' | translate"
+                 fxFlex="1 1 auto"
+                 nzMode="multiple">
+        <nz-option *ngFor="let tag of tags" [nzLabel]="tag.label | translate" [nzValue]="tag.value"></nz-option>
+      </nz-select>
+      <div fxLayout="row wrap" fxLayoutAlign="space-evenly center" fxLayoutGap="10px">
+        <div class="filter-element" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+          <div>{{'SIMULATOR.COMMUNITY_ROTATIONS.Rlvl_filter_placeholder' | translate}}:</div>
+          <nz-select (ngModelChange)="rlvlFilter$.next($event)"
+                     [ngModel]="rlvlFilter$ | async"
+                     [nzPlaceHolder]="'SIMULATOR.COMMUNITY_ROTATIONS.Rlvl_filter_placeholder' | translate"
+                     fxFlex="0 0 150px"
+                     nzAllowClear
+                     nzShowSearch>
+            <nz-option *ngFor="let rlvl of rlvls" [nzLabel]="rlvl.label" [nzValue]="rlvl.value"></nz-option>
+          </nz-select>
+        </div>
+        <div class="filter-element" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+          <div>{{'SIMULATOR.COMMUNITY_ROTATIONS.Durability_filter_placeholder' | translate}}:</div>
+          <nz-select (ngModelChange)="durabilityFilter$.next($event)"
+                     [ngModel]="durabilityFilter$ | async"
+                     [nzPlaceHolder]="'SIMULATOR.COMMUNITY_ROTATIONS.Durability_filter_placeholder' | translate"
+                     fxFlex="0 0 120px"
+                     nzAllowClear
+                     nzShowSearch>
+            <nz-option [nzValue]="30" nzLabel="30"></nz-option>
+            <nz-option [nzValue]="35" nzLabel="35"></nz-option>
+            <nz-option [nzValue]="40" nzLabel="40"></nz-option>
+            <nz-option [nzValue]="60" nzLabel="60"></nz-option>
+            <nz-option [nzValue]="70" nzLabel="70"></nz-option>
+            <nz-option [nzValue]="80" nzLabel="80"></nz-option>
+          </nz-select>
+        </div>
+        <div class="filter-element" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+          <div>{{'SIMULATOR.COMMUNITY_ROTATIONS.Min_craftsmanship_filter_placeholder' | translate}}:</div>
+          <nz-input-number (ngModelChange)="craftsmanshipFilter$.next($event)" [ngModel]="craftsmanshipFilter$ | async"
+                           [nzMin]="1"
+                           [nzStep]="1" name="minCraft"></nz-input-number>
+        </div>
+        <div class="filter-element" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+          <div>{{'SIMULATOR.COMMUNITY_ROTATIONS.Min_control_filter_placeholder' | translate}}:</div>
+          <nz-input-number (ngModelChange)="controlFilter$.next($event)" [ngModel]="controlFilter$ | async"
+                           [nzMin]="1"
+                           [nzStep]="1" name="minCraft"></nz-input-number>
+        </div>
+        <div class="filter-element" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+          <div>{{'SIMULATOR.COMMUNITY_ROTATIONS.Min_cp_filter_placeholder' | translate}}:</div>
+          <nz-input-number (ngModelChange)="cpFilter$.next($event)" [ngModel]="cpFilter$ | async"
+                           [nzMin]="1"
+                           [nzStep]="1" name="minCraft"></nz-input-number>
+        </div>
+        <div *ngIf="sets$ | async as sets" class="filter-element" fxLayout="row" fxLayoutAlign="center center"
+             fxLayoutGap="5px">
+          <div>{{'SIMULATOR.COMMUNITY_ROTATIONS.Set_to_simulate' | translate}}:</div>
+          <nz-select (ngModelChange)="setIndex$.next($event)"
+                     [ngModel]="setIndex$ | async"
+                     fxFlex="0 0 200px"
+                     nzShowSearch>
+            <nz-option *ngFor="let set of sets; let index = index"
+                       [nzValue]="index"
+                       nzLabel="{{set.jobId | jobAbbr | i18n}}{{set.specialist?'★':''}} - {{set.craftsmanship}}/{{set.control}}/{{set.cp}}"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+    </div>
+    <button (click)="resetFilters()" [nzTitle]="'SIMULATOR.COMMUNITY_ROTATIONS.Filters_reset' | translate" nz-button
+            nz-tooltip>
+      <i nz-icon nzType="reload"></i>
+    </button>
+  </div>
+  <app-page-loader [loading]="loading" class="rotations-container">
+    <div *ngIf="filteredRotations$ | async as rotations" fxFlex="1 1 auto" fxLayout="column" fxLayoutGap="5px">
+      <app-rotation-panel *ngFor="let rotation of rotations; trackBy: trackByRotation" [publicDisplay]="true"
+                          [rotation]="rotation" [simulationSet]="set$ | async"></app-rotation-panel>
+      <nz-pagination (nzPageIndexChange)="page$.next($event)" *ngIf="totalLength > pageSize" [nzPageIndex]="page$ | async"
+                     [nzPageSize]="pageSize"
+                     [nzTotal]="totalLength" fxLayout="row"
+                     fxLayoutAlign="center center"></nz-pagination>
+      <app-fullpage-message
+        *ngIf="rotations.length === 0 && !firstDisplay">{{'SIMULATOR.COMMUNITY_ROTATIONS.No_rotations_matching' | translate}}
+      </app-fullpage-message>
+      <app-fullpage-message
+        *ngIf="firstDisplay">{{'SIMULATOR.COMMUNITY_ROTATIONS.Intro' | translate}}
+      </app-fullpage-message>
+    </div>
+  </app-page-loader>
+</div>
+

@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "ffxivteamcraft",
+    "beta": "ffxiv-teamcraft-beta",
+    "preview": "ffxiv-teamcraft-canary"
+  }
+}

@@ -1,0 +1,28 @@
+<div class="import-container">
+  <h2>{{'Import' | translate}}</h2>
+  <div class="description">
+    {{'LISTS.Import_description' | translate}}
+  </div>
+  <div *ngIf="items$ | async as data; else loading" class="items-container" fxLayout="column">
+    <div *ngFor="let row of data.items; let odd = odd;" [class.odd]="odd" class="item-row" fxLayout="row"
+         fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+      <app-item-icon [icon]="row.itemData.item.icon" [itemId]="row.itemData.item.id" [width]="32"></app-item-icon>
+      <div class="item-name">{{row.itemData.item.id | itemName | i18n}} x{{row.quantity}}</div>
+      <div fxFlex="1 1 auto">
+        <nz-alert *ngIf="row.itemData.isCraft() && row.recipeId === null" [nzMessage]="'LISTS.Please_pick_recipe' | translate"
+                  nzShowIcon nzType="error"></nz-alert>
+      </div>
+      <nz-radio-group *ngIf="row.itemData.isCraft()" [(ngModel)]="row.recipeId">
+        <label *ngFor="let craft of row.itemData.item.craft" [nzValue]="craft.id.toString()" nz-radio-button>
+          {{craft.job | jobAbbr | i18n}} {{craft.lvl}}
+        </label>
+      </nz-radio-group>
+    </div>
+    <button (click)="doImport(data)" [disabled]="!canDoImport(data)" nz-button nzBlock nzType="primary">
+      {{'LISTS.Add_to_a_list' | translate}}
+    </button>
+  </div>
+</div>
+<ng-template #loading>
+  <app-page-loader></app-page-loader>
+</ng-template>

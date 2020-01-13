@@ -1,0 +1,54 @@
+<h1>{{'GC_SUPPLY.Title' | translate}}</h1>
+<form (ngSubmit)="getSupplies(form)" *ngIf="form$ | async as form" [formGroup]="form" [nzLayout]="'inline'" nz-form>
+  <nz-form-item *ngFor="let control of form.controls | keys">
+    <nz-form-control>
+      <nz-input-group [nzPrefix]="jobIcon">
+        <input [formControlName]="control" [nzTitle]="+control | jobName | i18n" class="lvl-input" min="0" nz-input
+               nz-tooltip
+               required type="number"/>
+      </nz-input-group>
+      <ng-template #jobIcon>
+        <img alt="" class="job-icon" src="https://garlandtools.org/db/images/{{(+control | jobAbbr)?.en}}.png">
+      </ng-template>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <button [disabled]="!form.valid" nz-button nzType="primary">
+        <i nz-icon nzType="search"></i>{{'GC_SUPPLY.Search' | translate}}
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+<div *ngIf="items$ | async as supplies" class="results" fxLayout="column" fxLayoutGap="10px">
+  <div *ngFor="let row of supplies" nz-row nzGutter="10">
+    <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px" nz-col nzMd="6" nzSm="24">
+      <img alt="" class="job-icon" src="https://garlandtools.org/db/images/{{(row.job | jobAbbr)?.en}}.png">
+      <div>{{row.job | jobName | i18n}}</div>
+    </div>
+    <nz-select #selectBox (ngModelChange)="select(row.job, $event.itemId, $event.count)" [ngModel]="null"
+               class="item-select" nz-col
+               nzAllowClear nzMd="6" nzShowSearch
+               nzSm="24">
+      <nz-option *ngFor="let item of row.items" [nzValue]="item"
+                 nzLabel="{{item.itemId | itemName | i18n}} x {{item.count}}"></nz-option>
+    </nz-select>
+    <div *ngIf="selectBox.value" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px" nz-col nzMd="6"
+         nzSm="24">
+      <img alt="" class="reward-icon" src="{{20 | lazyIcon}}">
+      <div>
+        {{selectBox.value.reward.seals}}
+      </div>
+      <img alt="" class="reward-icon" src="https://xivapi.com/img-misc/exp.png">
+      <div>
+        {{selectBox.value.reward.xp}}
+      </div>
+    </div>
+  </div>
+  <button (click)="generateList()" [disabled]="selection.length === 0" nz-button
+          nzBlock>{{'GC_SUPPLY.Generate_list' | translate}}</button>
+</div>
+<app-fullpage-message *ngIf="pristine" height="300px">
+  {{'GC_SUPPLY.Intro' | translate}}
+</app-fullpage-message>
+<app-page-loader *ngIf="loading" [message]="'GC_SUPPLY.Loading_message' | translate"></app-page-loader>

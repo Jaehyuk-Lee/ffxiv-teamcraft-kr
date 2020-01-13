@@ -1,0 +1,65 @@
+<div class="toggle" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <nz-switch [(ngModel)]="rotation.public"></nz-switch>
+  <div>{{'SIMULATOR.COMMUNITY_ROTATIONS.Community_rotation' | translate}}</div>
+</div>
+<form nz-form>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">{{'SIMULATOR.COMMUNITY_ROTATIONS.Tags_filter_placeholder' | translate}}</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-select [(ngModel)]="rotation.tags" [nzDisabled]="!rotation.public" name="tags" nzAllowClear nzMode="multiple"
+                 nzShowSearch>
+        <nz-option *ngFor="let tag of tags" [nzLabel]="tag.label | translate" [nzValue]="tag.value"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="6">{{'SIMULATOR.COMMUNITY_ROTATIONS.Rlvl_filter_placeholder' | translate}}</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-select [(ngModel)]="rotation.community.rlvl" [nzDisabled]="!rotation.public" name="rlvl"
+                 nzAllowClear nzShowSearch>
+        <nz-option *ngFor="let rlvl of rlvls" [nzLabel]="rlvl.label" [nzValue]="rlvl.value"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label
+      [nzSpan]="6">{{'SIMULATOR.COMMUNITY_ROTATIONS.Durability_filter_placeholder' | translate}}</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-select [(ngModel)]="rotation.community.durability" [nzDisabled]="!rotation.public" name="durability"
+                 nzAllowClear nzShowSearch>
+        <nz-option [nzValue]="30" nzLabel="30"></nz-option>
+        <nz-option [nzValue]="35" nzLabel="35"></nz-option>
+        <nz-option [nzValue]="40" nzLabel="40"></nz-option>
+        <nz-option [nzValue]="60" nzLabel="60"></nz-option>
+        <nz-option [nzValue]="70" nzLabel="70"></nz-option>
+        <nz-option [nzValue]="80" nzLabel="80"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label
+      [nzSpan]="6">{{'SIMULATOR.COMMUNITY_ROTATIONS.Min_craftsmanship_filter_placeholder' | translate}}</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-input-number [(ngModel)]="rotation.community.minCraftsmanship" [nzDisabled]="!rotation.public" [nzMin]="1"
+                       [nzStep]="1" name="minCraft"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label
+      [nzSpan]="6">{{'SIMULATOR.COMMUNITY_ROTATIONS.Min_control_filter_placeholder' | translate}}</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-input-number [(ngModel)]="rotation.community.minControl" [nzDisabled]="!rotation.public" [nzMin]="1"
+                       [nzStep]="1" name="minControl"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label
+      [nzSpan]="6">{{'SIMULATOR.COMMUNITY_ROTATIONS.Min_cp_filter_placeholder' | translate}}</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-input-number [(ngModel)]="rotation.community.minCp" [nzDisabled]="!rotation.public" [nzMin]="1" [nzStep]="1"
+                       name="minCP"></nz-input-number>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+

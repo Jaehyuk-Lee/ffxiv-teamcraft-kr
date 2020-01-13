@@ -1,0 +1,84 @@
+<!--<nz-alert nzBanner [nzDescription]="'CURRENCY_SPENDING.Disabled_description' | translate"-->
+<!--          [nzMessage]="'CURRENCY_SPENDING.Disabled' | translate"-->
+<!--          nzType="error" class="dark"></nz-alert>-->
+
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <h2>{{'CURRENCY_SPENDING.Title' | translate}}</h2>
+    <i>{{'CURRENCY_SPENDING.Description' | translate}}</i>
+  </div>
+  <div fxLayout="row" fxLayoutGap="5px">
+    <nz-select
+      (ngModelChange)="currency$.next($event)"
+      [ngModel]="null"
+      [nzPlaceHolder]="'CURRENCY_SPENDING.Pick_currency' | translate"
+      class="currency-picker"
+      nzShowSearch
+    >
+      <nz-option *ngFor="let currency of currencies$ | async" [nzLabel]="currency.ID | itemName | i18n"
+                 [nzValue]="currency.ID"
+                 nzCustomContent>
+        <div [title]="currency.ID | itemName | i18n" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img [src]="currency.Icon | xivapiIcon" alt="" class="currency-icon">
+          <div>
+            {{currency.ID | itemName | i18n}}
+          </div>
+        </div>
+      </nz-option>
+    </nz-select>
+    <nz-input-number (ngModelChange)="amount$.next($event)" [ngModel]="amount$ | async" [nzPlaceHolder]="'COMMON.Amount' | translate"
+                     [nzStep]="1"></nz-input-number>
+    <nz-select
+      (ngModelChange)="server$.next($event)"
+      [ngModel]="server$ | async"
+      [nzPlaceHolder]="'Server_name' | translate"
+      class="server-picker"
+      nzShowSearch
+    >
+      <nz-option *ngFor="let server of servers$ | async" [nzLabel]="server"
+                 [nzValue]="server">
+      </nz-option>
+    </nz-select>
+  </div>
+</div>
+
+<nz-list [nzDataSource]="results$ | async" [nzLoading]="loading" [nzRenderItem]="item">
+  <ng-template #item let-item>
+    <nz-list-item [nzContent]="content" class="result-item">
+      <ng-template #content>
+        <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <div>{{item.npcs[0] | npcName | i18n}}</div>
+          <app-db-button [id]="item.npcs[0]" type="npc"></app-db-button>
+        </div>
+      </ng-template>
+      <nz-list-item-meta
+        [nzAvatar]="avatar"
+        [nzDescription]="description"
+        [nzTitle]="nzTitle"
+      >
+        <ng-template #description>
+          <div fxLayout="row" fxLayoutAlign="flex-start center">
+            <div>{{'CURRENCY_SPENDING.You_can_buy' | translate: { amount: (item.rate * (amount$ | async) | floor) } }},&nbsp;</div>
+            <div>{{'MARKETBOARD.Unit_price' | translate}}:</div>
+            <app-item-icon [icon]="1 | lazyIcon" [itemId]="1" [width]="32"></app-item-icon>
+            <div>x {{item.price | number}},&nbsp;</div>
+            <div>{{'COMMON.Total' | translate}}:</div>
+            <app-item-icon [icon]="1 | lazyIcon" [itemId]="1" [width]="32"></app-item-icon>
+            <div>x {{(item.price * (item.rate * (amount$ | async) | floor)) | number}}</div>
+          </div>
+        </ng-template>
+        <ng-template #avatar>
+          <app-item-icon [hq]="item.HQ" [icon]="item.item | lazyIcon" [itemId]="item.item"
+                         [width]="32"></app-item-icon>
+        </ng-template>
+        <ng-template #nzTitle>
+          <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+            <div>{{item.item | itemName | i18n}}</div>
+            <app-db-button [id]="item.item" type="item"></app-db-button>
+            <app-marketboard-icon [itemId]="item.item" [showHistory]="true"></app-marketboard-icon>
+          </div>
+        </ng-template>
+      </nz-list-item-meta>
+    </nz-list-item>
+  </ng-template>
+</nz-list>

@@ -1,0 +1,372 @@
+@import "common";
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+}
+
+.material-icons {
+  font-size: 18px;
+  margin-top: 1px;
+}
+
+.feather {
+  width: 16px;
+}
+
+.custom-tag {
+  background-color: #333333;
+}
+
+.ant-menu-vertical .ant-menu-item, .ant-menu-vertical-left .ant-menu-item, .ant-menu-vertical-right .ant-menu-item,
+.ant-menu-inline .ant-menu-item, .ant-menu-vertical .ant-menu-submenu-title,
+.ant-menu-vertical-left .ant-menu-submenu-title, .ant-menu-vertical-right .ant-menu-submenu-title,
+.ant-menu-inline .ant-menu-submenu-title {
+  margin-top: 0 !important;
+}
+
+.ant-input-group-addon .ant-select-open .ant-select-selection, .ant-input-group-addon .ant-select-focused .ant-select-selection {
+  color: inherit !important;
+}
+
+.patreon-widget {
+  > img {
+    width: 175px;
+  }
+
+  margin-top: 25px;
+}
+
+.ant-input, .ant-select, .ant-collapse, .ant-input-group-addon, .ant-btn, .ant-collapse-content, .ant-select-selection, .ant-input-number, .ant-collapse-item, .ant-list-item {
+  border-color: #444 !important;
+}
+
+.ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin-left: 0 !important;
+}
+
+.fake-form-label {
+  visibility: hidden;
+}
+
+@font-face {
+  font-family: FFXIVAppIcons;
+  src: url("./assets/font/FFXIVAppIcons.ttf");
+}
+
+.companion-svg {
+  font-family: 'FFXIVAppIcons';
+}
+
+.man-attacked-by-tetris-block {
+  width: 18px;
+  height: 18px;
+  opacity: 0.65;
+
+  &.anticon {
+    margin-right: 10px;
+  }
+
+  &.button-icon {
+    margin-bottom: 6px;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// Let's have nicer scrollbars ! credits to angular/aio: https://github.com/angular/angular/blob/3a30f5d937e64289ad9a89a1cbc4bd66d8a8867a/aio/src/styles/2-modules/_scrollbar.scss
+*::-webkit-scrollbar, *::-webkit-scrollbar, *::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track, *::-webkit-scrollbar-track, *::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+*::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb, *::-webkit-scrollbar-thumb {
+  background-color: #6e6e6e;
+  outline: 1px solid #333;
+}
+
+// Loader css
+@loader-color: rgba(218, 165, 32, .3);
+.init-loader-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  #logo {
+    position: relative;
+
+    > img {
+      width: 200px;
+    }
+  }
+
+  #logo:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 154.5px;
+    left: 23px;
+    height: 1px;
+    width: 180px;
+    transform-origin: top left;
+    transform: rotate(-45deg);
+    animation: glow 1.5s infinite ease-in-out;
+    border-radius: 30%;
+  }
+
+  .brought-to-you {
+    padding-top: 40px;
+    font-size: 20px;
+    color: darkgrey;
+    opacity: .7;
+  }
+}
+
+@keyframes glow {
+  50%, 100% {
+    box-shadow: 0 0 0 0 @loader-color;
+  }
+  30% {
+    box-shadow: 0 0 5px 5px @loader-color,
+    inset 0 5px 5px @loader-color;
+  }
+}
+
+// Global antd design modifications
+.ant-select-arrow {
+  color: inherit;
+}
+
+nz-alert:not(.dark) {
+  .ant-alert {
+    &-error {
+      color: #ffa39e;
+      background-color: #352525;
+    }
+
+    &-info, &-warning, &-error {
+      .ant-alert-message {
+        color: black !important;
+      }
+
+      .ant-alert-description {
+        color: black;
+      }
+    }
+  }
+}
+
+nz-alert.dark {
+  .ant-alert {
+    background-color: #333333;
+
+    &-info, &-warning, &-error, &-success {
+      .ant-alert-message {
+        color: white !important;
+      }
+
+      .ant-alert-description {
+        color: white;
+      }
+    }
+  }
+}
+
+.ant-table-thead > tr.ant-table-row-hover > td, .ant-table-tbody > tr.ant-table-row-hover > td, .ant-table-thead > tr:hover > td, .ant-table-tbody > tr:hover > td {
+  background-color: rgba(128, 128, 128, .3) !important;
+}
+
+.ant-alert-success, .ant-alert-warning, .ant-alert-error, .ant-alert-info {
+  .ant-alert-message {
+    color: rgba(0, 0, 0, .8);
+  }
+}
+
+.input-number-with-addon {
+  border-radius: 4px 0 0 4px;
+}
+
+.ant-btn {
+  &-background-ghost:not(.ant-btn-primary) {
+    color: @text-color !important;
+  }
+
+  &-circle {
+    font-size: 20px;
+    box-shadow: 0 0 .5px 0 white;
+
+    &:not(.ant-btn-primary) {
+      box-shadow: 0 0 .5px 0 white inset;
+    }
+
+    > i.material-icons {
+      margin-top: 6px;
+    }
+
+    &.ant-btn-sm {
+      > i.material-icons {
+        margin-top: 2px;
+      }
+    }
+  }
+}
+
+.ant-menu-item {
+  .anticon {
+    font-size: 18px !important;
+  }
+}
+
+.ant-modal-body {
+  @media @mobile {
+    padding: 12px;
+  }
+}
+
+.ant-layout-sider-zero-width-trigger {
+  opacity: .8;
+}
+
+.ant-select-dropdown-menu-item:hover, .ant-select-dropdown-menu-item-active, .ant-dropdown-menu-item:hover,
+.ant-dropdown-menu-submenu-title:hover {
+  background-color: rgba(255, 255, 255, .2) !important;
+}
+
+.ant-menu-item-selected:not(.menu-link) {
+  background-color: unset !important;
+}
+
+.ant-menu-item-active:not(.menu-link) {
+  background-color: unset !important;
+}
+
+// Tooling
+.page-container {
+  padding: 20px 25px;
+
+  &.overlay {
+    padding: 0;
+    height: calc(100% - 21px);
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+// Drag and drop
+
+.ngx-dnd-container {
+  &.gu-empty {
+    border: 2px dotted red;
+  }
+
+  &:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .ex-moved {
+    background-color: #e74c3c;
+  }
+
+  .ex-over {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .handle {
+    padding: 0 5px;
+    margin-right: 5px;
+    background-color: rgba(0, 0, 0, 0.4);
+    cursor: move;
+  }
+}
+
+.no-select {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE/Edge */
+  user-select: none;
+  /* non-prefixed version, currently
+                         not supported by any browser */
+}
+
+.ngx-dnd-item {
+  transition: opacity 0.4s ease-in-out;
+  display: block;
+
+  &:not(.has-handle):not(.move-disabled),
+  &.has-handle [ngxdraghandle],
+  &.has-handle [ngxDragHandle] {
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+  }
+
+  .ngx-dnd-content {
+    user-select: none;
+  }
+}
+
+.gu-mirror {
+  position: fixed !important;
+  margin: 0 !important;
+  z-index: 9999 !important;
+  opacity: 0.8;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+  filter: alpha(opacity=80);
+}
+
+.gu-hide {
+  display: none !important;
+}
+
+.gu-unselectable {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+}
+
+.gu-transit {
+  opacity: 0.2;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+  filter: alpha(opacity=20);
+}
+
+.item-row {
+  &.craftable {
+    background-color: rgba(19, 168, 255, 0.3);
+
+    &.odd {
+      background-color: rgba(19, 168, 255, .4);
+    }
+  }
+
+  &.done {
+    .ant-btn-primary {
+      background-color: white !important;
+    }
+
+    background-color: rgba(94, 255, 91, 0.15);
+    opacity: .6;
+
+    &.odd {
+      background-color: rgba(94, 255, 91, 0.2);
+    }
+  }
+
+  &.has-all-ingredients {
+    border: 2px dashed rgba(19, 168, 255, .3);
+  }
+}

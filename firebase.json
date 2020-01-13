@@ -1,0 +1,43 @@
+{
+  "hosting": {
+    "public": "dist/apps/client",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "redirects": [
+      {
+        "source": "/desktop",
+        "destination": "https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/releases/latest",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(css|js|jpg|jpeg|gif|svg|png|json)",
+        "headers": [
+          {
+            "key": "Cache-control",
+            "value": "max-age=7200"
+          }
+        ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-control",
+            "value": "max-age=0"
+          }
+        ]
+      }
+    ]
+  }
+}

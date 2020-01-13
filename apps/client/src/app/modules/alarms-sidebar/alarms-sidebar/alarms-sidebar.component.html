@@ -1,0 +1,59 @@
+<ng-container *ngIf="loaded$ | async; else loading">
+  <div *ngIf="!overlayMode" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+    <nz-switch [(ngModel)]="settings.alarmsMuted"></nz-switch>
+    <div>{{'Mute_alarms' | translate}} </div>
+  </div>
+  <div *ngIf="alarms$ | async as alarms" [class.sidebar]="!overlayMode" class="alarms-container">
+    <div *ngFor="let row of alarms; trackBy: trackByAlarm; let last = last">
+      <div [class.played]="row.played && !row.spawned" [class.spawned]="row.spawned" class="alarm-row" fxLayout="row"
+           fxLayoutGap="5px">
+        <div class="ephemeral">
+          <i *ngIf="row.alarm.ephemeral" [nzTitle]="'GATHERING_LOCATIONS.Ephemeral_node' | translate" nz-icon nz-tooltip
+             nzType="clock-circle"></i>
+        </div>
+        <div class="item-icon">
+          <app-item-icon [disableClick]="overlayMode" [icon]="row.alarm.itemId | lazyIcon"
+                         [itemId]="row.alarm.itemId" [itemName]="row.alarm.itemId | itemName: row.alarm | i18n" [width]="32"></app-item-icon>
+          <img alt="" class="node-type" src="{{row.alarm.type | nodeTypeIcon}}">
+        </div>
+        <div class="center-content">
+          <span *ngIf="row.alarm.itemId; else customName" class="item-name">
+            <i *ngIf="row.groupName" [nzTitle]="row.groupName" class="folder-icon" nz-icon
+               nz-tooltip nzType="folder-open"></i>
+            {{row.alarm.itemId | itemName: row.alarm | i18n}}
+            <i *ngIf="row.alarm.note" [nzTitle]="row.alarm.note" class="note-icon" nz-icon
+               nz-tooltip nzType="edit"></i>
+          </span>
+          <ng-template #customName>
+            <i *ngIf="row.groupName" [nzTitle]="row.groupName" class="folder-icon" nz-icon
+               nz-tooltip nzType="folder-open"></i>
+            <span class="item-name">{{row.alarm.name}}</span>
+          </ng-template>
+          <div fxLayout="row wrap" fxLayoutGap="5px">
+            <div class="timer">{{row.remainingTime | timer}}</div>
+            <div
+              class="map">{{(row.alarm.mapId | closestAetheryte: row.alarm.coords | async)?.nameid |  placeName | i18n}}</div>
+            <div class="coords">X:{{row.alarm.coords.x}} - Y: {{row.alarm.coords.y}}</div>
+          </div>
+        </div>
+        <div *ngIf="row.alarm.slot" class="slot">({{row.alarm.slot}})</div>
+        <div *ngIf="!overlayMode" class="map-button">
+          <button (click)="openMap(row.alarm)" nz-button nzShape="circle" nzSize="small" nzType="primary">
+            <i nz-icon nzType="environment-o"></i>
+          </button>
+        </div>
+        <div (nzOnConfirm)="deleteAlarm(row.alarm)" [nzTitle]="'Confirmation' | translate" class="delete-icon"
+             nz-popconfirm>
+          <i nz-icon nzType="close"></i>
+        </div>
+      </div>
+      <nz-divider *ngIf="!last"></nz-divider>
+    </div>
+    <app-fullpage-message *ngIf="alarms.length === 0">
+      {{'ALARMS.No_alarm' | translate}}
+    </app-fullpage-message>
+  </div>
+</ng-container>
+<ng-template #loading>
+  <app-page-loader></app-page-loader>
+</ng-template>

@@ -1,0 +1,36 @@
+.list-title, .alert, .note {
+  margin-bottom: 5px;
+}
+
+.list-title {
+  padding-top: 20px;
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+.toolbar {
+  margin-bottom: 10px;
+}
+
+:host ::ng-deep {
+  .ant-alert-message {
+    color: rgba(0, 0, 0, .65);
+  }
+
+  .anticon-close {
+    color: rgba(0, 0, 0, .65);
+
+    &:hover {
+      color: rgba(0, 0, 0, .85);
+    }
+  }
+
+  .alert {
+    .ant-card-body {
+      padding: 16px;
+      background-color: var(--topbar-color);
+    }
+  }
+}

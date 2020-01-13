@@ -1,0 +1,88 @@
+<ng-container *ngIf="xivapiTrait$ | async as trait; else loader">
+  <div [style.padding]="'0 50px' | ifMobile: '0'" fxLayout="column" fxLayoutGap="10px">
+    <div class="top-bar" fxFlex="1 1 auto" fxLayout="row" fxLayout.lt-md="column"
+         fxLayoutAlign="flex-start flex-start" fxLayoutGap="5px" fxLayoutGap.lt-md="10px">
+      <div class="top-left-block" fxFlex="0 0 300px" fxFlex.lt-md="1 1 auto" fxLayout="column"
+           fxLayoutAlign="space-between" fxLayoutGap="10px">
+        <div class="icon-block" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img [src]="trait.Icon | xivapiIcon" class="img-icon" fxFlex="0 0 auto">
+          <div fxLayout="column" fxLayoutAlign="flex-start flex-start">
+            <h2 class="item-name">{{trait | xivapiI18n}}</h2>
+            <div class="item-kind" fxLayout="row" fxLayoutGap="5px">
+              <div>Lvl {{trait.Level}}</div>
+              <div [innerHTML]="trait.ClassJob | xivapiI18n: 'Abbreviation'"></div>
+            </div>
+            <div *ngIf="trait.GamePatch" class="patch">
+              {{trait.GamePatch | xivapiI18n}}
+              <app-db-button [id]="trait.GamePatch.ID" type="patch"></app-db-button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="links$ | async as links" class="links" fxLayout="row" fxLayoutAlign="flex-start center"
+             fxLayoutGap="5px">
+          <a *ngFor="let link of links" [href]="link.url" [nzTitle]="link.title" nz-tooltip target="_blank">
+            <img [alt]="link.title" [src]="link.icon" class="link-icon">
+          </a>
+        </div>
+      </div>
+      <div fxFlex="1 1 auto">
+        <p *ngIf="trait.Description" [innerHTML]="trait | xivapiI18n: 'Description' | xivUIText"></p>
+      </div>
+    </div>
+    <app-db-comments *ngIf="settings.dbCommentsPosition === 'TOP'" [id]="trait.ID" type="trait"></app-db-comments>
+
+    <nz-divider [nzText]="'DB.Details' | translate" nzOrientation="left"></nz-divider>
+    <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutGap="10px">
+      <nz-card *ngIf="trait.QuestTargetID" [nzTitle]="title"
+               class="details-card"
+               fxFlex="1 1 30%"
+               nzBordered="false">
+        <ng-template #title>
+          {{'DB.ACTION.Unlocked_by_quest' | translate}}
+        </ng-template>
+        <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="10px">
+          <img [src]="trait.Quest.JournalGenre.Icon | xivapiIcon" alt="">
+          <div>{{trait.QuestTargetID | questName | i18n}}</div>
+          <app-db-button [id]="trait.QuestTargetID" type="quest"></app-db-button>
+        </div>
+      </nz-card>
+      <ng-container *ngIf="relatedActions$ | async as relatedActions">
+        <nz-card *ngIf="relatedActions.length > 0" [nzTitle]="title"
+                 class="details-card"
+                 fxFlex="1 1 30%"
+                 nzBordered="false">
+          <ng-template #title>
+            {{'DB.TRAIT.Related_actions' | translate}}
+          </ng-template>
+          <nz-list [nzDataSource]="relatedActions" [nzItemLayout]="'horizontal'"
+                   [nzRenderItem]="actionTemplate">
+            <ng-template #actionTemplate let-sharedAction>
+              <nz-list-item
+                [nzContent]="more">
+                <nz-list-item-meta
+                  [nzAvatar]="actionAvatar"
+                  [nzTitle]="actionTitle">
+                  <ng-template #actionAvatar>
+                    <img [appXivdbActionTooltip]="sharedAction" [src]="sharedAction | actionIcon | xivapiIcon" alt="">
+                  </ng-template>
+                  <ng-template #actionTitle>
+                    <div>
+                      {{sharedAction | actionName | i18n}}
+                    </div>
+                  </ng-template>
+                  <ng-template #more>
+                    <app-db-button [id]="sharedAction" type="action"></app-db-button>
+                  </ng-template>
+                </nz-list-item-meta>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-card>
+      </ng-container>
+    </div>
+  </div>
+  <app-db-comments *ngIf="settings.dbCommentsPosition === 'BOTTOM'" [id]="trait.ID" type="trait"></app-db-comments>
+</ng-container>
+<ng-template #loader>
+  <app-page-loader></app-page-loader>
+</ng-template>

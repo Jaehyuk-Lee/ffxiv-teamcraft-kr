@@ -1,0 +1,21 @@
+<div class="inventory-container" fxLayout="column" fxLayoutAlign="flex-start center" fxLayoutGap="10px">
+  <nz-switch
+    (ngModelChange)="showFinalItems$.next($event)"
+    [ngModel]="showFinalItems$ | async"
+    [nzCheckedChildren]="checkedTemplate"
+    [nzUnCheckedChildren]="unCheckedTemplate"
+  ></nz-switch>
+  <ng-template #checkedTemplate>{{'LIST.INVENTORY.Show_final_items' | translate}}</ng-template>
+  <ng-template #unCheckedTemplate>{{'LIST.INVENTORY.Hide_final_items' | translate}}</ng-template>
+  <div *ngFor="let tab of display$ | async" class="tab" fxLayout="row wrap" fxLayoutGap="5px">
+    <div *ngFor="let slot of tab" [class.empty]="slot === undefined" class="slot" nz-tooltip
+         nzTitle="{{slot?.id | itemName| i18n}} ({{'Copy_isearch' | translate}})">
+      <div (cbOnSuccess)="copied('Item_name_copied', {itemname: $event.content})"
+           *ngIf="slot !== undefined" cbContent="/isearch &quot;{{slot?.id | itemName | i18n}}&quot;" class="item-container"
+           ngxClipboard>
+        <img src="{{slot.icon | icon}}">
+        <span class="amount">{{slot.amount}}</span>
+      </div>
+    </div>
+  </div>
+</div>

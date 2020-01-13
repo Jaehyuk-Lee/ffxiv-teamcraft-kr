@@ -1,0 +1,82 @@
+.search-box {
+  width: 80%;
+  margin: auto;
+}
+
+.add-to-group {
+  font-size: 24px;
+}
+
+.spawned-timer {
+  color: var(--primary-color);
+}
+
+.played-timer {
+  color: var(--highlight-color);
+}
+
+.results {
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  .compact-node {
+    flex: 1 0 20%;
+  }
+
+  .ant-card {
+    max-width: 475px;
+    margin: 4px;
+    min-width: 250px;
+  }
+
+  .ant-card-loading {
+    width: 475px;
+    @media only screen and (max-width: 600px) {
+      width: 85vw;
+    }
+  }
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+}
+
+.node-type {
+  width: 32px;
+}
+
+.folklore {
+  width: 32px;
+  border-radius: 50%;
+}
+
+.material-icons {
+  font-size: 24px;
+}
+
+.create-alarm {
+  &.disabled {
+    opacity: .5;
+
+    &:hover {
+      cursor: default;
+      color: inherit;
+    }
+  }
+}
+
+.intro {
+  padding: 100px 100px 0;
+  text-align: center;
+  font-size: 24px;
+  opacity: .8;
+}
+
+.gig-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}

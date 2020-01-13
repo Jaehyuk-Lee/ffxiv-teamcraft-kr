@@ -1,0 +1,461 @@
+<app-loading-screen *ngIf="!dataLoaded; else appLayout"></app-loading-screen>
+<ng-template #appLayout>
+  <nz-layout *ngIf="!(hasDesktop$ | async); else desktopOpenedMessage" [class.no-panel-borders]="settings.noPanelBorders"
+             class="app-container">
+    <nz-layout *ngIf="!overlay">
+      <nz-header class="header">
+        <a class="logo" routerLink="/">
+          {{'FFXIV Teamcraft' | ifMobile:'TC'}} <i>v{{version}}</i>
+        </a>
+        <nz-select (ngModelChange)="use($event)" *ngIf="true | ifMobile: false" [ngModel]="translate.currentLang" class="language-swap"
+                   fxFlex="0 0 auto"
+                   fxLayout="row">
+          <nz-option *ngFor="let locale of availableLanguages" [nzLabel]="locale | uppercase"
+                     [nzValue]="locale"></nz-option>
+        </nz-select>
+        <a [nzTitle]="'WIKI.Title' | translate" class="wiki-link" href="https://wiki.ffxivteamcraft.com"
+           nz-tooltip target="_blank">
+          <i nz-icon nzType="question-circle"></i>
+        </a>
+        <div *ngIf="(newVersionAvailable$ | async) && platformService.isDesktop() && !downloading">
+          <button (click)="updateDesktopApp()" [nzTitle]="'UPDATE.New_update_available_desktop' | translate" nz-button nz-tooltip
+                  nzPlacement="bottom"
+                  nzShape="circle"
+                  nzType="primary"><i nz-icon nzType="download"></i></button>
+        </div>
+        <div *ngIf="downloading" class="download-spinner">
+          <nz-spin [nzSimple]="true"></nz-spin>
+        </div>
+        <div class="tips-container" fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign="center center">
+          <ng-container *ngIf="platformService.isDesktop()">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+              <button (click)="back()" nz-button nzShape="circle">
+                <i nz-icon nzType="arrow-left"></i>
+              </button>
+              <button (cbOnSuccess)="afterPathNameCopy()" cbContent="https://ffxivteamcraft.com{{getPathname()}}" ngxClipboard nz-button
+                      nzShape="circle">
+                <i nz-icon nzTheme="outline" nzType="share-alt"></i>
+              </button>
+              <button (click)="forward()" nz-button nzShape="circle">
+                <i nz-icon nzType="arrow-right"></i>
+              </button>
+            </div>
+          </ng-container>
+          <div class="tips" fxHide.lt-lg fxShow>
+            <i>{{'TIPS.Title' | translate}}: {{('TIPS.' + (randomTip$ | async)) | translate}}</i>
+          </div>
+        </div>
+        <ul [nzMode]="'horizontal'" [nzTheme]="'dark'" class="right-menu" nz-menu>
+          <li class="ant-menu-item" fxFlex fxHide.lt-sm fxLayout="column" fxShow routerLink="/support-us"
+              routerLinkActive="ant-menu-item-selected">
+            {{'SUPPORT_US.Title' | translate}}
+          </li>
+          <li (click)="toggleTimeFormat()" class="clock ant-menu-item" fxFlex fxHide.lt-sm fxShow>
+            {{time$ | async}}
+          </li>
+          <li *ngIf="!platformService.isDesktop()" [nzTitle]="'COMMON.Open_in_desktop' | translate" class="clock ant-menu-item" fxFlex fxHide.lt-sm fxShow
+              nz-tooltip nzPlacement="bottom">
+            <a (click)="openedApp()" [href]="desktopUrl">
+              <i iconfont="icon-openinapp" nz-icon></i>
+            </a>
+          </li>
+          <li *ngIf="notifications$ | async as notifications" [nzContent]="notificationsTemplate" class="ant-menu-item" nz-popover
+              nzPlacement="bottomRight">
+            <nz-badge [nzCount]="notifications.length" class="notifications-count">
+              <i nz-icon nzType="notification"></i>
+            </nz-badge>
+            <ng-template #notificationsTemplate>
+              <nz-list [nzDataSource]="notifications" [nzNoResult]="noNotifications"
+                       [nzRenderItem]="notificationTemplate">
+                <ng-template #noNotifications>
+                  <nz-empty [nzNotFoundContent]="'NOTIFICATIONS.No_notifications' | translate"></nz-empty>
+                </ng-template>
+                <ng-template #notificationTemplate let-notification>
+                  <nz-list-item [nzActions]="[actionOpen, actionClose]">
+                    <nz-list-item-meta [nzAvatar]="icon"
+                                       [nzDescription]="notification.route.join('/')"
+                                       [nzTitle]="notification.content">
+                      <ng-template #icon>
+                        <i nz-icon nzType="{{notification.icon}}"></i>
+                      </ng-template>
+                    </nz-list-item-meta>
+                  </nz-list-item>
+                  <ng-template #actionClose>
+                    <i (click)="$event.stopPropagation();deleteNotification(notification)" nz-icon nzType="close"></i>
+                  </ng-template>
+                  <ng-template #actionOpen>
+                    <a (click)="$event.stopPropagation();deleteNotification(notification)"
+                       [routerLink]="notification.route">
+                      <i nz-icon nzType="select"></i>
+                    </a>
+                  </ng-template>
+                </ng-template>
+              </nz-list>
+            </ng-template>
+          </li>
+          <li [class.accent]="!(loggedIn$ | async)" class="user-menu" nz-submenu>
+          <span title>
+            <nz-spin *ngIf="loading$ | async; else authDetails"></nz-spin>
+            <ng-template #authDetails>
+              <span *ngIf="!(loggedIn$ | async); else userLoggedIn">
+                <nz-avatar [nzText]="'A'">
+                </nz-avatar>
+                {{'COMMON.Anonymous' | translate}}
+              </span>
+              <ng-template #userLoggedIn>
+                <ng-container *ngIf="character$ | async as character">
+                <app-user-avatar *ngIf="character.ID > 0; else krAvatar" [flex]="false" [ignoreVerification]="true"
+                                 [userId]="userId$ | async"
+                                 [width]="32"></app-user-avatar>
+                <ng-template #krAvatar>
+                  <nz-avatar [nzText]="character.Name[0]"></nz-avatar>
+                </ng-template>
+                  {{character.Name | ifMobile:''}}
+                </ng-container>
+                </ng-template>
+            </ng-template>
+          </span>
+            <span>
+            <a *ngIf="loggedIn$ | async" nz-menu-item routerLink="/profile">
+              <i nz-icon nzType="idcard"></i>
+              {{'Profile' | translate}}
+            </a>
+              <a nz-menu-item routerLink="/inventory">
+              <i nz-icon nzType="appstore"></i>
+                {{'INVENTORY.Title' | translate}}
+            </a>
+            <a *ngIf="loggedIn$ | async" nz-menu-item routerLink="/teams">
+              <i nz-icon nzType="team"></i>
+              {{'TEAMS.Title' | translate}}
+            </a>
+            <a *ngIf="loggedIn$ | async" nz-menu-item routerLink="/favorites">
+              <i nz-icon nzType="heart"></i>
+              {{'Favorites' | translate}}
+            </a>
+            <ng-container *ngIf="user$ | async as user">
+              <a *ngIf="user.patron || user.admin" nz-menu-item routerLink="/custom-links">
+                <i nz-icon nzType="link"></i>
+                {{'CUSTOM_LINKS.Title' | translate}}
+              </a>
+            </ng-container>
+            <a (click)="openSettings()" nz-menu-item>
+              <i nz-icon nzType="setting"></i>
+              {{'SETTINGS.Title' | translate}}
+            </a>
+            <span nz-menu-divider></span>
+            <a (click)="logOut()" *ngIf="loggedIn$ | async" nz-menu-item>
+              <i nz-icon nzType="logout"></i>
+              {{'Disconnect' | translate}}
+            </a>
+            <a (click)="openRegisterPopup()" *ngIf="!(loggedIn$ | async)" nz-menu-item>
+              <i nz-icon nzType="form"></i>
+              {{'Registration' | translate}}
+            </a>
+            <a (click)="openLoginPopup()" *ngIf="!(loggedIn$ | async)" nz-menu-item>
+              <i nz-icon nzType="login"></i>
+              {{'Login' | translate}}
+            </a>
+          </span>
+          </li>
+        </ul>
+      </nz-header>
+    </nz-layout>
+    <nz-layout [class.overlay]="overlay" class="content-container">
+      <nz-sider (nzCollapsedChange)="settings.compactSidebar = $event"
+                *ngIf="!overlay"
+                [(nzCollapsed)]="collapsedSidebar"
+                [nzCollapsedWidth]="80 | ifMobile: 0"
+                class="sider"
+                nzCollapsible>
+        <div class="flex-container" fxLayout="column" fxLayoutAlign="space-between">
+          <div>
+            <ul [nzInlineCollapsed]="collapsedSidebar" [nzMode]="'inline'" [nzTheme]="'dark'" nz-menu>
+              <li [nzOpen]="true" nz-submenu>
+                <span title>
+                  <i nz-icon nzType="home"></i>
+                  <span>{{'SIDEBAR.General' | translate}}</span>
+                </span>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/search"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="search"></i>
+                      <span class="nav-text">{{'ITEMS.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/lists"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon
+                         nzType="profile"></i>
+                      <span class="nav-text">{{'Lists' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="$event.preventDefault();onNavLinkClick()" class="menu-link" nz-menu-item
+                   routerLink="/simulator" routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i class="companion-svg anticon">
+                        &#xF239;
+                      </i>
+                      <span class="nav-text">{{'SIMULATOR.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/rotations"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="build"></i>
+                      <span class="nav-text">{{'SIMULATOR.Rotations' | translate}}</span>
+                  </span>
+                </a>
+              </li>
+
+              <li [nzOpen]="true" nz-submenu>
+                <span title>
+                  <i nz-icon nzType="share-alt"></i>
+                  <span>{{'SIDEBAR.Sharing' | translate}}</span>
+                </span>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/community-lists"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="solution"></i>
+                      <span class="nav-text">{{'Public_lists' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/community-rotations"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <img class="man-attacked-by-tetris-block anticon" src="./assets/icons/svg/thing.svg"/>
+                      <span class="nav-text">{{'SIMULATOR.COMMUNITY_ROTATIONS.Title' | translate}}</span>
+                  </span>
+                </a>
+              </li>
+
+              <li [nzOpen]="true" nz-submenu>
+                <span title>
+                  <i class="companion-svg anticon">
+                    &#xF121;
+                  </i>
+                  <span>{{'SIDEBAR.Gathering' | translate}}</span>
+                </span>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/alarms"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="bell"></i>
+                      <span class="nav-text">{{'ALARMS.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/gathering-location"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon
+                         nzType="environment-o"></i>
+                      <span class="nav-text">{{'GATHERING_LOCATIONS.Title' | translate}}</span>
+                  </span>
+                </a>
+              </li>
+
+              <li nz-submenu>
+                <span title>
+                  <i nz-icon nzType="appstore"></i>
+                  <span>{{'SIDEBAR.Helpers' | translate}}</span>
+                </span>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/levequests"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="book"></i>
+                      <span class="nav-text">{{'LEVEQUESTS.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/log-tracker"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i iconfont="icon-book" nz-icon></i>
+                      <span class="nav-text">{{'LOG_TRACKER.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/gc-supply"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="file-done"></i>
+                      <span class="nav-text">{{'GC_SUPPLY.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/desynth"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i iconfont="icon-vectorcombine" nz-icon></i>
+                      <span class="nav-text">{{'DESYNTH.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/recipe-finder"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzTheme="outline" nzType="experiment"></i>
+                      <span class="nav-text">{{'RECIPE_FINDER.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/currency-spending"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzTheme="outline" nzType="shopping"></i>
+                      <span class="nav-text">{{'CURRENCY_SPENDING.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/custom-items"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i iconfont="icon-custom" nz-icon></i>
+                      <span class="nav-text">{{'CUSTOM_ITEMS.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/macro-translator"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="message"></i>
+                      <span class="nav-text">{{'MACRO_TRANSLATION.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/reset-timers"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="hourglass"></i>
+                      <span class="nav-text">{{'ALARMS.REALTIME.Reset_timers' | translate}}</span>
+                  </span>
+                </a>
+              </li>
+
+              <li nz-submenu>
+                <span title>
+                  <i nz-icon nzType="info-circle"></i>
+                  <span>{{'SIDEBAR.Other' | translate}}</span>
+                </span>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/blog"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="file-text"></i>
+                      <span class="nav-text">{{'BLOG.Title' | translate}}</span>
+                  </span>
+                </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/about"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="info-circle-o"></i>
+                      <span class="nav-text">{{'ABOUT.title' | translate}}</span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div [fxLayout]="collapsedSidebar?'column':'row'" class="social-buttons" fxLayoutAlign="center center"
+               fxLayoutGap="5px">
+            <a *ngIf="!collapsedSidebar" class="social-fab twitter" href="https://twitter.com/FFXIVTeamcraft" nz-button
+               nz-tooltip
+               nzShape="circle"
+               nzTitle="{{'Find_us_on_twitter' | translate}}" target="_blank">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a *ngIf="!collapsedSidebar" class="social-fab discord" href="https://discord.gg/r6qxt6P" nz-button nz-tooltip
+               nzShape="circle"
+               nzTitle="{{'Join_discord_server' | translate}}"
+               target="_blank">
+              <i class="fab fa-discord"></i>
+            </a>
+            <a *ngIf="!desktop && !collapsedSidebar" href="https://ffxivteamcraft.com/desktop" nz-button nz-tooltip
+               nzShape="circle"
+               nzTitle="{{'Download_desktop_app' | translate}}"
+               target="_blank">
+              <i nz-icon nzType="desktop"></i>
+            </a>
+            <a *ngIf="!collapsedSidebar" class="social-fab github" href="https://github.com/ffxiv-teamcraft/ffxiv-teamcraft" nz-button
+               nz-tooltip
+               nzShape="circle"
+               nzTitle="{{'See_code_github' | translate}}"
+               target="_blank"><i class="fab fa-github"></i>
+            </a>
+            <a *ngIf="!collapsedSidebar" class="social-fab patreon" href="https://www.patreon.com/ffxivteamcraft" nz-button
+               nz-tooltip
+               nzShape="circle"
+               nzTitle="{{'Support_on_patreon' | translate}}"
+               target="_blank">
+              <i class="fab fa-patreon"></i>
+            </a>
+          </div>
+        </div>
+      </nz-sider>
+      <nz-content>
+        <div [class.overlay]="overlay" class="page-container">
+          <nz-alert *ngIf="(newVersionAvailable$ | async) && !platformService.isDesktop()" [nzMessage]="message" class="new-version-alert"
+                    nzBanner
+                    nzShowIcon
+                    nzType="info">
+            <ng-template #message>
+              {{'UPDATE.New_update_available' | translate}}
+              {{'UPDATE.Web_instructions' | translate}}
+            </ng-template>
+          </nz-alert>
+          <nz-alert (nzOnClose)="settings.hideMachinaBanner = true" *ngIf="platformService.isDesktop() && !settings.hideMachinaBanner && !ipc.machinaToggle" [nzCloseText]="'Close' | translate"
+                    [nzDescription]="description"
+                    [nzMessage]="'PACKET_CAPTURE.Banner_title' | translate"
+                    class="new-version-alert"
+                    nzBanner
+                    nzShowIcon
+                    nzType="info">
+            <ng-template #description>
+              {{'PACKET_CAPTURE.Banner_description' | translate}}<br>
+              <i>{{'PACKET_CAPTURE.Banner_description_warning' | translate}}</i><br>
+              <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+                <button (click)="enablePacketCapture()" nz-button>
+                  {{'PACKET_CAPTURE.Button_label' | translate}}
+                </button>
+                <div>{{'Or' | translate}}</div>
+                <a
+                  href="https://wiki.ffxivteamcraft.com/advanced-features/packet-capture">{{'COMMON.Read_more_on_wiki' | translate}}</a>
+              </div>
+            </ng-template>
+          </nz-alert>
+          <ng-container *ngIf="platformService.isDesktop() && ipc.machinaToggle && !overlay">
+            <nz-alert *ngIf="emptyInventory$ | async" [nzDescription]="'PACKET_CAPTURE.Please_zone' | translate" [nzMessage]="'PACKET_CAPTURE.Empty_inventory' | translate"
+                      class="new-version-alert"
+                      nzBanner
+                      nzShowIcon
+                      nzType="warning">
+            </nz-alert>
+            <ng-container *ngIf="user$ | async as user">
+              <nz-alert *ngIf="user.cid === undefined && (loggedIn$ | async) && settings.enableUniversalisSourcing && !overlay"
+                        [nzDescription]="'PACKET_CAPTURE.Please_relog' | translate"
+                        [nzMessage]="'PACKET_CAPTURE.No_character_id' | translate"
+                        class="new-version-alert"
+                        nzBanner
+                        nzShowIcon
+                        nzType="warning">
+              </nz-alert>
+            </ng-container>
+          </ng-container>
+          <nz-spin [nzSize]="'large'" [nzSpinning]="navigating" class="app-container">
+            <router-outlet></router-outlet>
+          </nz-spin>
+        </div>
+      </nz-content>
+      <nz-sider *ngIf="!overlay"
+                [(nzCollapsed)]="collapsedAlarmsBar"
+                [nzCollapsedWidth]="0"
+                [nzWidth]="230"
+                [nzZeroTrigger]="alarmsTrigger"
+                class="right-sider"
+                nzCollapsible>
+        <ng-template #alarmsTrigger>
+          <i nz-icon nzType="bell"></i>
+        </ng-template>
+        <app-alarms-sidebar *ngIf="!(loading$ | async)"></app-alarms-sidebar>
+      </nz-sider>
+    </nz-layout>
+    <nz-footer [fxHide]="!overlay" class="footer" fxShow.lt-sm>
+      <span (click)="toggleTimeFormat()" class="timer">{{time$ | async}}</span>
+    </nz-footer>
+  </nz-layout>
+  <ng-template #desktopOpenedMessage>
+    <div class="opened-in-desktop" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+      <img alt="FFXIV Teamcraft" src="./assets/logo.png">
+      <div class="desktop-message">{{'COMMON.Opened_in_desktop' | translate}}</div>
+    </div>
+  </ng-template>
+</ng-template>

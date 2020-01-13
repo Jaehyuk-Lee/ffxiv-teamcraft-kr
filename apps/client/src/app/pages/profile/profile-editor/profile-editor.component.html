@@ -1,0 +1,132 @@
+<ng-container *ngIf="user$ | async as user">
+  <div *ngIf="mainCharacter$ | async as mainCharacter" fxLayout="column" fxLayoutGap="10px">
+    <h2>{{'Profile' | translate}}</h2>
+    <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center center" fxLayoutGap="5px">
+      <img *ngIf="mainCharacter.character.ID > 0" [src]="mainCharacter.character.Avatar" alt="" class="avatar">
+      <nz-avatar *ngIf="mainCharacter.character.ID < 0" [nzText]="mainCharacter.character.Name[0]"></nz-avatar>
+      <div fxLayout="row" fxLayoutGap="5px">
+        <nz-select (ngModelChange)="setDefaultCharacter($event)" [ngModel]="mainCharacter.character.ID">
+          <nz-option *ngFor="let characterEntry of characters$ | async"
+                     [nzLabel]="characterEntry.character.Character.Name"
+                     [nzValue]="characterEntry.character.Character.ID">
+          </nz-option>
+        </nz-select>
+        <i *ngIf="!mainCharacter.verified && mainCharacter.character.ID > 0" [nzTitle]="'Not_verified' | translate" nz-icon
+           nz-tooltip
+           type="exclamation-circle"></i>
+      </div>
+      <div fxLayout="row" fxLayoutGap="5px">
+        <ng-container *ngIf="userId$ | async as userId">
+          <button (click)="verifyCharacter(userId, mainCharacter.character.ID)" *ngIf="!mainCharacter.verified && mainCharacter.character.ID > 0" [nzTitle]="'PROFILE.VERIFICATION.Title' | translate"
+                  nz-button nz-tooltip
+                  nzShape="circle" nzSize="small"
+                  nzType="primary">
+            <i nz-icon nzType="check"></i>
+          </button>
+        </ng-container>
+
+        <button (click)="addCharacter()" [nzTitle]="'PROFILE.Add_character' | translate" nz-button nz-tooltip nzShape="circle"
+                nzSize="small" nzType="primary">
+          <i nz-icon nzType="plus"></i>
+        </button>
+        <button (click)="removeCharacter(mainCharacter.character.ID)" *ngIf="(characters$ | async)?.length > 1" [nzTitle]="'PROFILE.Remove_character' | translate" nz-button nz-tooltip
+                nzShape="circle"
+                nzSize="small"
+                nzType="danger">
+          <i nz-icon nzType="delete"></i>
+        </button>
+        <a *ngIf="mainCharacter.character.ID > 0" [nzTitle]="'PROFILE.View_on_apkallu_falls' | translate" href="https://apkallufalls.com/character/{{mainCharacter.character.ID}}"
+           nz-tooltip
+           target="_blank">
+          <img
+            alt=""
+            class="apkallu-logo" src="https://camo.githubusercontent.com/77266c191911dcb4d3f5c6d68f9629b13cde635b/68747470733a2f2f61706b616c6c7566616c6c732e636f6d2f69636f6e2f61706b616c6c752d7370656369616c2e706e67">
+        </a>
+      </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+      <nz-tag *ngIf="user.admin" [nzColor]="'magenta'">{{'COMMON.Admin' | translate}}</nz-tag>
+      <nz-tag *ngIf="user.moderator" [nzColor]="'volcano'">{{'COMMON.Moderator' | translate}}</nz-tag>
+      <nz-tag *ngIf="user.patron" [nzColor]="'purple'">{{'PROFILE.Patreon_supporter' | translate}}</nz-tag>
+      <nz-tag *ngIf="user.stats?.listsCreated > 100"
+              [nzColor]="'orange'">{{'PROFILE.More_than_100_lists_created' | translate}}</nz-tag>
+      <!-- Yup, this is one year in seconds-->
+      <nz-tag *ngIf="now - user.createdAt.getTime()/1000 > 365.25 * 86400"
+              [nzColor]="'geekblue'">{{'PROFILE.Veteran' | translate}}</nz-tag>
+    </div>
+    <div [nzGutter]="10" nz-row>
+      <div [nzMd]="12" [nzXs]="24" class="profile-card" nz-col>
+        <nz-card [nzExtra]="ipc.machinaToggle?autoFill:null" [nzTitle]="'PROFILE.Jobs' | translate">
+          <ng-template #autoFill>
+            <button (click)="openAutoFillPopup()" [nzTitle]="'PROFILE.Autofill_from_packets' | translate" nz-button nz-tooltip nzShape="circle"
+                    nzType="primary">
+              <i nz-icon nzType="api"></i>
+            </button>
+          </ng-template>
+          <nz-list [nzDataSource]="gearSets$ | async" [nzRenderItem]="setTemplate" nzSize="small">
+            <ng-template #setTemplate let-set>
+              <nz-list-item [nzActions]="[masterbooks, stats]"
+                            [nzContent]="set.jobId <= 15 ? content : null | ifMobile: null">
+                <ng-template #content>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                    <i *ngIf="set.specialist" [nzTitle]="'SIMULATOR.CONFIGURATION.Specialist' | translate" nz-icon nz-tooltip
+                       type="star"></i>
+                    <div>
+                      {{'SIMULATOR.CONFIGURATION.STATS.CP' | translate}}: {{set.cp}} -
+                      {{'SIMULATOR.CONFIGURATION.STATS.Craftsmanship' | translate}}: {{set.craftsmanship}} -
+                      {{'SIMULATOR.CONFIGURATION.STATS.Control' | translate}}: {{set.control}}
+                    </div>
+                  </div>
+                </ng-template>
+                <nz-list-item-meta
+                  [nzAvatar]="'./assets/icons/classjob/'+(set.jobId | jobName)?.en?.toLowerCase()+'.png' | ifMobile: null"
+                  [nzTitle]="set.jobId | jobName | i18n"
+                  nzDescription="lvl {{set.level}}"></nz-list-item-meta>
+                <ng-template #masterbooks>
+                  <button (click)="editMasterbooks(set.jobId)" [nzTitle]="'PROFILE.Masterbooks' | translate" nz-button nz-tooltip
+                          nzShape="circle" nzType="primary">
+                    <i nz-icon nzType="book"></i>
+                  </button>
+                </ng-template>
+                <ng-template #stats>
+                  <button (click)="editStats(set.jobId)" [nzTitle]="'PROFILE.Stats' | translate" nz-button nz-tooltip nzShape="circle"
+                          nzType="primary">
+                    <i nz-icon nzType="solution" theme="outline"></i>
+                  </button>
+                </ng-template>
+              </nz-list-item>
+            </ng-template>
+          </nz-list>
+        </nz-card>
+      </div>
+      <ng-container *ngIf="user$ | async as user">
+        <div [nzMd]="12" [nzXs]="24" class="profile-card" nz-col>
+          <nz-card [nzTitle]="'PROFILE.Contacts' | translate">
+            <nz-list [nzDataSource]="user.contacts" [nzRenderItem]="contact">
+              <ng-template #contact let-contact>
+                <nz-list-item [nzActions]="[delete]">
+                  <nz-list-item-meta [nzAvatar]="avatar" [nzDescription]="contact"
+                                     [nzTitle]="contact | characterName | async">
+                    <ng-template #delete>
+                      <button (nzOnConfirm)="removeContact(user, contact)" [nzTitle]="'Confirmation' | translate" nz-button nz-popconfirm nzShape="circle"
+                              nzSize="small" nzType="danger">
+                        <i nz-icon nzType="delete"></i>
+                      </button>
+                    </ng-template>
+                    <ng-template #avatar>
+                      <app-user-avatar [userId]="contact"></app-user-avatar>
+                    </ng-template>
+                  </nz-list-item-meta>
+                </nz-list-item>
+              </ng-template>
+            </nz-list>
+            <button (click)="newContact(user)" nz-button nzBlock nzType="primary">
+              <i nz-icon nzType="plus"></i>
+              {{'PROFILE.Add_new_contact' | translate}}
+            </button>
+          </nz-card>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

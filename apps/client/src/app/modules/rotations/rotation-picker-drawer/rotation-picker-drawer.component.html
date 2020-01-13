@@ -1,0 +1,91 @@
+<ng-container *ngIf="!disableNew">
+  <a (click)="ref.close(null)" [nzType]="'primary'" nz-button nzBlock routerLink="/simulator/{{itemId}}/{{recipeId}}">
+    <i nz-icon nzType="plus"></i>&nbsp;{{'SIMULATOR.New_rotation' | translate}}
+  </a>
+  <nz-divider [nzText]="'Or' | translate"></nz-divider>
+</ng-container>
+<nz-input-group [nzSuffix]="suffixIconSearch">
+  <input (ngModelChange)="query$.next($event)" [ngModel]="query$ | async" [placeholder]="'SIMULATOR.ROTATIONS.Search_placeholder' | translate" nz-input
+         type="text">
+</nz-input-group>
+<ng-template #suffixIconSearch>
+  <i nz-icon nzType="search"></i>
+</ng-template>
+<div *ngIf="recipe && recipe.rlvl" fxLayout="column" fxLayoutGap="5px">
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div>rlvl</div>
+    <div>{{recipe.rlvl}}</div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div>{{'SIMULATOR.Durability' | translate}}</div>
+    <div>{{recipe.durability}}</div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div>{{'SIMULATOR.Progress' | translate}}</div>
+    <div>{{recipe.progress | number}}</div>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="space-between center">
+    <div>{{'SIMULATOR.Quality' | translate}}</div>
+    <div>{{recipe.quality | number}}</div>
+  </div>
+</div>
+<div *ngIf="rotations$ | async as rotations">
+
+  <nz-list [nzDataSource]="rotations" [nzHeader]="header" [nzRenderItem]="rotation">
+    <ng-template #header><i nz-icon nzType="solution"></i>&nbsp;{{'SIMULATOR.Rotations' | translate}}</ng-template>
+    <ng-template #rotation let-rotation>
+      <nz-list-item [nzActions]="[pickRotation]">
+        <nz-list-item-meta [nzTitle]="title">
+          <ng-template #title>
+            <div [nzTitle]="rotation.getName()" class="rotation-name" nz-tooltip>{{rotation.getName()}}</div>
+          </ng-template>
+        </nz-list-item-meta>
+      </nz-list-item>
+      <ng-template #pickRotation>
+        <a (click)="ref.close(rotation)" *ngIf="pickOnly; else links" [nzShape]="'circle'" [nzType]="'primary'" nz-button>
+          <i nz-icon nzType="check"></i>
+        </a>
+        <ng-template #links>
+          <a (click)="ref.close(rotation)" *ngIf="!custom" [nzShape]="'circle'" [nzType]="'primary'" nz-button
+             routerLink="/simulator/{{itemId}}/{{recipeId}}/{{rotation.$key}}">
+            <i nz-icon nzType="check"></i>
+          </a>
+          <a (click)="ref.close(rotation)" *ngIf="custom" [nzShape]="'circle'" [nzType]="'primary'" nz-button
+             routerLink="/simulator/custom/{{rotation.$key}}">
+            <i nz-icon nzType="check"></i>
+          </a>
+        </ng-template>
+      </ng-template>
+    </ng-template>
+  </nz-list>
+
+  <nz-list *ngIf="favoriteRotations$ | async as favRotations" [nzDataSource]="favRotations" [nzHeader]="header"
+           [nzRenderItem]="rotation">
+    <ng-template #header><i nz-icon nzType="solution"></i>&nbsp;{{'SIMULATOR.Favorite_Rotations' | translate}}
+    </ng-template>
+  </nz-list>
+
+  <ng-container *ngIf="rotationFoldersDisplay$ | async as ownFolders">
+    <div *ngIf="ownFolders.length > 0">
+      <h3>{{'SIMULATOR.ROTATIONS.FOLDERS.Your_folders' | translate}}</h3>
+      <nz-list *ngFor="let folder of ownFolders" [nzDataSource]="folder.rotations"
+               [nzHeader]="header"
+               [nzRenderItem]="rotation">
+        <ng-template #header><i nz-icon nzType="folder"></i>&nbsp;{{folder.folder.name}}
+        </ng-template>
+      </nz-list>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="favoriteFolders$ | async as favoriteFolders">
+    <div *ngIf="favoriteFolders.length > 0">
+      <h3>{{'SIMULATOR.ROTATIONS.FOLDERS.Favorite_folders' | translate}}</h3>
+      <nz-list *ngFor="let folder of  favoriteFolders" [nzDataSource]="folder.rotations"
+               [nzHeader]="header"
+               [nzRenderItem]="rotation">
+        <ng-template #header><i nz-icon nzType="folder"></i>&nbsp;{{folder.folder.name}}
+        </ng-template>
+      </nz-list>
+    </div>
+  </ng-container>
+</div>

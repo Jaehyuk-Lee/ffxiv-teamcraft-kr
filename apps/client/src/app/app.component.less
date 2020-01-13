@@ -1,0 +1,158 @@
+@import "../common";
+
+.app-container {
+  height: 100%;
+}
+
+::ng-deep .no-panel-borders {
+  .ant-collapse,
+  .ant-collapse > .ant-collapse-item,
+  .ant-collapse-content {
+    border: 0;
+  }
+}
+
+.download-spinner {
+  height: 64px;
+  width: 32px;
+}
+
+.support-us {
+  line-height: 18px;
+  padding-top: 14px;
+
+  > i {
+    font-size: 11px;
+  }
+}
+
+.tips-container {
+  height: 64px;
+
+  .tips {
+    line-height: 12px;
+  }
+}
+
+
+.wiki-link {
+  margin: 0 10px;
+  color: var(--text-color);
+}
+
+.opened-in-desktop {
+  height: 100%;
+
+  .desktop-message {
+    font-size: 2em;
+    opacity: .8;
+  }
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+
+  .logo {
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+  }
+
+  .language-swap {
+    margin: auto 0 auto 11px;
+  }
+}
+
+.new-version-alert {
+  margin-bottom: 10px;
+}
+
+.user-menu {
+  min-width: 140px;
+  @media @mobile {
+    min-width: 0;
+  }
+}
+
+:host ::ng-deep {
+  .notifications-count > sup {
+    right: 5px !important;
+    min-width: 16px;
+    height: 16px;
+    line-height: 16px;
+    top: -4px;
+
+    .ant-badge-count {
+      font-size: 11px;
+    }
+  }
+
+  .sider {
+    .ant-layout-sider-children {
+      overflow: auto;
+    }
+  }
+
+  .ant-menu-submenu-title {
+    .anticon {
+      font-size: 16px;
+    }
+  }
+}
+
+.menu-link, .menu-link:visited, .menu-link:focus {
+  text-decoration: none;
+  color: inherit;
+  padding-left: 34px !important;
+}
+
+.content-container {
+  margin-top: 64px;
+  height: 100%;
+
+  &.overlay {
+    margin-top: 0;
+  }
+}
+
+.right-menu {
+  float: right;
+  line-height: 64px;
+}
+
+.right-sider {
+  ::ng-deep .ant-layout-sider-zero-width-trigger {
+    left: -36px;
+    border-radius: 4px 0 0 4px;
+
+    i::before {
+      content: '\e64e';
+    }
+  }
+}
+
+.flex-container {
+  min-height: 100%;
+}
+
+.social-buttons {
+  width: 100%;
+  padding-bottom: 64px;
+  padding-top: .1vh;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  z-index: 5;
+  width: 100%;
+  background-color: @layout-header-background;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nz-card {
+  margin: 8px 0;
+}

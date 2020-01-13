@@ -1,0 +1,247 @@
+<nz-tabset (nzSelectedIndexChange)="setType($event)" *ngIf="type$ | async as trackerType" [nzSelectedIndex]="trackerType - 1"
+           nzAnimated="false">
+  <nz-tab [nzTitle]="'Game_Term/DoH' | translate">
+    <nz-tabset (nzSelectedIndexChange)="dohSelectedPage = dohTabs[$event][0].id" nzAnimated="false"
+               nzSize="small">
+      <nz-tab *ngFor="let tab of dohTabs; let index = index" [nzTitle]="titleTemplate">
+        <ng-template #titleTemplate>
+          <img [class.small-icon]="false | ifMobile: true" [src]="getDohIcon(index)" alt=""
+               class="job-icon">{{ tab.name }}
+        </ng-template>
+        <nz-tabset (nzSelectedIndexChange)="dohSelectedPage = tab[$event].id" nzAnimated="false" nzSize="small"
+                   nzTabPosition="left">
+          <nz-tab *ngFor="let page of tab;" [nzTitle]="titleTemplate">
+            <ng-template #titleTemplate>
+          <span [class.not-required]="!isRequiredForAchievement(page)">{{ getDohPageName(page) }}<span
+            *ngIf="isRequiredForAchievement(page)" [nzTitle]="'LOG_TRACKER.Required_for_achievement' | translate"
+            nz-tooltip>*</span>
+            ({{getDohPageCompletion(page)}})
+          </span>
+            </ng-template>
+            <nz-spin [nzSpinning]="userCompletion === {}">
+              <div *ngIf="dohSelectedPage === page.id" fxLayout="column">
+                <div class="toolbar" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="5px">
+                  <button (nzOnConfirm)="markDohPageAsDone(page)" [nzTitle]="'Confirmation' | translate" nz-button
+                          nz-popconfirm>
+                    <i nz-icon nzType="check"></i> {{'LOG_TRACKER.Mark_page_as_done' | translate}}
+                  </button>
+                  <button (click)="createList(page)" nz-button>
+                    <i nz-icon nzType="check"></i> {{'LOG_TRACKER.Create_list' | translate}}
+                  </button>
+                  <button (click)="createList(page, 50)" nz-button>
+                    <i nz-icon nzType="check"></i> {{'LOG_TRACKER.Create_list_limited' | translate}}
+                  </button>
+                  <div fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="5px">
+                    <nz-switch [(ngModel)]="hideCompleted"></nz-switch>
+                    <div>{{'LOG_TRACKER.Hide_completed' | translate}}</div>
+                  </div>
+                </div>
+                <ng-container *ngFor="let recipe of page.recipes">
+                  <div *ngIf="!userCompletion[recipe.recipeId] || !hideCompleted" fxLayout="row"
+                       fxLayoutAlign="flex-start center"
+                       fxLayoutGap="5px">
+                    <app-item-icon *ngIf="true | ifMobile: false"
+                                   [icon]="recipe.icon | xivapiIcon"
+                                   [itemId]="recipe.itemId"
+                                   [width]="32"></app-item-icon>
+                    <div fxLayout="column">
+                      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                        <div [appItemRarity]="recipe.itemId"
+                             class="recipe-name">{{recipe.itemId | itemName | i18n}}</div>
+                        <i *ngIf="userCompletion[recipe.recipeId]" nz-icon nzType="check"></i>
+                      </div>
+                      <div class="recipe-details">rlvl {{recipe.rlvl}}</div>
+                    </div>
+                    <div>
+                      <button (click)="markDohAsDone(recipe.recipeId, true)" *ngIf="!userCompletion[recipe.recipeId]" [nzTitle]="'LOG_TRACKER.Mark_as_done' | translate"
+                              nz-button
+                              nz-tooltip
+                              nzShape="circle"
+                              nzSize="small">
+                        <i nz-icon nzType="check"></i>
+                      </button>
+                      <button (click)="markDohAsDone(recipe.recipeId, false)" *ngIf="userCompletion[recipe.recipeId]" [nzTitle]="'LOG_TRACKER.Mark_as_not_done' | translate"
+                              nz-button
+                              nz-tooltip
+                              nzShape="circle"
+                              nzSize="small"
+                              nzType="danger">
+                        <i nz-icon nzType="close"></i>
+                      </button>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </nz-spin>
+          </nz-tab>
+        </nz-tabset>
+      </nz-tab>
+    </nz-tabset>
+  </nz-tab>
+  <nz-tab [nzTitle]="'MIN/BTN' | translate">
+    <ng-template #extraTemplate>
+      <div class="dol-path-buttons" fxLayout="row" fxLayoutGap="10px">
+        <div fxLayout="row" fxLayoutAlign="flex-end center" fxLayoutGap="5px">
+          <nz-switch [(ngModel)]="hideCompleted"></nz-switch>
+          <div>{{'LOG_TRACKER.Hide_completed_items' | translate}}</div>
+        </div>
+        <button (click)="showOptimizedMap(0)" [nzTitle]="'LOG_TRACKER.MIN_optimized_path' | translate" nz-button
+                nz-tooltip
+                nzType="primary">
+          <i iconfont="icon-map" nz-icon></i>
+          <img alt="MIN" class="job-icon" src="./assets/icons/MIN.png">
+        </button>
+        <button (click)="showOptimizedMap(2)" [nzTitle]="'LOG_TRACKER.BTN_optimized_path' | translate" nz-button
+                nz-tooltip
+                nzType="primary">
+          <i iconfont="icon-map" nz-icon></i>
+          <img alt="BTN" class="job-icon" src="./assets/icons/BTN.png">
+        </button>
+
+      </div>
+    </ng-template>
+    <nz-tabset (nzSelectedIndexChange)="dolSelectedPage = dolTabs[$event][0].id" [nzTabBarExtraContent]="extraTemplate"
+               nzAnimated="false"
+               nzSize="small">
+      <nz-tab *ngFor="let tab of dolTabs; let index = index" [nzTitle]="titleTemplate">
+        <ng-template #titleTemplate>
+          <img [class.small-icon]="false | ifMobile: true" [src]="getDolIcon(index)" alt=""
+               class="job-icon">{{ tab.name }}
+        </ng-template>
+        <nz-tabset (nzSelectedIndexChange)="dolSelectedPage = tab[$event].id" nzAnimated="false" nzSize="small"
+                   nzTabPosition="left">
+          <nz-tab *ngFor="let page of tab;" [nzTitle]="!isPageDone(page) || !hideCompleted ? titleTemplate: null">
+            <ng-template #titleTemplate>
+              <span>{{ getDolPageName(page) }}
+                ({{getDolPageCompletion(page)}})
+              </span>
+            </ng-template>
+            <nz-spin [nzSpinning]="userCompletion === {}">
+              <div *ngIf="dolSelectedPage === page.id" fxLayout="column">
+                <div class="toolbar" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="flex-end"
+                     fxLayoutGap="5px">
+                  <button (click)="markDolPageAsDone(page)" nz-button>
+                    <i nz-icon nzType="check"></i> {{'LOG_TRACKER.Mark_page_as_done' | translate}}
+                  </button>
+                </div>
+                <div *ngFor="let item of page.items; let last = last">
+                  <ng-container *ngIf="!userGatheringCompletion[item.itemId] || !hideCompleted">
+                    <div fxLayoutAlign="flex-start center" nz-row>
+                      <div [nzMd]="6" fxLayout="column" fxLayoutAlign="flex-start flex-start" nz-col>
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                          <app-item-icon *ngIf="true | ifMobile: false"
+                                         [icon]="item.itemId | lazyIcon"
+                                         [itemId]="item.itemId"
+                                         [width]="32"></app-item-icon>
+                          <div fxLayout="column" fxLayoutAlign="center flex-start" fxLayoutGap="5px">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                              <div [appItemRarity]="item.itemId"
+                                   class="recipe-name">{{item.itemId | itemName | i18n}}</div>
+                              <i *ngIf="userCompletion[item.itemId]" nz-icon nzType="check"></i>
+                            </div>
+                            <div class="recipe-details">ilvl {{item.ilvl}} {{item.stars | ingameStars}}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div [nzMd]="12" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="center center" nz-col>
+                        <ng-container *ngIf="getNodeData(item.itemId, dolSelectedPage) as nodeData">
+                          <div *ngFor="let node of nodeData; let last = last" fxLayout="row"
+                               fxLayoutAlign="flex-start center">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                              <div>
+                                <app-map-position [mapId]="node.mapId"
+                                                  [marker]="{x: node.x, y: node.y}"
+                                                  [showZoneName]="true"
+                                                  [zoneId]="node.zoneid"
+                                                  flex="row"></app-map-position>
+                              </div>
+                              <div *ngIf="node.timed">
+                                <ng-container *ngIf="getAlarm(node) as alarm">
+                                  <nz-button-group *ngIf="alarm | alarmDisplay | async as display">
+                                    <button (click)="toggleAlarm(display)" [nzGhost]="!display.registered"
+                                            [nzSize]="'small'"
+                                            [nzType]="display.spawned?'primary':'default'"
+                                            nz-button
+                                            nz-tooltip>
+                                      <i *ngIf="!display.registered" nz-icon nzType="bell"></i>
+                                      <i *ngIf="display.registered" nz-icon nzType="close-circle-o"></i>
+                                      {{display.remainingTime | timer}}
+                                      <span *ngIf="display.alarm.slot">({{display.alarm.slot}})</span>
+                                      <img [src]="display.alarm.type | nodeTypeIcon" alt="" class="node-type-icon">
+                                    </button>
+                                    <ng-container *ngIf="alarmGroups$ | async as alarmGroups">
+                                      <button *ngIf="!display.registered && alarmGroups.length > 0" [nzDropdownMenu]="menu" [nzPlacement]="'bottomCenter'"
+                                              [nzSize]="'small'"
+                                              nz-button nz-dropdown>
+                                        <i nz-icon nzType="ellipsis"></i>
+                                      </button>
+                                      <nz-dropdown-menu #menu="nzDropdownMenu">
+                                        <ul nz-menu>
+                                          <li (click)="addAlarmWithGroup(alarm, group)" *ngFor="let group of alarmGroups"
+                                              nz-menu-item>
+                                            {{group.name}}
+                                          </li>
+                                        </ul>
+                                      </nz-dropdown-menu>
+                                    </ng-container>
+                                  </nz-button-group>
+                                </ng-container>
+                              </div>
+                            </div>
+                            <nz-divider *ngIf="!last" nzType="vertical"></nz-divider>
+                          </div>
+                        </ng-container>
+                      </div>
+                      <div [nzMd]="4" nz-col></div>
+                      <div [nzMd]="2" nz-col>
+                        <button (click)="markDolAsDone(item.itemId, true)" *ngIf="!userGatheringCompletion[item.itemId]" [nzTitle]="'LOG_TRACKER.Mark_as_done' | translate"
+                                nz-button
+                                nz-tooltip
+                                nzShape="circle"
+                                nzType="primary">
+                          <i nz-icon nzType="check"></i>
+                        </button>
+                        <button (click)="markDolAsDone(item.itemId, false)" *ngIf="userGatheringCompletion[item.itemId]" [nzTitle]="'LOG_TRACKER.Mark_as_not_done' | translate"
+                                nz-button
+                                nz-tooltip
+                                nzShape="circle"
+                                nzType="danger">
+                          <i nz-icon nzType="close"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <nz-divider *ngIf="!last"></nz-divider>
+                  </ng-container>
+                </div>
+              </div>
+            </nz-spin>
+          </nz-tab>
+        </nz-tabset>
+      </nz-tab>
+    </nz-tabset>
+  </nz-tab>
+  <nz-tab [nzTitle]="'Game_Term/FSH' | translate">
+    <app-fishing-log-tracker></app-fishing-log-tracker>
+  </nz-tab>
+</nz-tabset>
+<ng-template #notificationRef let-notification>
+  <div class="ant-notification-notice-content ant-notification-notice-with-icon">
+    <span class="ant-notification-notice-icon"><i class="ant-notification-notice-icon-success" nz-icon
+                                                  nzType="check-circle"></i></span>
+    <div>
+      <div class="ant-notification-notice-message">{{'COMMON.Success' | translate}}</div>
+      <div class="ant-notification-notice-description">
+        <span *ngIf="itemsAdded === 1">{{'Recipe_Added' | translate: { listname: modifiedList.name } }}</span>
+        <span *ngIf="itemsAdded !== 1">{{'Recipes_Added' | translate: {
+          itemcount: itemsAdded,
+          listname: modifiedList.name
+        } }}</span>
+      </div>
+      <span class="ant-notification-notice-btn">
+            <a (click)="notification.close();" nz-button nzType="primary" routerLink="/list/{{modifiedList.$key}}">
+              <span>{{'Open' | translate}}</span>
+            </a>
+          </span>
+    </div>
+  </div>
+</ng-template>

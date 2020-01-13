@@ -1,0 +1,33 @@
+<ng-container *ngIf="achievement$ | async as achievement; else loader">
+  <div [style.padding]="'0 50px' | ifMobile: '0'" fxLayout="column" fxLayoutGap="10px">
+    <div class="top-bar" fxFlex="1 1 auto" fxLayout="row" fxLayout.lt-md="column"
+         fxLayoutAlign="flex-start flex-start" fxLayoutGap="5px" fxLayoutGap.lt-md="10px">
+      <div class="top-left-block" fxFlex="0 0 300px" fxFlex.lt-md="1 1 auto" fxLayout="column"
+           fxLayoutAlign="space-between" fxLayoutGap="10px">
+        <div class="icon-block" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img [src]="achievement.Icon | xivapiIcon" fxFlex="0 0 auto">
+          <div fxLayout="column" fxLayoutAlign="flex-start flex-start">
+            <h2 class="item-name">{{achievement | xivapiI18n}}</h2>
+            <div *ngIf="achievement.GamePatch" class="patch">
+              {{achievement.GamePatch | xivapiI18n}}
+              <app-db-button [id]="achievement.GamePatch.ID" type="patch"></app-db-button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="links$ | async as links" class="links" fxLayout="row" fxLayoutAlign="flex-start center"
+             fxLayoutGap="5px">
+          <a *ngFor="let link of links" [href]="link.url" [nzTitle]="link.title" nz-tooltip target="_blank">
+            <img [alt]="link.title" [src]="link.icon" class="link-icon">
+          </a>
+        </div>
+      </div>
+      <div fxFlex="1 1 auto">
+        <p *ngIf="achievement.Description" [innerHTML]="achievement | xivapiI18n: 'Description' | xivUIText"></p>
+      </div>
+    </div>
+    <app-db-comments [id]="achievement.ID" type="achievement"></app-db-comments>
+  </div>
+</ng-container>
+<ng-template #loader>
+  <app-page-loader></app-page-loader>
+</ng-template>

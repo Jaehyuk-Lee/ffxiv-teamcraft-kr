@@ -1,0 +1,22 @@
+<nz-list [nzDataSource]="totalPrice" [nzRenderItem]="currencyTemplate" nzSize="small">
+  <ng-template #currencyTemplate let-entry>
+    <nz-list-item>
+      <nz-list-item-meta [nzAvatar]="entry.currencyId === -1?'https://xivapi.com/i/065000/065002.png':avatar"
+                         [nzDescription]="description"
+                         [nzTitle]="(entry.currencyId | itemName | i18n) || 'Gil'">
+        <ng-template #avatar>
+          <app-item-icon *ngIf="entry.currencyId > -1" [icon]="entry.currencyIcon" [itemId]="entry.currencyId"
+                         [itemName]="entry.currencyId | itemName | i18n"
+                         [width]="32"></app-item-icon>
+        </ng-template>
+        <ng-template #description>
+          x{{entry.costs[0] | number}}
+          <span *ngIf="entry.costs[1]">
+               (NQ) - {{entry.costs[1]}} (HQ)
+           </span>
+        </ng-template>
+      </nz-list-item-meta>
+    </nz-list-item>
+  </ng-template>
+</nz-list>
+

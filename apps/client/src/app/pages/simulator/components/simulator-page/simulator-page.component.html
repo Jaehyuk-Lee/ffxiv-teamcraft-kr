@@ -1,0 +1,5 @@
+<app-simulator *ngIf="recipe$ | async as recipe; else loading" [item]="item$ | async" [recipe]="recipe"
+               [thresholds]="thresholds$ | async"></app-simulator>
+<ng-template #loading>
+  <app-page-loader></app-page-loader>
+</ng-template>

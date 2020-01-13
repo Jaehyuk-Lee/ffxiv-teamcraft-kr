@@ -1,0 +1,194 @@
+@import '../../../../common';
+
+.patch-banner {
+  max-width: 600px;
+  @media @mobile {
+    max-width: 80vw;
+  }
+}
+
+.search-box {
+  width: 80%;
+  margin: auto;
+  @media @mobile {
+    width: 90%;
+  }
+}
+
+.search-tip {
+  font-style: italic;
+  font-size: 11px;
+}
+
+.result-type {
+  opacity: .8;
+}
+
+.order-boxes {
+  padding: 10px;
+
+  > nz-select {
+    min-width: 200px;
+  }
+}
+
+.search-type {
+  min-width: 100px;
+}
+
+.quest-icon {
+  width: 48px;
+  height: 48px;
+}
+
+nz-form-item {
+  display: flex;
+  align-items: center;
+}
+
+.filter-select {
+  width: 200px !important;
+}
+
+.input-box {
+  ::ng-deep {
+    input {
+      max-width: 120px;
+    }
+  }
+}
+
+.inputs-container {
+  @media @mobile {
+    width: 100%;
+  }
+  @media @tablet {
+    width: 100%;
+  }
+}
+
+.job-icon {
+  width: 32px;
+  height: 32px;
+
+  &.small {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.stat-filter-row {
+
+  .level-range {
+    top: -2px;
+  }
+
+  ::ng-deep .ant-select-selection {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+
+  .min-input {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+}
+
+.level-range {
+  width: 200px;
+
+  .ant-input-number {
+    width: 40%;
+  }
+
+  input:disabled {
+    width: 20%;
+    text-align: center;
+    pointer-events: none;
+  }
+}
+
+.filters {
+  width: 80%;
+  @media @mobile {
+    width: 90%;
+  }
+}
+
+.addition-buttons {
+  width: 100%;
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.results {
+  padding: 20px 50px;
+  @media @mobile {
+    padding: 20px 10px;
+  }
+
+  .amount-input {
+    width: 230px;
+  }
+
+  .item-name {
+    font-size: 1.2em;
+  }
+
+  .description {
+    opacity: .8;
+  }
+
+  .result-row {
+    border-bottom: 1px solid #444;
+    padding: 5px;
+
+    &.odd {
+      background-color: rgba(77, 77, 77, .5);
+    }
+  }
+}
+
+.instance-banner {
+  width: 220px;
+}
+
+::ng-deep {
+  .ant-list-item {
+    @media @mobile {
+      justify-content: center;
+    }
+
+    .ant-list-item-meta {
+      align-items: center;
+      @media @mobile {
+        flex: 0 0 auto;
+        margin-bottom: 5px;
+      }
+
+      .ant-list-item-meta-title {
+        white-space: nowrap;
+      }
+    }
+
+    .ant-list-item-action {
+      @media @mobile {
+        margin: auto;
+      }
+    }
+
+    .ant-notification-notice {
+      margin-bottom: 0 !important;
+    }
+
+    .ant-list-item-content {
+      @media @mobile {
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

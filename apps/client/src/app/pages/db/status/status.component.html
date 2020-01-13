@@ -1,0 +1,56 @@
+<ng-container *ngIf="xivapiStatus$ | async as status; else loader">
+  <div [style.padding]="'0 50px' | ifMobile: '0'" fxLayout="column" fxLayoutGap="10px">
+    <div class="top-bar" fxFlex="1 1 auto" fxLayout="row" fxLayout.lt-md="column"
+         fxLayoutAlign="flex-start flex-start" fxLayoutGap="5px" fxLayoutGap.lt-md="10px">
+      <div class="top-left-block" fxFlex="0 0 300px" fxFlex.lt-md="1 1 auto" fxLayout="column"
+           fxLayoutAlign="space-between" fxLayoutGap="10px">
+        <div class="icon-block" fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+          <img [src]="status.Icon | xivapiIcon" fxFlex="0 0 auto">
+          <div fxLayout="column" fxLayoutAlign="flex-start flex-start">
+            <h2 class="item-name">{{status | xivapiI18n}}</h2>
+            <div *ngIf="status.GamePatch" class="patch">
+              {{status.GamePatch | xivapiI18n}}
+              <app-db-button [id]="status.GamePatch.ID" type="patch"></app-db-button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="links$ | async as links" class="links" fxLayout="row" fxLayoutAlign="flex-start center"
+             fxLayoutGap="5px">
+          <a *ngFor="let link of links" [href]="link.url" [nzTitle]="link.title" nz-tooltip target="_blank">
+            <img [alt]="link.title" [src]="link.icon" class="link-icon">
+          </a>
+        </div>
+      </div>
+      <div fxFlex="1 1 auto">
+        <p *ngIf="status.Description" [innerHTML]="status | xivapiI18n: 'Description' | xivUIText"></p>
+      </div>
+    </div>
+    <div class="details-container" fxLayout="row wrap" fxLayoutGap="5px">
+      <div class="details-block">
+        <div class="detail-name">{{'DB.STATUS.Type' | translate}}</div>
+        <div
+          class="detail-value">{{status.Category === 1 ? 'DB.STATUS.Type_buff' : 'DB.STATUS.Type_debuff' | translate}}</div>
+      </div>
+      <div class="details-block">
+        <div class="detail-name">{{'DB.STATUS.Max_stacks' | translate}}</div>
+        <div class="detail-value">{{status.MaxStacks ? status.MaxStacks : ('COMMON.None' | translate)}}</div>
+      </div>
+      <div class="details-block">
+        <div class="detail-name">{{'DB.STATUS.Locks_actions' | translate}}</div>
+        <div class="detail-value">{{(status.LockActions === 1 ? 'Yes' : 'No') | translate}}</div>
+      </div>
+      <div class="details-block">
+        <div class="detail-name">{{'DB.STATUS.Locks_control' | translate}}</div>
+        <div class="detail-value">{{(status.LockControl === 1 ? 'Yes' : 'No') | translate}}</div>
+      </div>
+      <div class="details-block">
+        <div class="detail-name">{{'DB.STATUS.Locks_movement' | translate}}</div>
+        <div class="detail-value">{{(status.LockMovement === 1 ? 'Yes' : 'No') | translate}}</div>
+      </div>
+    </div>
+    <app-db-comments [id]="status.ID" type="status"></app-db-comments>
+  </div>
+</ng-container>
+<ng-template #loader>
+  <app-page-loader></app-page-loader>
+</ng-template>

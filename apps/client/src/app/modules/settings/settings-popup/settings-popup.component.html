@@ -1,0 +1,324 @@
+<nz-tabset [nzSelectedIndex]="selectedTab" class="tabset" nzTabPosition="left">
+  <nz-tab [nzTitle]="'SETTINGS.General' | translate">
+    <div fxLayout="column" fxLayoutGap="10px">
+      <nz-form-item class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <button (click)="clearSearchHistory()" class="clear-search" fxFlexAlign="center center" nz-button>
+            {{'SETTINGS.Clear_search_history' | translate}}
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">{{'COMMON.Language' | translate}}</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select (ngModelChange)="setLanguage($event)" [ngModel]="translate.currentLang">
+            <nz-option *ngFor="let locale of availableLanguages" [nzLabel]="locale | uppercase"
+                       [nzValue]="locale"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <ng-container *ngIf="user$ | async as user">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">{{'SETTINGS.Theme' | translate}}</nz-form-label>
+          <nz-form-control [nzSpan]="12">
+            <nz-select (ngModelChange)="setTheme($event)" [ngModel]="settings.theme?.name">
+              <nz-option *ngFor="let theme of availableThemes" [nzLabel]="theme?.name"
+                         [nzValue]="theme?.name"></nz-option>
+              <nz-option *ngIf="user.patron || user.admin" [nzLabel]="'CUSTOM'"
+                         [nzValue]="'CUSTOM'"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="(user.patron || user.admin) && settings.theme?.name === 'CUSTOM'" class="empty-label">
+          <nz-form-label [nzSpan]="5">{{'SETTINGS.Theme' | translate}}</nz-form-label>
+          <nz-form-control [nzSpan]="12">
+            <div class="custom-theme-editor" fxLayout="column" fxLayoutGap="5px">
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+                <div fxLayout="1 1 auto">{{'SETTINGS.COLORS.Background' | translate}}</div>
+                <div class="color-container color-picker">
+                  <div (colorPickerChange)="saveCustomTheme()" [(colorPicker)]="customTheme.background"
+                       [style.background]="customTheme.background" class="color-picker"></div>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+                <div fxLayout="1 1 auto">{{'SETTINGS.COLORS.Primary' | translate}}</div>
+                <div class="color-container color-picker">
+                  <div (colorPickerChange)="saveCustomTheme()" [(colorPicker)]="customTheme.primary"
+                       [style.background]="customTheme.primary" class="color-picker"></div>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+                <div fxLayout="1 1 auto">{{'SETTINGS.COLORS.Highlight' | translate}}</div>
+                <div class="color-container color-picker">
+                  <div (colorPickerChange)="saveCustomTheme()" [(colorPicker)]="customTheme.highlight"
+                       [style.background]="customTheme.highlight" class="color-picker"></div>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+                <div fxLayout="1 1 auto">{{'SETTINGS.COLORS.Text' | translate}}</div>
+                <div class="color-container color-picker">
+                  <div (colorPickerChange)="saveCustomTheme()" [(colorPicker)]="customTheme.text"
+                       [style.background]="customTheme.text" class="color-picker"></div>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+                <div fxLayout="1 1 auto">{{'SETTINGS.COLORS.Topbar' | translate}}</div>
+                <div class="color-container color-picker">
+                  <div (colorPickerChange)="saveCustomTheme()" [(colorPicker)]="customTheme.topbar"
+                       [style.background]="customTheme.topbar" class="color-picker"></div>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+                <div fxLayout="1 1 auto">{{'SETTINGS.COLORS.Sidebar_trigger' | translate}}</div>
+                <div class="color-container color-picker">
+                  <div (colorPickerChange)="saveCustomTheme()" [(colorPicker)]="customTheme.trigger"
+                       [style.background]="customTheme.trigger" class="color-picker"></div>
+                </div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5px">
+                <div fxLayout="1 1 auto">{{'SETTINGS.COLORS.Sidebar_trigger_hover' | translate}}</div>
+                <div class="color-container color-picker">
+                  <div (colorPickerChange)="saveCustomTheme()" [(colorPicker)]="customTheme.triggerHover"
+                       [style.background]="customTheme.triggerHover" class="color-picker"></div>
+                </div>
+              </div>
+            </div>
+          </nz-form-control>
+        </nz-form-item>
+      </ng-container>
+      <nz-form-item class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.noPanelBorders"
+                 nz-checkbox>{{'SETTINGS.no_panel_borders' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.showAllAlarms"
+                 nz-checkbox>{{'SETTINGS.Show_all_alarms' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.disableCrossWorld"
+                 nz-checkbox>{{'SETTINGS.Disable_cross_world_prices' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.alwaysHQLeves"
+                 nz-checkbox>{{'SETTINGS.Always_HQ_leves' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.disableSearchHistory"
+                 nz-checkbox>{{'SETTINGS.Disable_search_history' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.disableSearchDebounce"
+                 nz-checkbox>{{'SETTINGS.Disable_search_debounce' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">{{'SETTINGS.Amount_display_mode' | translate}}</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-switch
+            [(ngModel)]="settings.displayRemaining"
+            [nzCheckedChildren]="checkedTemplate"
+            [nzUnCheckedChildren]="unCheckedTemplate"
+          ></nz-switch>
+          <ng-template #checkedTemplate>{{'SETTINGS.Amount_display_mode_remaining' | translate}}</ng-template>
+          <ng-template #unCheckedTemplate>{{'SETTINGS.Amount_display_mode_total' | translate}}</ng-template>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">{{'SETTINGS.Preferred_copy_type' | translate}}</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select [(ngModel)]="settings.preferredCopyType">
+            <nz-option [nzLabel]="'SETTINGS.COPY_TYPE.Classic' | translate" [nzValue]="'classic'"></nz-option>
+            <nz-option [nzLabel]="'SETTINGS.COPY_TYPE.Isearch' | translate" [nzValue]="'isearch'"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">{{'PERMISSIONS.Default_permission_level' | translate}}</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select [(ngModel)]="settings.defaultPermissionLevel">
+            <nz-option [nzLabel]="'NONE' | translate" [nzValue]="1"></nz-option>
+            <nz-option [nzLabel]="'READ' | translate" [nzValue]="10"></nz-option>
+            <nz-option [nzLabel]="'PARTICIPATE' | translate" [nzValue]="20"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">{{'SETTINGS.Db_comments_position' | translate}}</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select [(ngModel)]="settings.dbCommentsPosition">
+            <nz-option [nzLabel]="'COMMON.Top' | translate" [nzValue]="'TOP'"></nz-option>
+            <nz-option [nzLabel]="'COMMON.Bottom' | translate" [nzValue]="'BOTTOM'"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.autoMarkAsCompleted"
+                 nz-checkbox>{{'SETTINGS.Auto_mark_as_done_in_log' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="!platform.isDesktop()" class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.autoOpenInDesktop"
+                 nz-checkbox>{{'SETTINGS.Auto_open_in_desktop' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item *ngIf="loggedIn$ | async" class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.itemTagsEnabled"
+                 nz-checkbox>{{'SETTINGS.Enable_item_tags' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item *ngIf="loggedIn$ | async" class="empty-label">
+        <nz-form-label [nzSpan]="5"></nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <label [(ngModel)]="settings.showCopyOnOwnList"
+                 nz-checkbox>{{'SETTINGS.Show_copy_list_own_list' | translate}}</label>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">{{'SETTINGS.Starting_place' | translate}}</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select [(ngModel)]="settings.startingPlace">
+            <nz-option *ngFor="let place of startingPlaces" [nzLabel]="place.placenameId | placeName | i18n"
+                       [nzValue]="place.id"></nz-option>
+          </nz-select>
+          <nz-form-explain>{{'SETTINGS.Starting_place_explain' | translate}}</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">{{'SETTINGS.Free_aetheryte' | translate}}</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select [(ngModel)]="settings.freeAetheryte"
+                     nzAllowClear
+                     nzShowSearch
+                     style="width: 100%">
+            <nz-option *ngFor="let aetheryte of allAetherytes"
+                       [nzLabel]="(aetheryte.id | aetheryteName | i18n) || (aetheryte.nameid | placeName | i18n)"
+                       [nzValue]="aetheryte.nameid"></nz-option>
+          </nz-select>
+          <nz-form-explain>{{'SETTINGS.Starting_place_explain' | translate}}</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">{{'SETTINGS.Favorite_aetherytes' | translate}}</nz-form-label>
+        <nz-form-control [nzSpan]="12">
+          <nz-select
+            [(ngModel)]="favoriteAetherytes"
+            (ngModelChange)="settings.favoriteAetherytes = favoriteAetherytes"
+            [nzMaxMultipleCount]="4"
+            nzAllowClear
+            nzMode="multiple"
+            style="width: 100%">
+            <nz-option *ngFor="let aetheryte of allAetherytes"
+                       [nzLabel]="(aetheryte.id | aetheryteName | i18n) || (aetheryte.nameid | placeName | i18n)"
+                       [nzValue]="aetheryte.nameid"></nz-option>
+          </nz-select>
+          <nz-form-explain>{{'SETTINGS.Starting_place_explain' | translate}}</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </div>
+  </nz-tab>
+  <nz-tab *ngIf="loggedIn$ | async" [nzTitle]="'SETTINGS.Account' | translate">
+    <div class="account-buttons" fxLayout="column" fxLayoutGap="10px">
+      <button (nzOnConfirm)="resetPassword()" [nzTitle]="'SETTINGS.Reset_password_warning'" nz-button nz-popconfirm>
+        {{'SETTINGS.Reset_password' | translate}}
+      </button>
+      <ng-container *ngIf="user$ | async as user">
+        <div>UserID: {{user.$key}}</div>
+        <button (click)="patreonOauth()" *ngIf="user.patreonToken === undefined; else connectedWithPatreon" nz-button
+                nzType="primary">
+          {{'SETTINGS.Connect_with_patreon' | translate}}
+        </button>
+        <ng-template #connectedWithPatreon>
+          <p>
+            {{'SETTINGS.Connected_with_patreon' | translate}}
+          </p>
+        </ng-template>
+        <div *ngIf="user.patron || user.admin" fxLayout="column" fxLayoutGap="5px">
+          <nz-input-group>
+            <nz-form-label>{{'SETTINGS.Nickname' | translate}}</nz-form-label>
+            <nz-form-control [nzValidateStatus]="nicknameAvailable === false ? 'error' : null">
+              <input #nickname (ngModelChange)="nicknameAvailable = undefined" [ngModel]="user.nickname" nz-input placeholder="Nickname"
+                     type="text">
+              <nz-form-explain
+                *ngIf="nicknameAvailable === false">{{'SETTINGS.Nickname_used' | translate}}</nz-form-explain>
+            </nz-form-control>
+          </nz-input-group>
+          <button (click)="checkNicknameAvailability(nickname.value)" *ngIf="!nicknameAvailable && nickname.value !== user.nickname" nz-button
+                  nzBlock>Verify
+          </button>
+          <button (click)="setNickname(user, nickname.value)" *ngIf="nicknameAvailable && nickname.value !== user.nickname" nz-button
+                  nzBlock nzType="primary">Apply
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </nz-tab>
+  <nz-tab *ngIf="platform.isDesktop()" [nzTitle]="'SETTINGS.Desktop' | translate">
+    <div fxLayout="column" fxLayoutGap="5px">
+      <div>
+        <label [(ngModel)]="alwaysOnTop" (ngModelChange)="alwaysOnTopChange($event)" nz-checkbox>
+          {{'SETTINGS.Always_on_top' | translate}}
+        </label>
+      </div>
+      <div>
+        <label [(ngModel)]="settings.clickthroughOverlay" nz-checkbox>
+          {{'SETTINGS.Clickthrough_overlay' | translate}}
+        </label>
+      </div>
+      <nz-card>
+        <div fxLayout="column">
+          <div>
+            <label [(ngModel)]="machinaToggle" (ngModelChange)="machinaToggleChange($event)" nz-checkbox>
+              {{'SETTINGS.Enable_packet_capture' | translate}}
+            </label>
+          </div>
+          <div>
+            <i>{{'SETTINGS.Packet_capture_info' | translate}}</i>
+          </div>
+          <div>
+            <label [(ngModel)]="settings.enableUniversalisSourcing" [nzDisabled]="!machinaToggle" nz-checkbox>
+              {{'SETTINGS.Contribute_to_universalis' | translate}}
+            </label>
+          </div>
+          <div>
+            <label [(ngModel)]="settings.persistInventory" [nzDisabled]="!machinaToggle" nz-checkbox>
+              {{'SETTINGS.Persist_inventory' | translate}}
+            </label>
+          </div>
+        </div>
+      </nz-card>
+      <button (click)="openDesktopConsole()" nz-button>
+        {{'SETTINGS.Show_devtools' | translate}}
+      </button>
+      <button (click)="clearCache()" nz-button>
+        {{'SETTINGS.Clear_cache' | translate}}
+      </button>
+    </div>
+  </nz-tab>
+</nz-tabset>

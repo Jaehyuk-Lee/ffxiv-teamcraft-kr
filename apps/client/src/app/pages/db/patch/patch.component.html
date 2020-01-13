@@ -1,0 +1,344 @@
+<div *ngIf="patch$ | async as patch; else loader" [style.padding]="'0 50px' | ifMobile: '0'" fxLayout="column"
+     fxLayoutGap="10px">
+  <div class="top-bar" fxFlex="1 1 auto" fxLayout="row" fxLayout.lt-md="column"
+       fxLayoutAlign="flex-start flex-start" fxLayoutGap="5px" fxLayoutGap.lt-md="10px">
+    <div class="top-left-block" fxFlex="0 0 auto" fxFlex.lt-md="1 1 auto" fxLayout="column"
+         fxLayoutAlign="space-between" fxLayoutGap="10px">
+      <div class="icon-block" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="flex-start center"
+           fxLayoutGap="5px">
+        <img [src]="patch.Banner || fallbackIcon" alt="{{patch | xivapiI18n}}"
+             class="patch-banner" fxFlex="0 0 auto">
+        <div fxLayout="column" fxLayoutAlign="flex-start flex-start">
+          <h2 class="item-name">{{patch | xivapiI18n}}</h2>
+        </div>
+      </div>
+    </div>
+    <div fxFlex="1 1 auto">
+    </div>
+    <div fxFlex="0 0 300px" fxFlex.lt-md="1 1 auto" fxLayout="column" fxLayoutGap="5px">
+      <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+        <img alt="EN" class="language-flag" src="./assets/icons/english.png">
+        <div>{{patch.Name_en}}</div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+        <img alt="DE" class="language-flag" src="./assets/icons/german.png">
+        <div>{{patch.Name_de}}</div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+        <img alt="FR" class="language-flag" src="./assets/icons/french.png">
+        <div>{{patch.Name_fr}}</div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="flex-start center" fxLayoutGap="5px">
+        <img alt="JA" class="language-flag" src="./assets/icons/japanese.png">
+        <div>{{patch.Name_ja}}</div>
+      </div>
+    </div>
+  </div>
+
+  <nz-divider [nzText]="'DB.PATCH.CONTENT.Title' | translate" nzOrientation="left"></nz-divider>
+
+  <div nz-row nzGutter="10">
+    <nz-collapse *ngIf="patch.achievement" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #achievementPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Achievements' | translate:{amount: patch.achievement.length}">
+        <nz-list *ngIf="achievementPanel.nzActive" [nzDataSource]="patch.achievement" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | achievementName | i18n">
+                <ng-template #avatar>
+                  <img [src]="entry | achievementIcon | xivapiIcon" alt="" class="img-icon">
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="achievement"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.action" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #actionPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Actions' | translate:{amount: patch.action.length}">
+        <nz-list *ngIf="actionPanel.nzActive" [nzDataSource]="patch.action" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | actionName | i18n">
+                <ng-template #avatar>
+                  <img [src]="entry | actionIcon | xivapiIcon" alt="" class="img-icon">
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="action"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.craftaction" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #craftactionPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Crafting_actions' | translate:{amount: patch.craftaction.length}">
+        <nz-list *ngIf="craftactionPanel.nzActive" [nzDataSource]="patch.craftaction" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | actionName | i18n">
+                <ng-template #avatar>
+                  <img [src]="entry | actionIcon | xivapiIcon" alt="" class="img-icon">
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="action"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.fate" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #fatePanel
+        [nzHeader]="'DB.PATCH.CONTENT.Fates' | translate:{amount: patch.fate.length}">
+        <nz-list *ngIf="fatePanel.nzActive" [nzDataSource]="patch.fate" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | fate | i18n">
+                <ng-template #avatar>
+                  <img [src]="(entry | fate)?.icon | xivapiIcon" alt="" class="img-icon">
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="fate"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.instancecontent" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #instancecontentPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Instances' | translate:{amount: patch.instancecontent.length}">
+        <nz-list *ngIf="instancecontentPanel.nzActive" [nzDataSource]="patch.instancecontent" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | instanceName | i18n">
+                <ng-template #avatar>
+                  <img [src]="entry | instanceIcon" alt="" class="img-icon">
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="instance"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.item" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #itemPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Items' | translate:{amount: patch.item.length}">
+        <nz-list *ngIf="itemPanel.nzActive" [nzDataSource]="patch.item" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | itemName | i18n">
+                <ng-template #avatar>
+                  <app-item-icon [icon]="entry | lazyIcon" [itemId]="entry"
+                                 [width]="32"></app-item-icon>
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="item"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.leve" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #levePanel
+        [nzHeader]="'DB.PATCH.CONTENT.Leves' | translate:{amount: patch.leve.length}">
+        <nz-list *ngIf="levePanel.nzActive" [nzDataSource]="patch.leve" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzTitle]="entry | leveName | i18n">
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="leve"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.placename" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #placenamePanel
+        [nzHeader]="'DB.PATCH.CONTENT.Maps' | translate:{amount: patch.placename.length}">
+        <nz-list *ngIf="placenamePanel.nzActive" [nzDataSource]="patch.placename" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzTitle]="entry | placeName | i18n">
+                <ng-template #more>
+                  <app-db-button *ngIf="(entry | mapId) > 0" [id]="entry | mapId" type="map"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.bnpcname" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #bnpcnamePanel
+        [nzHeader]="'DB.PATCH.CONTENT.Monsters' | translate:{amount: patch.bnpcname.length}">
+        <nz-list *ngIf="bnpcnamePanel.nzActive" [nzDataSource]="patch.bnpcname" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzTitle]="entry | mobName | i18n">
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="mob"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.enpcresident" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #enpcresidentPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Npcs' | translate:{amount: patch.enpcresident.length}">
+        <nz-list *ngIf="enpcresidentPanel.nzActive" [nzDataSource]="patch.enpcresident" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzTitle]="entry | npcName | i18n">
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="npc"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.quest" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #questPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Quests' | translate:{amount: patch.quest.length}">
+        <nz-list *ngIf="questPanel.nzActive" [nzDataSource]="patch.quest"
+                 [nzItemLayout]="'horizontal'" [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | questName | i18n">
+                <ng-template #avatar>
+                  <img [src]="entry | questIcon | xivapiIcon" alt="" class="img-icon">
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="quest"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.status" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #statusPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Statuses' | translate:{amount: patch.status.length}">
+        <nz-list *ngIf="statusPanel.nzActive" [nzDataSource]="patch.status" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | statusName | i18n">
+                <ng-template #avatar>
+                  <img [src]="entry | statusIcon | xivapiIcon" alt="" class="img-icon">
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="status"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+
+    <nz-collapse *ngIf="patch.trait" nz-col nzLg="6" nzMd="8" nzSm="24">
+      <nz-collapse-panel
+        #traitPanel
+        [nzHeader]="'DB.PATCH.CONTENT.Traits' | translate:{amount: patch.trait.length}">
+        <nz-list *ngIf="traitPanel.nzActive" [nzDataSource]="patch.trait" [nzItemLayout]="'horizontal'"
+                 [nzRenderItem]="template">
+          <ng-template #template let-entry>
+            <nz-list-item [nzContent]="more">
+              <nz-list-item-meta
+                [nzAvatar]="avatar"
+                [nzTitle]="entry | traitName | i18n">
+                <ng-template #avatar>
+                  <img [src]="entry | traitIcon | xivapiIcon" alt="" class="img-icon">
+                </ng-template>
+                <ng-template #more>
+                  <app-db-button [id]="entry" type="trait"></app-db-button>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
+          </ng-template>
+        </nz-list>
+      </nz-collapse-panel>
+    </nz-collapse>
+  </div>
+
+  <app-db-comments *ngIf="settings.dbCommentsPosition === 'TOP'" [id]="patch.ID" type="patch"></app-db-comments>
+</div>
+<app-db-comments *ngIf="settings.dbCommentsPosition === 'BOTTOM'" [id]="patch.ID" type="patch"></app-db-comments>
+<ng-template #loader>
+  <app-page-loader></app-page-loader>
+</ng-template>
