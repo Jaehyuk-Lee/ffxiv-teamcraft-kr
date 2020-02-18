@@ -39,20 +39,6 @@ for (let i = 0; i < argv.length; i++) {
   }
 }
 
-function callUpdater(...args) {
-  const cp = require('child_process');
-  const updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'Update.exe');
-  cp.spawn(updateDotExe, args, { detached: true });
-}
-
-if (!isDev) {
-  autoUpdater.setFeedURL({
-    url: `https://update.ffxivteamcraft.com`
-  });
-  const target = path.basename(process.execPath);
-  callUpdater('--createShortcut', target);
-}
-
 let deepLink = '';
 
 if (options.noHA) {
@@ -82,7 +68,7 @@ autoUpdater.on('update-downloaded', () => {
   log.log('Update downloaded');
   dialog.showMessageBox({
     type: 'info',
-    title: 'FFXIV Teamcraft - Update available',
+    title: 'FFXIV Teamcraft KR - Update available',
     message: 'An update has been installed, restart now to apply it?',
     buttons: ['Yes', 'No']
   }, (buttonIndex) => {
