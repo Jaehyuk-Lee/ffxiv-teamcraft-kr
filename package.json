@@ -85,7 +85,6 @@
     "e2e": "npm run prebuild && ng e2e client-e2e",
     "e2e:watch": "npm run prebuild && ng e2e client-e2e --watch",
     "e2e:ci": "npm run prebuild && ng e2e client-e2e --headless",
-    "commitmsg": "validate-commit-msg",
     "prerelease": "npm test",
     "commit": "git-cz",
     "electron": "electron",
