@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ListRow } from '../../../modules/list/model/list-row';
-import { TradeIconPipe } from '../trade-icon.pipe';
+import { getItemSource, ListRow } from '../../../modules/list/model/list-row';
+import { TradeIconPipe } from '../../../pipes/pipes/trade-icon.pipe';
 import { TradeSource } from '../../../modules/list/model/trade-source';
+import { TradeEntry } from '../../../modules/list/model/trade-entry';
+import { DataType } from '../../../modules/list/data/data-type';
 
 @Component({
   selector: 'app-total-panel-price-popup',
@@ -10,24 +12,35 @@ import { TradeSource } from '../../../modules/list/model/trade-source';
 })
 export class TotalPanelPricePopupComponent implements OnInit {
 
-  public totalPrice: { currencyId: number, currencyIcon: number, amount: number }[] = [];
+  public totalPrice: { currencyId: number, currencyIcon: number, amount: number, canIgnore: boolean }[] = [];
 
   public panelContent: ListRow[] = [];
 
-  constructor() {
-  }
+  public ignoredSources = [];
 
   getTradeSourceByPriority(tradeSources: TradeSource[]): TradeSource {
-    return tradeSources.sort((a, b) => {
-      return TradeIconPipe.TRADE_SOURCES_PRIORITIES[a.trades[0].currencies[0].id]
-      > TradeIconPipe.TRADE_SOURCES_PRIORITIES[b.trades[0].currencies[0].id] ? -1 : 1;
-    })[0];
+    return tradeSources
+      .filter(source => {
+        return this.getFilteredCurrencies(source.trades[0].currencies).length > 0;
+      })
+      .sort((a, b) => {
+        return TradeIconPipe.TRADE_SOURCES_PRIORITIES[this.getFilteredCurrencies(a.trades[0].currencies)[0].id]
+        > TradeIconPipe.TRADE_SOURCES_PRIORITIES[this.getFilteredCurrencies(b.trades[0].currencies)[0].id] ? 1 : -1;
+      })[0];
   }
 
-  ngOnInit(): void {
+  private getFilteredCurrencies(currencies: TradeEntry[]): TradeEntry[] {
+    return currencies.filter(c => {
+      return !this.ignoredSources.includes(c.id);
+    });
+  }
+
+  private computePrice(): void {
     this.totalPrice = this.panelContent.reduce((result, row) => {
-      if (row.vendors !== null && row.vendors.length > 0) {
-        const vendor = row.vendors
+      const vendors = getItemSource(row, DataType.VENDORS);
+      const tradeSources = getItemSource(row, DataType.TRADE_SOURCES);
+      if (vendors.length > 0) {
+        const vendor = vendors
           .sort((a, b) => {
             return a.price - b.price;
           })[0];
@@ -37,30 +50,43 @@ export class TotalPanelPricePopupComponent implements OnInit {
         } else {
           gilsRow.costs[0] += vendor.price * (row.amount - row.done);
         }
-      } else if (row.tradeSources !== undefined && row.tradeSources.length > 0) {
-        const tradeSource = this.getTradeSourceByPriority(row.tradeSources);
+      } else if (tradeSources.length > 0) {
+        const tradeSource = this.getTradeSourceByPriority(tradeSources);
         const trade = tradeSource.trades[0];
         const itemsPerTrade = trade.items.find(item => item.id === row.id).amount;
-        const costs = tradeSource.trades.sort((ta) => ta.items[0].hq ? 1 : -1).map(t => {
-          return Math.ceil(t.currencies[0].amount * (row.amount - row.done) / itemsPerTrade);
+        this.getFilteredCurrencies(trade.currencies).forEach(currency => {
+          const costs = tradeSource.trades
+            .sort((ta) => ta.items[0].hq ? 1 : -1)
+            .map(t => {
+              return Math.ceil(t.currencies.find(c => c.id === currency.id).amount * (row.amount - row.done) / itemsPerTrade);
+            });
+
+          const tradeRow = result.find(r => r.currencyId === currency.id);
+
+          if (tradeRow === undefined) {
+            result.push({
+              currencyId: currency.id,
+              currencyIcon: currency.icon,
+              costs: costs,
+              canIgnore: [].concat.apply([], tradeSources.filter(source => {
+                return source.trades.some(t => {
+                  return this.getFilteredCurrencies(t.currencies).length > 0;
+                });
+              })).length > 1
+            });
+          } else {
+            tradeRow.costs[0] = (tradeRow.costs[0] || 0) + costs[0];
+            tradeRow.costs[1] = (tradeRow.costs[1] || tradeRow.costs[0]) + costs[1];
+          }
         });
-
-        const tradeRow = result.find(r => r.currencyId === trade.currencies[0].id);
-
-        if (tradeRow === undefined) {
-          result.push({
-            currencyId: trade.currencies[0].id,
-            currencyIcon: trade.currencies[0].icon,
-            costs: costs
-          });
-        } else {
-          tradeRow.costs[0] += costs[0];
-          tradeRow.costs[1] += costs[1];
-        }
       }
 
       return result;
     }, []);
+  }
+
+  ngOnInit(): void {
+    this.computePrice();
   }
 
 }

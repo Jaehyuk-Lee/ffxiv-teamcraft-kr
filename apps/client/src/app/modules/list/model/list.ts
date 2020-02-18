@@ -1,4 +1,4 @@
-import { ListRow } from './list-row';
+import { getItemSource, ListRow } from './list-row';
 import { CraftAddition } from './craft-addition';
 import { GarlandToolsService } from '../../../core/api/garland-tools.service';
 import * as semver from 'semver';
@@ -17,6 +17,9 @@ import { bufferCount, debounceTime, expand, map, skip, skipUntil, switchMap, tap
 import { DataService } from '../../../core/api/data.service';
 import { Ingredient } from '../../../model/garland-tools/ingredient';
 import { ListManagerService } from '../list-manager.service';
+import { ListColor } from './list-color';
+import * as firebase from 'firebase/app';
+import { DataType } from '../data/data-type';
 
 declare const gtag: Function;
 
@@ -35,7 +38,7 @@ export class List extends DataWithPermissions {
   note = '';
 
   // noinspection JSUnusedGlobalSymbols
-  createdAt: string = new Date().toISOString();
+  createdAt: firebase.firestore.Timestamp;
 
   // Should we disable HQ suggestions for this list?
   disableHQSuggestions = false;
@@ -58,8 +61,15 @@ export class List extends DataWithPermissions {
   // Used for the drag-and-drop feature.
   workshopId?: string;
 
+  color: ListColor;
+
+  archived = false;
+
   constructor() {
     super();
+    if (!this.createdAt) {
+      this.createdAt = firebase.firestore.Timestamp.fromDate(new Date());
+    }
   }
 
   public get crystals(): ListRow[] {
@@ -67,9 +77,9 @@ export class List extends DataWithPermissions {
   }
 
   public isComplete(): boolean {
-    return this.finalItems.length > 0 && this.finalItems.filter(recipe => {
+    return this.finalItems.length > 0 && !this.finalItems.some(recipe => {
       return recipe.done < recipe.amount;
-    }).length === 0;
+    });
   }
 
   public clone(internal = false): List {
@@ -78,9 +88,7 @@ export class List extends DataWithPermissions {
     clone.version = this.version || '1.0.0';
     clone.tags = this.tags;
     if (internal) {
-      for (const prop of Object.keys(this)) {
-        clone[prop] = JSON.parse(JSON.stringify(this[prop]));
-      }
+      Object.assign(clone, this);
     } else {
       for (const prop of Object.keys(this)) {
         if (['finalItems', 'items', 'note'].indexOf(prop) > -1) {
@@ -98,33 +106,14 @@ export class List extends DataWithPermissions {
       this.forks++;
       clone.reset();
     }
+    clone.createdAt = this.createdAt;
     return clone;
-  }
-
-  public getCompact(): List {
-    const compact = new List();
-    for (const prop of Object.keys(this)) {
-      if (['finalItems', 'note'].indexOf(prop) > -1) {
-        compact[prop] = JSON.parse(JSON.stringify(this[prop]));
-      }
-    }
-    compact.name = this.name;
-    compact.version = this.version || '1.0.0';
-    compact.tags = this.tags;
-    compact.everyone = this.everyone;
-    compact.offline = this.offline;
-    compact.registry = this.registry;
-    compact.authorId = this.authorId;
-    compact.$key = this.$key;
-    compact.ephemeral = this.ephemeral;
-    compact.index = this.index;
-    compact.teamId = this.teamId;
-    compact.createdAt = this.createdAt;
-    return compact;
   }
 
   public reset(): void {
     this.finalItems.forEach(recipe => this.resetDone(recipe));
+    this.modificationsHistory = [];
+    this.updateAllStatuses();
   }
 
   /**
@@ -174,7 +163,7 @@ export class List extends DataWithPermissions {
         // We don't want to check the amount of items required for recipes, as they can't be wrong (provided by the user only).
         if (prop !== 'finalItems') {
           this[prop].forEach(row => {
-            if (row.craftedBy === undefined || row.craftedBy.length === 0) {
+            if (getItemSource(row, DataType.CRAFTED_BY).length === 0) {
               row.amount = row.amount_needed = this.totalAmountRequired(row);
             } else {
               row.amount = this.totalAmountRequired(row);
@@ -190,6 +179,29 @@ export class List extends DataWithPermissions {
 
   public isEmpty(): boolean {
     return this.finalItems.length === 0;
+  }
+
+  public requiredAsHQ(item: ListRow): number {
+    const recipesNeedingItem = this.finalItems
+      .filter(i => i.requires !== undefined)
+      .filter(i => {
+        return (i.requires || []).some(req => req.id === item.id);
+      });
+    if (item.requiredAsHQ) {
+      return item.amount;
+    }
+    if (this.disableHQSuggestions) {
+      return 0;
+    }
+    if (recipesNeedingItem.length === 0 || item.requiredAsHQ === false) {
+      return 0;
+    } else {
+      let count = 0;
+      recipesNeedingItem.forEach(recipe => {
+        count += recipe.requires.find(req => req.id === item.id).amount * recipe.amount;
+      });
+      return count;
+    }
   }
 
   public getItemById(id: number | string, excludeFinalItems: boolean = false, onlyFinalItems = false, recipeId?: string): ListRow {
@@ -279,7 +291,8 @@ export class List extends DataWithPermissions {
   }
 
   canBeCrafted(item: ListRow): boolean {
-    if (item.craftedBy === undefined || item.craftedBy.length === 0 || item.requires === undefined) {
+    const craftedBy = getItemSource(item, DataType.CRAFTED_BY);
+    if (craftedBy === undefined || item.requires === undefined) {
       return false;
     }
     let canCraft = true;
@@ -308,8 +321,25 @@ export class List extends DataWithPermissions {
     return canCraft;
   }
 
+  updateAllStatuses(updatedItemId?: number): void {
+    const directRequirements = [...this.finalItems, ...this.items].filter(item => {
+      return (item.requires || []).length > 0
+        && (!updatedItemId || item.requires.some(req => req.id === updatedItemId));
+    });
+    directRequirements.forEach(item => {
+      item.canBeCrafted = this.canBeCrafted(item);
+      item.craftableAmount = this.craftableAmount(item);
+    });
+    this.finalItems.forEach(i => {
+      i.hasAllBaseIngredients = (i.requires || []).length > 0 && !i.canBeCrafted && i.done < i.amount && this.hasAllBaseIngredients(i);
+    });
+    this.items.forEach(i => {
+      i.hasAllBaseIngredients = (i.requires || []).length > 0 && !i.canBeCrafted && i.done < i.amount && this.hasAllBaseIngredients(i);
+    });
+  }
+
   craftableAmount(item: ListRow): number {
-    if (item.craftedBy === undefined || item.craftedBy.length === 0 || item.requires === undefined) {
+    if (getItemSource(item, DataType.CRAFTED_BY).length === 0 || item.requires === undefined) {
       return 0;
     }
     let amount = 0;
@@ -329,12 +359,12 @@ export class List extends DataWithPermissions {
 
   hasAllBaseIngredients(item: ListRow, amount = item.amount): boolean {
     // If it's not a craft, break recursion
-    if (item.craftedBy === undefined || item.craftedBy.length === 0 || item.requires === undefined) {
+    if (getItemSource(item, DataType.CRAFTED_BY).length === 0 || item.requires === undefined) {
       // Simply return the amount of the item being equal to the amount needed.
       return item.done >= amount;
     }
     // If we already have the precraft done, don't go further into the requirements.
-    if (item.done >= amount) {
+    if (item.done >= amount || item.canBeCrafted) {
       return true;
     }
     // Don't mind crystals
@@ -357,8 +387,7 @@ export class List extends DataWithPermissions {
     }
     let res = false;
     res = res || (this.version === undefined);
-    res = res || semver.ltr(this.version, '5.0.0');
-    res = res || (this.items || []).some(item => item.workingOnIt !== undefined && !(item.workingOnIt instanceof Array));
+    res = res || semver.ltr(this.version, '6.1.0');
     return res;
   }
 
@@ -426,7 +455,7 @@ export class List extends DataWithPermissions {
         listManager.addDetails(this, crystal);
       } else {
         const elementDetails = (<ItemData>addition.data).getIngredient(+element.id);
-        if (elementDetails.isCraft()) {
+        if (elementDetails && elementDetails.isCraft()) {
           const yields = elementDetails.craft[0].yield || 1;
           const added = this.add(this.items, {
             id: elementDetails.id,
@@ -444,15 +473,28 @@ export class List extends DataWithPermissions {
             amount: added
           });
         } else {
-          this.add(this.items, {
-            id: elementDetails.id,
-            icon: elementDetails.icon,
-            amount: element.amount * addition.amount,
-            done: 0,
-            used: 0,
-            yield: 1,
-            usePrice: true
-          });
+          if (elementDetails === undefined) {
+            const partial = (<ItemData>addition.data).getPartial(element.id.toString(), 'item');
+            this.add(this.items, {
+              id: partial.obj.i,
+              icon: partial.obj.c,
+              amount: element.amount * addition.amount,
+              done: 0,
+              used: 0,
+              yield: 1,
+              usePrice: true
+            });
+          } else {
+            this.add(this.items, {
+              id: elementDetails.id,
+              icon: elementDetails.icon,
+              amount: element.amount * addition.amount,
+              done: 0,
+              used: 0,
+              yield: 1,
+              usePrice: true
+            });
+          }
         }
         listManager.addDetails(this, <ItemData>addition.data);
       }
@@ -572,22 +614,16 @@ export class List extends DataWithPermissions {
         this.setDone(row.id, row.amount_needed - previousDone, !recipe, recipe, false, data.recipeId);
       }
     }
+    this.updateAllStatuses();
     return added;
   }
 
   public isLarge(): boolean {
-    return this.items && this.items.length >= 150 || this.finalItems && this.finalItems.length > 80;
-  }
-
-  /**
-   * Gets payload size for firestore database.
-   */
-  public getSize(): number {
-    return JSON.stringify(this).length;
+    return this.items && this.items.length >= 100 || this.finalItems && this.finalItems.length > 50;
   }
 
   public isTooLarge(): boolean {
-    return this.getSize() > 800000;
+    return this.items.length + this.finalItems.length > 1000;
   }
 
   /**
@@ -610,5 +646,13 @@ export class List extends DataWithPermissions {
       }
     });
     return count;
+  }
+
+  afterDeserialized(): void {
+    if (typeof this.createdAt !== 'object') {
+      this.createdAt = firebase.firestore.Timestamp.fromDate(new Date(this.createdAt));
+    } else if (!(this.createdAt instanceof firebase.firestore.Timestamp)) {
+      this.createdAt = new firebase.firestore.Timestamp((this.createdAt as any).seconds, (this.createdAt as any).nanoseconds);
+    }
   }
 }

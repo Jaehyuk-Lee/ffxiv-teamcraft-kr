@@ -36,7 +36,8 @@
     "Reset_filters": "Resetear filtros",
     "Too_many_results_warning": "Esta búsqueda devuelve más de 100 artículos. Como nuestro origen de datos esta limitado a 100 resultados, puede que necesite filtros adicionales para encontrar un artículo específico.",
     "Share_url": "Copiar el url de búsqueda al portapapeles",
-    "Share_url_copied": "URL de búsqueda copiado al portapapeles"
+    "Share_url_copied": "URL de búsqueda copiado al portapapeles",
+    "Only_craftable": "Only recipes"
   },
   "Use_as_default_character": "Usar como personaje por defecto",
   "Download_desktop_app": "Descargar aplicación para PC",
@@ -142,7 +143,17 @@
     "User": "Usuario",
     "Tables": "Tabla",
     "Pie_charts": "Gráfico de pastel",
-    "Read_more_on_wiki": "Leer más detalles en el wiki"
+    "Read_more_on_wiki": "Leer más detalles en el wiki",
+    "Apply": "Aplicar",
+    "Open_link": "Abrir enlace del sitio web",
+    "Unknown": "Unknown",
+    "Minimum": "Minimum",
+    "Maximum": "Maximum",
+    "Average": "Average",
+    "Hq": "HQ",
+    "Nq": "NQ",
+    "Share_link_copied": "Share link copied to clipboard",
+    "Copy": "Copy"
   },
   "ALARMS": {
     "Title": "Alarmas",
@@ -160,6 +171,7 @@
     "Volume": "Volumen",
     "Macro_copied": "Macro copiada al portapapeles",
     "Open_overlay": "Abrir capa sobrepuesta",
+    "Open_alarms_overlay": "Open alarms overlay",
     "More_available": "y {{amount}} más...",
     "Node_content": "Contenido del nodo",
     "Toggle_collapse": "Colapsar/Expandir grupos",
@@ -200,7 +212,7 @@
   "No_items_found": "Artículo no encontrado",
   "No_instances_found": "No se encontraron instancias",
   "No_quests_found": "No se encontraron misiones",
-  "No_npcs_found": "Npc no encontrado",
+  "No_npcs_found": "Pnj no encontrado",
   "No_mobs_found": "Monstruo no encontrado",
   "No_lore_entries": "Entrada de historia no encontrada",
   "No_fates_found": "Fate no encontrada",
@@ -249,7 +261,7 @@
   "Login": "Acceder",
   "Disconnect": "Desconectar",
   "Password": "Contraseña",
-  "Password_Confirmation": "Confirmación",
+  "Password_Confirmation": "Confirm Password",
   "Submit": "Enviar",
   "Invalid_credentials": "Credenciales Inválidas",
   "Not_verified": "No verificado",
@@ -336,6 +348,8 @@
     "no_panel_borders": "Deshabilitar bordes alrededor de varios paneles",
     "Desktop": "Escritorio",
     "Always_on_top": "Siempre arriba",
+    "Start_minimized": "Start minimized in tray",
+    "Always_quit": "Quit when clicking on close button (instead of minimizing)",
     "Check_for_update": "Buscar actualizaciones",
     "Downloading_update": "Descargando actualización",
     "No_update_available": "No hay actualización disponible",
@@ -374,8 +388,15 @@
     "Disable_search_debounce": "Deshabilitar la búsqueda en tiempo real (sólo pulsar entrar activará la búsqueda)",
     "Enable_packet_capture": "Habilitar captura de paquetes (añade características de inventario en tiempo real)",
     "Packet_capture_info": "Capturar paquetes es contra los TdS, la misma razón por la que usar ACT es contra los TdS. Pero Square Enix lo tolera a menos que lo presuma a todos en el juego. Simplemente no lo haga y no se arriesgará a nada.",
+    "Enable_autofill_by_default": "Enable autofill by default",
+    "Enable_autofill_notification_by_default": "Enable autofill notification by default",
+    "Enable_autofill_hq_filter": "Only autofill using hq items when item is required as HQ",
     "Contribute_to_universalis": "Contribuir a Universalis",
-    "Persist_inventory": "Save inventory in database (to share with web version)",
+    "Track_items_on_sale": "Rastrear artículos a la venta en sus retenedores (requiere reiniciar/actualizar)",
+    "Performance_mode": "Performance mode",
+    "Performance_mode_explain": "Removes item images in lists, as well as menus (only keeps buttons) for less stress on the browser and the app",
+    "Change_email": "Change email",
+    "Change_email_success": "Email changed",
     "COLORS": {
       "Background": "Color de fondo",
       "Primary": "Color primario",
@@ -388,6 +409,13 @@
     "COPY_TYPE": {
       "Classic": "Copiar nombre de artículo",
       "Isearch": "Copiar macro de /isearch"
+    },
+    "CATEGORIES": {
+      "Autofill_completion": "Sonido de autorellenado",
+      "Packet_capture": "Captura de paquetes",
+      "Theme": "Tema",
+      "Search": "Búsqueda",
+      "Other": "Otros"
     }
   },
   "PROFILE": {
@@ -407,7 +435,7 @@
     "More_than_100_lists_created": "Más de 100 listas creadas",
     "Veteran": "Veterano",
     "Autofill_from_packets": "Autocompletar estadísticas usando captura de paquetes",
-    "Autofill_stats_explain": "Switch to the desired job in order to update it, close this popup once you're done. Please make sure you don't have any active food, else it'll save your stats with the food active.",
+    "Autofill_stats_explain": "Cambie a la profesión deseada para actualizarla, cierre esta ventana cuando haya terminado. Por favor, asegúrese de no tener comida activa, de lo contrario guardará sus estadísticas con la comida activa.",
     "VERIFICATION": {
       "Title": "Verificación de personaje",
       "Guide": "Para verificar su cuenta, pegue este código: \"{{userId}}\" dentro de su biografía en su perfil de Lodestone y haga clic en el botón de abajo. Más información en el <a href=\"https://wiki.ffxivteamcraft.com/guides/verify-your-character\">wiki</a>",
@@ -425,7 +453,7 @@
     "Lists_merged": "¡Listas mezcladas con éxito!",
     "Shared_lists": "Listas compartidas con usted",
     "Add_selection": "Agregar selección a la lista",
-    "Add_selection_to_list": "Add selection to list",
+    "Add_selection_to_list": "Agregar selección a la lista",
     "Your_lists": "Sus listas",
     "Outdated_tag": "Desactualizado",
     "No_lists": "No tiene listas",
@@ -464,16 +492,31 @@
     "Copy_list_as_text": "Copiar toda la lista como texto",
     "Copied_as_text": "Contenido copiado en el portapapeles",
     "Total_price": "Total de compras (gil y otras monedas)",
+    "Ignore_currency": "Ignorar esta moneda (sólo funciona si hay otra forma de comprar)",
     "Total_trade_price": "Total: ",
     "Add_all_alarms": "Agregar todas las alarmas de esta lista",
     "History": "Historial",
     "Items_count": "{{amount}} artículos",
     "Show_craftable_amount": "Mostrar cantidad fabricable",
+    "Show_vendors": "Show first available vendor for each item",
     "Optimized_full_path": "Mostrar ruta optimizada completa (más barata y más rápida)",
     "Quick_layout_swap": "Intercambio rápido de diseño",
     "Offline": "Sin conexión",
     "Offline_help": "Las listas sin conexión se almacenan dentro del navegador o de la aplicación, sólo están disponibles dentro de esta instancia y no pueden ser compartidas, pero son más rápidas porque no requieren llamadas de red.",
     "Mark_whole_panel_done": "Marcar contenido del panel como completado",
+    "Set_color": "Establecer color de lista",
+    "Go_to_pinned": "Ir a la lista anclada (clic derecho para quitar)",
+    "Reset_panel": "Reset all the items of this panel",
+    "COLORS": {
+      "RED": "Rojo",
+      "GREEN": "Verde",
+      "YELLOW": "Amarillo",
+      "BLUE": "Azul",
+      "PURPLE": "Morado",
+      "ORANGE": "Naranja",
+      "PINK": "Rosa",
+      "NONE": "Ninguno"
+    },
     "ROTATION": {
       "Attach": "Adjuntar rotación",
       "Detach": "Desligar rotación",
@@ -522,6 +565,8 @@
     "Disable_HQ_suggestions": "Deshabilitar las banderas HQ automáticas",
     "Amount_craftable": "Puede crear {{amount}}",
     "Add_item": "Agregar un artículo",
+    "List_large": "This is a large list",
+    "Enable_performance_mode": "You might want to enable performance mode in settings in order to get faster rendering",
     "List_too_large": "Lista demasiado larga",
     "List_too_large_description": "Esta lista es muy larga y puede llegar al limite de tamaño de la base de datos debido a toda la información que lleva. No le será permitido añadir más elementos para asegurar que no pierda la lista.",
     "Add_to_another_list": "Añadir a otra lista",
@@ -530,6 +575,13 @@
     "Contributions_popup": "Estadísticas de contribuciones",
     "Autofill_details": "Ingrese su progreso cuando obtenga artículos en el juego, usando captura de paquetes. Esto estará deshabilitado si abandona la página de la lista, para evitar entradas no deseadas.",
     "Autofill": "Autocompletar",
+    "Autofill_notification_details": "Mostrar una notificación cuando un artículo se complete con autorellenado.",
+    "Autofill_notification": "Notificación de finalización",
+    "Autofill_notification_title": "Artículo completado",
+    "Autofill_notification_body": "{{itemName}} se ha completado para la lista {{listName}}",
+    "Fill_with_inventory": "Fill with inventory (only accounts what you have in personal inventory)",
+    "Filter_items_done": "Ignore completed items",
+    "Inventory_synthesis": "Inventory synthesis (items per inventory)",
     "LAYOUT_DIALOG": {
       "Title": "Diseño",
       "Add_panel": "Agregar Panel",
@@ -567,6 +619,11 @@
       "Order_by": "Ordenar por",
       "Order": "Orden",
       "Tag_filter": "Filtro de etiquetas"
+    },
+    "OVERLAY": {
+      "Open": "Open list overlay",
+      "No_display": "Open a list in main window to get started",
+      "No_panel_selected": "Select a panel using the buttons above"
     }
   },
   "LIST_TAGS": {
@@ -645,6 +702,7 @@
     "Title": "Ruta de navegación optimizada",
     "Steps": "Pasos",
     "Loading_path": "Cargando ruta optimizada (puede tomar varios segundos)",
+    "You_are_here": "Usted está aquí",
     "STEP": {
       "Gathering": "Recolectar {{amount}} (total: {{total}})",
       "Hunting": "Conseguir {{amount}} en monstruos (total: {{total}})",
@@ -721,9 +779,11 @@
   },
   "SIMULATOR": {
     "Title": "Simulador de fabricación",
+    "Include_stats": "Include stats",
     "Fixed_notification_number": "Notificación fija",
     "Starting_echo_number": "# de notificación",
     "Break_on_reclaim": "Dividir macros en el punto de no regreso de Reclaim",
+    "Break_before_byregots_blessing": "Dividir macros antes de Byregot's Blessing",
     "Include_consumables_notification": "Incluir notificación de consumibles",
     "Consumable_notification": "Usar {{buffs}}",
     "Extra_wait": "Espera extra",
@@ -788,6 +848,8 @@
     "Rotation_solver": "Resolvedor de rotación",
     "Recipe_picker_placeholder": "Introduzca el nombre de la receta que desea crear",
     "Could_not_find_minstats": "No se pudieron encontrar atributos mínimos para esta rotación",
+    "Remove_final_appraisal": "Remover el beneficio de Final Appraisal",
+    "Total_macro_duration": "Duración total de la macro: {{duration}}s.",
     "STATE": {
       "Excellent": "Excelente",
       "Good": "Bueno",
@@ -888,7 +950,7 @@
       "No_medicine": "Sin medicina",
       "No_fc_buffs": "Sin bonos de Gremio Independiente (FC)",
       "Quest_warning": "Asegúrese de que ha hecho la misión nivel 70 para \"Stroke of Genius\"",
-      "Starting_quality": "Starting quality",
+      "Starting_quality": "Calidad inicial",
       "STATS": {
         "CP": "CP",
         "Craftsmanship": "Artesanía",
@@ -906,26 +968,20 @@
     "ROTATION_TIPS": {
       "Use_inner_quiet": "Casi todas las rotaciones deberían incluir \"Inner Quiet\" si su objetivo es un objeto HQ. Proporciona un buen impulso de calidad y permite acciones como \"Byregot's Blessing\".",
       "Use_inner_quiet_before_quality_increase": "Debería aplicar \"Inner Quiet\" antes de cualquier aumento de calidad, no hacerlo significa que está desperdiciando cargas de \"Inner Quiet\".",
-      "Use_ingenuity_I_instead": "Debería usar Ingenuity I en lugar de II para reducir el costo en 8CP, ya que será suficiente para terminar la artesanía.",
-      "Use_cz_earlier": "Debería usar \"Comfort Zone\" antes para obtener el efecto de restauración antes",
-      "Use_reclaim": "Tiene suficiente CP restante para usar \"Reclaim\", debería añadirlo a la rotación para asegurarte de que reciba materiales de regreso si falla la artesanía",
-      "Use_byregot_brow_low_iq_stacks": "Utilizó \"Byregot Blessing\" con menos de 6 cargas. Usar \"Byregot Brow\" es mejor en este caso, ya que producirá más calidad.",
       "Use_byregot_blessing_high_iq_stacks": "Utilizó \"Byregot Brow\" con más de 6 cargas. Usar \"Byregot Blessing\" es mejor en este caso, ya que producirá más calidad.",
-      "Use_sh1_instead": "Utilizó \"Steady Hand II\" en el paso {{index}} mientras que utilizar \"Steady Hand I\" sería suficiente y costaría 3 CP menos.",
-      "Use_sh2_instead": "Utilizó \"Steady Hand I\" en el paso {{index}} mientras que utilizar \"Steady Hand II\" le daría más confiabilidad por 3 CP.",
-      "Use_pbp_first": "Debería usar \"Piece by Piece\" antes de cualquier otra acción de síntesis, ya que se escala con el progreso que falta por hacer",
-      "Use_mume_if_pbp": "Debería usar \"Muscle Memory\" en el paso 1 para reemplazar un \"Piece by Piece\" y obtener 9 CP extra",
       "Use_observe_before_focused": "Debería usar \"Observe\" antes de la acción \"enfocada\" en el paso {{index}} para obtener una tasa de éxito del 100% gratis.",
       "Use_durability_restoration_later": "Debería usar la acción de restauración de durabilidad en el paso {{index}} más tarde para evitar desperdiciar la restauración de durabilidad.",
       "Use_patient_touch_faster": "Debería usar \"Patient Touch\" antes de añadir cargas de \"Inner Quiet\", para minimizar las cargas desperdiciadas si la acción falla.",
-      "Use_advanced_touch_instead": "Usó \"Basic Touch\" seguido de \"Advanced Touch\" en el paso {{index}}, debería usar dos \"Standard Touch\" en su lugar para obtener la misma potencia por 2 CP menos.",
       "Do_not_overlap_buffs": "Ha traslapado el bono aplicado en el paso {{overlappedIndex}} con el bono aplicado en el paso {{overlappingIndex}}, debería retrasar el segundo para obtener los máximos beneficios de sus bonos.",
       "Use_byregot_brow_5_stacks": "Debería usar \"Byregot's Brow\" en vez de \"Byregot's Blessing\" para obtener la misma calidad por 6 CP menos.",
       "Use_ingenuity_before_byregot": "Debería usar \"Ingenuity\" antes de la acción de \"Byregot\" para obtener un aumento en la ganancia de calidad.",
       "Use_more_quality_actions": "Le sobra durabilidad al final del proceso, probablemente debería usarla para más acciones relacionadas con la calidad.",
-      "Use_prudent_touch_manipulation": "Como usted es nivel 66+, debería usar el combo \"Manipulation II\" + \"Prudent Touch\" para obtener calidad para la mejor ganancia de calidad y más confiabilidad.",
+      "Use_prudent_touch_manipulation": "Como usted es nivel 66+, debería usar el combo \"Manipulation\" + \"Prudent Touch\" para obtener calidad para la mejor ganancia de calidad y más confiabilidad.",
       "Use_rapid_synthesis_earlier": "No debería usar \"Rapid Synthesis\" como una acción de término, usarla antes para poder manejar el fracaso de la acción es mejor para la confiabilidad de su rotación.",
-      "Use_reflect_earlier": "Debería usar la acción de especialización \"Reflect\" antes para impulsar las acciones de calidad posteriores."
+      "Do_not_use_brand_without_name": "No utilice Brand of the Elements sin Name of the Elements activo.",
+      "Avoid_using_good_actions": "Evite el uso de acciones que requieran de \"Buen\" estado en una macro, ya que no son predecibles",
+      "Requires_reuse_to_proc": "Your rotation requires Reuse to proc in order to work properly, make sure it can work without a reuse proc.",
+      "Use_reuse": "Your rotation reaches 100% HQ and you have enough CP to use Reuse, consider adding it to get extra mats back."
     }
   },
   "PRICING": {
@@ -937,7 +993,7 @@
     "Autofill_panel_prices_warning": "Este es un proceso lento y debería tomar alrededor de {{time}} segundos para completarse. ¿Está seguro?",
     "Copy_earnings_as_text": "Copiar contenido como texto",
     "Content_copied": "Contenido copiado a su portapapeles",
-    "Cheaper_at_vendor": "Más barato si compra de NPC ({{price}} gil)",
+    "Cheaper_at_vendor": "Más barato si compra de PNJ ({{price}} gil)",
     "Copy_panel_as_text": "Copiar este panel como texto",
     "Check_precraft_prices": "Busque precios más baratos dentro del mercado",
     "Craft_price": "Precio de fabricación",
@@ -956,6 +1012,7 @@
     "Global_exp": "Usar experiencia global",
     "More_on_gamerescape": "Más detalles en gamerescape",
     "Deliver_to": "Entregar a {{placename}}",
+    "Hide_large": "Ocultar leves grandes",
     "INTRO": {
       "Title": "Misiones Leve",
       "First_line": "Esta página le permite buscar una determinada misión leve o múltiples misiones leve para crear una lista de los resultados",
@@ -1019,7 +1076,8 @@
       "LIST_PROGRESSION": "Progresar materiales de la lista",
       "FINAL_LIST_PROGRESSION": "Progresar artículos finales de la lista",
       "USER_ASSIGNMENT": "Asignación de usuario",
-      "ITEM_COMPLETION": "Completar el artículo"
+      "ITEM_COMPLETION": "Completar el artículo",
+      "ITEM_PROGRESSION": "Item progression"
     }
   },
   "MARKETBOARD": {
@@ -1068,7 +1126,8 @@
   "UPDATE": {
     "New_update_available": "¡Nueva actualización disponible! ",
     "New_update_available_desktop": "¡Una nueva actualización está disponible!\nHaga clic aquí para descargarla e instalarla.",
-    "Web_instructions": "Por favor refresque la página para obtener la última versión."
+    "Web_instructions": "Por favor refresque la página para obtener la última versión.",
+    "Downloading_update": "Downloading the update, you'll be prompted to install once the download is done"
   },
   "LOG_TRACKER": {
     "Title": "Seguidor de registro",
@@ -1144,13 +1203,13 @@
       },
       "VENDORS": {
         "Title": "Vendedores",
-        "Npc_name": "Nombre de NPC",
+        "Npc_name": "Nombre de PNJ",
         "Price": "Precio",
         "Delete_vendor": "Eliminar vendedor"
       },
       "TRADES": {
         "Title": "Fuentes comerciales",
-        "Npc_name": "Nombre de NPC",
+        "Npc_name": "Nombre de PNJ",
         "Shop_name": "Nombre de la tienda",
         "Delete_trade": "Eliminar comercio",
         "Trade_details": "Detalles del comercio",
@@ -1161,8 +1220,8 @@
       }
     },
     "NPC_PICKER": {
-      "Title": "Encuentre un NPC",
-      "Npc_name": "Nombre de NPC"
+      "Title": "Encuentre un PNJ",
+      "Npc_name": "Nombre de PNJ"
     },
     "IMPORT": {
       "Corrupted_file": "El archivo de importación está corrupto o incorrecto",
@@ -1245,7 +1304,7 @@
     "TT_card_unlock": "Desbloquea la tarjeta en la colección",
     "Track_on_attt": "Rastrear en otro Rastreador de Triple Triada",
     "Unlocked_by_quest": "Desbloqueado por misión",
-    "More_on_attt_npc": "Ver más detalles sobre este npc en otro Rastreador de Triple Triada",
+    "More_on_attt_npc": "Ver más detalles sobre este pnj en otro Rastreador de Triple Triada",
     "Triple_triad_pack": "Paquete de tarjetas triple triada",
     "Dungeons": "Mazmorras/Pruebas",
     "Used_for_trades": "Intercambios",
@@ -1289,9 +1348,74 @@
     "Currencies": "Divisas",
     "Rowena_splendor": "Esplendores de Rowena (Estrella = +20% de bonus)",
     "Unlocks": "Desbloqueos",
+    "Jump_to_page": "Saltar rápido a otra página",
+    "Ishgard_restoration": "Restauración Ishgardiana",
     "ITEM": {
       "Masterpiece_base": "BASE",
       "Masterpiece_bonus": "BONUS"
+    },
+    "FISH": {
+      "Hour": "Hour of the day",
+      "Etime": "Eorzean time",
+      "Misses_popup_title": "Misses for this spot",
+      "Show_misses": "Show misses",
+      "Baits": "Bait used",
+      "Hookset_and_tug": "Hooksets and tugs",
+      "Weathers": "Weathers",
+      "Weather_transitions": "Weather transitions",
+      "Hooksets": "Hooksets",
+      "Tugs": "Tugs",
+      "Seconds": "Seconds",
+      "Bite_time": "Bite time",
+      "Spots": "Spots",
+      "Min_gathering": "Min. gathering",
+      "Min_size": "Min. size",
+      "Max_size": "Max. size",
+      "Avg_size": "Avg. size",
+      "Used_as_mooch_for": "Used as mooch for",
+      "No_known_mooch_usage": "No known mooch usage for this fish",
+      "No_spot_filter": "No spot filter",
+      "Chances_for_transition": "Chances for this transition to happen",
+      "Weather_chances": "Chances for each weather to appear",
+      "Bait": "Fishing bait",
+      "Refresh_data": "Refresh data",
+      "TUG": {
+        "Light": "Light",
+        "Medium": "Medium",
+        "Big": "Big"
+      },
+      "OVERLAY": {
+        "Open": "Open fishing report overlay",
+        "Bait": "Attached bait",
+        "Tug": "Tug",
+        "Hookset": "Hookset",
+        "Fishing": "Fishing",
+        "Mooch": "Last throw was mooch",
+        "Mooch_report": "Mooch",
+        "Current_weather": "Current weather",
+        "Previous_weather": "Previous weather",
+        "Spot": "Spot",
+        "Possible_fish": "Possible fish",
+        "Stats": "Stats",
+        "Statuses": "Statuses",
+        "No_statuses": "No relevant statuses",
+        "Total_reports": "Total reports for this session",
+        "Last_report": "Last report",
+        "Fish": "Fish",
+        "Size": "Size",
+        "ERRORS": {
+          "Unknown_map": "Map unknown, change zone to load it.",
+          "No_bait": "No bait detected, switch bait once to fix."
+        }
+      }
+    },
+    "FISHING_SPOT": {
+      "Next": "Next",
+      "Possible_weathers": "Possible weathers",
+      "Available_fishes": "Available fishes",
+      "Fish_per_weather": "Fish per weather",
+      "Fish_per_bait": "Fish per bait",
+      "Fish_per_tug": "Fish per tug"
     },
     "NODE": {
       "Items": "Artículos",
@@ -1304,7 +1428,7 @@
       "Steps": "Pasos",
       "Unlocked_by": "Desbloqueado por",
       "Next_quests": "Siguientes misiones",
-      "Involved_npcs": "Npcs involucrados",
+      "Involved_npcs": "Pnjs involucrados",
       "Journal_entries": "Entradas de diario",
       "Dialogues": "Diálogos",
       "Start": "Inicio",
@@ -1341,7 +1465,7 @@
     "DATA_TYPE": {
       "fate": "Fates",
       "mob": "Monstruos",
-      "npc": "NPCs",
+      "npc": "PNJs",
       "node": "Nodos",
       "hunt": "Cacerías"
     },
@@ -1421,7 +1545,7 @@
         "Leves": "Leves ({{amount}})",
         "Maps": "Mapas ({{amount}})",
         "Monsters": "Monstruos ({{amount}})",
-        "Npcs": "Npcs ({{amount}})",
+        "Npcs": "Pnjs ({{amount}})",
         "Quests": "Misiones ({{amount}})",
         "Statuses": "Estados ({{amount}})",
         "Traits": "Rasgos ({{amount}})"
@@ -1433,7 +1557,7 @@
     "Recipe": "Receta",
     "Instance": "Instancia",
     "Quest": "Misión",
-    "NPC": "NPC",
+    "NPC": "PNJ",
     "Leve": "Misión Leve",
     "Leve_info_message": "Puede usar la página de misiones leve para preparar conjuntos leve y calcular la recompensa de exp por sus leves",
     "Monster": "Monstruo",
@@ -1444,7 +1568,8 @@
     "Status": "Estado",
     "Trait": "Rasgo",
     "Any": "Cualquiera",
-    "Achievement": "Logro"
+    "Achievement": "Logro",
+    "Fishing-spot": "Fishing spot"
   },
   "SEARCH_FILTERS": {
     "Level": "Nivel",
@@ -1461,7 +1586,9 @@
     "3D_model": "Puede previsualizar modelos 3D de artículos en de la base de datos.",
     "Levequests": "Puede preparar listas de leve y previsualizar la experiencia recibida dentro de la página de misiones leve.",
     "Log_tracker": "Puede dar seguimiento a la progresión de su registro (recolección, fabricación, pesca) dentro de la página de seguimiento de registro.",
-    "Desktop_app_overlay": "Puede tener una ventana sobrepuesta para las alarmas si utiliza la versión para escritorio (enlace de descarga en la barra lateral)."
+    "Desktop_app_overlay": "Puede tener una ventana sobrepuesta para las alarmas si utiliza la versión para escritorio (enlace de descarga en la barra lateral).",
+    "Start_desktop_before_game": "Remember to start desktop app before the game to ensure maximum data integrity",
+    "Middle_click_share_button": "On desktop app, middle click on the share button in topbar to open current page in browser"
   },
   "RECIPE_FINDER": {
     "Title": "Buscador de recetas",
@@ -1475,7 +1602,7 @@
     "Remove_from_basket": "Eliminar de la cesta",
     "Search": "Buscar recetas",
     "Generate_list": "Agregar a la lista",
-    "Description": "Introduzca los artículos que tiene y haga clic en \"Buscar recetas\" para obtener una lista de posibles recetas para fabricar y generar fácilmente una lista de fabricación de los resultados.",
+    "Description": "Input the items you have and click \"Find recipes\" to get a list of possible recipes to craft and easily generate a crafting list from the results.",
     "Empty_basket": "Su cesta está vacía",
     "Add_item": "Agregar artículo",
     "Clipboard_content_malformed": "Contenido del portapapeles incorrecto",
@@ -1536,8 +1663,8 @@
     "Please_zone": "Por favor teletranspórtese a una ubicación aleatoria y abra su alforja de chocobo una vez que llegue para inicializar el sistema de inventario correctamente.",
     "No_character_id": "No hay un id de personaje establecido",
     "Please_relog": "Para contribuir a Universalis, necesitamos que cierre y vuelva iniciar sesión (en el juego), esto sólo es necesario una vez.",
-    "Inventory_outdated": "Your inventory is outdated",
-    "Please_update_inventory_popup": "Please change zone (by either teleporting or entering a house) in order to update your inventory. This popup will close once it's done."
+    "Inventory_outdated": "Su inventario está desactualizado",
+    "Please_update_inventory_popup": "Por favor, cambie de zona (ya sea teletransportandose o entrando a una casa) para actualizar su inventario. Esta ventana se cerrará una vez terminado."
   },
   "INVENTORY": {
     "Title": "Inventario",
@@ -1547,12 +1674,128 @@
     "Copied_to_clipboard": "Inventario copiado al portapapeles",
     "Click_to_add_to_progression": "Haga clic para agregar a la progresión de artículos",
     "Contribute_to_universalis": "Contribuir datos a Universalis",
-    "Reset_inventory": "Reset this inventory",
+    "Reset_inventory": "Restablecer este inventario",
+    "Clean_all": "Restablecer todos sus inventarios",
+    "Search_for_an_item": "Buscar un artículo",
     "BAG": {
       "SaddleBag": "Alforja de Chocobo",
-      "FC_chest": "FC chest",
+      "FC_chest": "Cofre FC",
       "Bag": "Inventario",
-      "Other": "Otro inventario"
+      "Other": "Otro inventario",
+      "Armory": "Armería",
+      "RetainerMarket": "On sale by retainers"
     }
+  },
+  "INVENTORY_OPTIMIZER": {
+    "Title": "Optimizador de inventario",
+    "Ignore_item": "Ignorar este consejo para este artículo",
+    "Remove_ignore_item": "Ya no ignorar este consejo para este objeto",
+    "Ignore_container": "Ignorar este consejo para este contenedor",
+    "Remove_ignore_container": "Ya no ignorar este consejo para este contenedor",
+    "Show_ignored": "Mostrar artículos ignorados",
+    "No_optimizations": "No hay optimizaciones disponibles",
+    "CAN_BE_BOUGHT": {
+      "Title": "Artículos que se pueden comprar con gil",
+      "Message": "This item can be bought from NPCs with gil and does not require beast tribe reputation."
+    },
+    "DUPLICATES": {
+      "Title": "Artículos duplicados en múltiples contenedores",
+      "Message": "Este elemento también está presente en: {{containers}}."
+    },
+    "HAS_TOO_FEW": {
+      "Title": "Objetos que tiene en pilas muy pequeñas",
+      "Message": "Sólo tiene {{amount}} de este objeto, ¿vale la pena conservarlos?",
+      "Threshold_amount": "Valor del umbral"
+    }
+  },
+  "VERSION_LOCK": {
+    "Outdated": "Está usando una versión anticuada de Teamcraft que ya no funciona correctamente",
+    "Refresh_or_download_latest": "Si está usando el sitio web, simplemente presione Ctrl + F5 para actualizar por completo, si está utilizando la aplicación de escritorio, descargue la última versión aquí: "
+  },
+  "GEARSETS": {
+    "Title": "Gearsets",
+    "Rename_gearset": "Rename gearset",
+    "View_gearset": "View gearset",
+    "Edit_gearset": "Edit gearset",
+    "generate_list": "Generate a list",
+    "Content": "Content",
+    "Stat_name": "Stat",
+    "Current_value": "Current value",
+    "Cap_value": "Cap",
+    "Add_materia": "Add materia",
+    "No_materia": "No materia",
+    "Value": "Value",
+    "Empty_slot": "Empty slot",
+    "Filters": "Filters",
+    "Total_stats": "Total stats",
+    "Total_materias_needed": "Total materias needed",
+    "Materia": "Materia",
+    "Amount_needed": "Amount",
+    "Modal_editor": "Materias for {{itemName}}",
+    "Unavailable_slot": "Slot not available",
+    "Job_cannot_be_changed": "Cannot be changed after creation",
+    "Pick_a_job": "Pick a job",
+    "New_gearset": "New gearset",
+    "Please_input_ariyala_link": "Please input an ariyala link",
+    "Link_not_supported": "Link not supported",
+    "Compare_gearset": "Compare this gearset with another",
+    "Stats": "Stats",
+    "Materias": "Materias",
+    "Pieces": "Gear pieces",
+    "Import_from_ariyala": "Import from Ariyala",
+    "Import_from_lodestone": "Import from Lodestone",
+    "Import_using_pcap": "Import using packet capture",
+    "Your_gearsets": "Your gearsets",
+    "Delete_gearset": "Delete gearset",
+    "Import_from_pcap_notice": "Switch to the desired gearset with the corresponding job to import it.",
+    "No_food_selected": "No food selected",
+    "Generate_list": "Generate a list",
+    "Clone_gearset": "Copy this on your account",
+    "You_have_no_gearsets": "You have no gearsets",
+    "Favorite_gearsets": "Favorite gearsets",
+    "Update_from_pcap": "Update using packet capture",
+    "Copy_as_text": "Copy this gearset as text",
+    "SLOT": {
+      "Body": "Chest",
+      "Ears": "Ears",
+      "Feet": "Feet",
+      "FingerL": "Left finger",
+      "FingerR": "Right finger",
+      "Gloves": "Gloves",
+      "Head": "Head",
+      "Legs": "Legs",
+      "MainHand": "Main Hand",
+      "Neck": "Neck",
+      "OffHand": "Off Hand",
+      "SoulCrystal": "Soul Crystal",
+      "Waist": "Waist",
+      "Wrists": "Wrists"
+    },
+    "COMPARISON": {
+      "Compare_popup_title": "Compare {{setName}} with...",
+      "Error_title": "Could not compare gearsets",
+      "Error_description": "Please make sure the gearset you entered exists and is the same type as the current one (same main stat)",
+      "Type": "Gearset type",
+      "Ariyala": "An ariyala set",
+      "External_gearset": "A Teamcraft gearset from someone else",
+      "Personal_gearset": "One of your gearsets",
+      "Paste_link_step_title": "Link to the gearset",
+      "Pick_your_gearset": "Pick your gearset",
+      "Submit": "Compare",
+      "Your_gearset": "Your gearset",
+      "Other_gearset": "Other gearset",
+      "Diff": "Diff",
+      "Avg_melding_chances": "Avg. overmeld chances"
+    }
+  },
+  "FOLDERS": {
+    "New_folder": "New folder",
+    "Delete_folder": "Delete folder",
+    "Rename_folder": "Rename folder",
+    "View_folder": "Open folder",
+    "Content": "Content",
+    "Folder_not_found": "Folder not found",
+    "Your_folders": "Your folders",
+    "Favorite_folders": "Favorite folders"
   }
 }

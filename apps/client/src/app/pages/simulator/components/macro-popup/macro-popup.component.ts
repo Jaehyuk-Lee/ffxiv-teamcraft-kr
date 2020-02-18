@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CraftingAction, CraftingJob, HastyTouch, Reclaim, Simulation } from '@ffxiv-teamcraft/simulator';
+import { CraftingAction, CraftingJob, HastyTouch, ByregotsBlessing, FinalAppraisal, Simulation } from '@ffxiv-teamcraft/simulator';
 import { LocalizedDataService } from '../../../../core/data/localized-data.service';
 import { I18nToolsService } from '../../../../core/tools/i18n-tools.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Consumable } from '../../model/consumable';
 import { FreeCompanyAction } from '../../model/free-company-action';
+import { SettingsService } from '../../../../modules/settings/settings.service';
 
 @Component({
   selector: 'app-macro-popup',
@@ -15,23 +16,23 @@ export class MacroPopupComponent implements OnInit {
 
   public macro: string[][] = [[]];
 
-  public aactionsMacro: string[] = [];
+  public totalDuration: number;
 
   private readonly maxMacroLines = 15;
 
-  public addEcho = true;
+  public addEcho = this.settings.macroEcho;
 
-  public echoSeNumber = 1;
+  public echoSeNumber = this.settings.macroEchoSeNumber;
 
-  public fixedEcho = false;
+  public fixedEcho = this.settings.macroFixedEcho;
 
-  public extraWait = 0;
+  public extraWait = this.settings.macroExtraWait;
 
-  public breakOnReclaim = false;
+  public breakBeforeByregotsBlessing = this.settings.macroBreakBeforeByregot;
 
-  public macroLock = localStorage.getItem('macros:macrolock') === 'true';
+  public macroLock = this.settings.macroLock;
 
-  public addConsumables = localStorage.getItem('macros:consumables') === 'true';
+  public addConsumables = this.settings.macroConsumables;
 
   rotation: CraftingAction[];
 
@@ -45,39 +46,59 @@ export class MacroPopupComponent implements OnInit {
 
   tooManyAactions = false;
 
-  constructor(private l12n: LocalizedDataService, private i18n: I18nToolsService, private translator: TranslateService) {
+  constructor(private l12n: LocalizedDataService, private i18n: I18nToolsService, private translator: TranslateService, private settings: SettingsService) {
+    // TEMP: load settings and clean up localStorage
+    if (localStorage.getItem("macros:addecho") !== null){
+      this.addEcho = this.settings.macroEcho = localStorage.getItem("macros:addecho") !== 'false';
+      localStorage.removeItem("macros:addecho");
+    }
+
+    if (localStorage.getItem("macros:macrolock") !== null){
+      this.macroLock = this.settings.macroLock = localStorage.getItem('macros:macrolock') === 'true';
+      localStorage.removeItem("macros:macrolock");
+    }
+
+    if (localStorage.getItem("macros:consumables") !== null){
+      this.addConsumables = this.settings.macroConsumables = localStorage.getItem('macros:consumables') === 'true';
+      localStorage.removeItem("macros:consumables");
+    }
   }
 
   public generateMacros(): void {
-    localStorage.setItem('macros:macrolock', this.macroLock.toString());
-    localStorage.setItem('macros:consumables', this.addConsumables.toString());
+    this.settings.macroExtraWait = this.extraWait;
+    this.settings.macroLock = this.macroLock;
+    this.settings.macroConsumables = this.addConsumables;
+    this.settings.macroEcho = this.addEcho;
+    this.settings.macroBreakBeforeByregot = this.breakBeforeByregotsBlessing;
+    this.settings.macroFixedEcho = this.fixedEcho;
+    this.settings.macroEchoSeNumber = this.echoSeNumber;
+
     this.macro = this.macroLock ? [['/mlock']] : [[]];
-    this.aactionsMacro = ['/aaction clear'];
+    this.totalDuration = 0;
     let totalLength = 0;
-    const reclaimBreakpoint = this.simulation ? this.simulation.clone().run(true).simulation.lastPossibleReclaimStep : -1;
-    this.rotation.forEach((action) => {
+    this.rotation.forEach((action, actionIndex) => {
       let macroFragment = this.macro[this.macro.length - 1];
       // One macro is 15 lines, if this one is full, create another one.
-      // Alternatively, if breaking on Reclaim is enabled, split there too.
-      if ((this.simulation && this.breakOnReclaim && (macroFragment.length === reclaimBreakpoint + 1)) || macroFragment.length >= this.maxMacroLines) {
+      // Alternatively, if breaking before Byregots Blessing is enabled, split there too.
+      if ((this.breakBeforeByregotsBlessing && action.is(ByregotsBlessing)) || macroFragment.length >= this.maxMacroLines) {
         this.macro.push(this.macroLock ? ['/mlock'] : []);
         macroFragment = this.macro[this.macro.length - 1];
       }
-      let actionName = this.i18n.getName(this.l12n.getAction(action.getIds()[0]));
-      if (actionName.indexOf(' ') > -1 || this.translator.currentLang === 'ko') {
-        actionName = `"${actionName}"`;
-      }
-      if (action.getLevelRequirement().job !== CraftingJob.ANY && action.getLevelRequirement().job !== this.job) {
-        if (this.aactionsMacro.indexOf(`/aaction ${actionName}`) === -1) {
-          this.aactionsMacro.push(`/aaction ${actionName}`);
+      if (action.getIds()[0] === -1) {
+        macroFragment.push(`/statusoff "${this.i18n.getName(this.l12n.getAction(new FinalAppraisal().getIds()[0]))}"`);
+        totalLength++;
+      } else {
+        let actionName = this.i18n.getName(this.l12n.getAction(action.getIds()[0]));
+        if (actionName.indexOf(' ') > -1 || this.translator.currentLang === 'ko') {
+          actionName = `"${actionName}"`;
         }
+        macroFragment.push(`/ac ${actionName} <wait.${action.getWaitDuration() + this.extraWait}>`);
+        this.totalDuration += action.getWaitDuration() + this.extraWait;
+        totalLength++;
       }
-
-      macroFragment.push(`/ac ${actionName} <wait.${action.getWaitDuration() + this.extraWait}>`);
-      totalLength++;
 
       let doneWithChunk: boolean;
-      if (this.breakOnReclaim && macroFragment.length === reclaimBreakpoint) {
+      if (this.breakBeforeByregotsBlessing && actionIndex < this.rotation.length - 1 && this.rotation[actionIndex+1].is(ByregotsBlessing)) {
         doneWithChunk = true;
       } else if (macroFragment.length === 14 && this.addEcho && this.rotation.length > totalLength + 1) {
         doneWithChunk = true;
@@ -102,24 +123,6 @@ export class MacroPopupComponent implements OnInit {
         seNumber = Math.min(this.echoSeNumber + this.macro.length, 16);
       }
       this.macro[this.macro.length - 1].push(`/echo Craft finished <se.${seNumber}>`);
-    }
-    // 11 not 10 because /aactions clear takes the first line :)
-    if (this.aactionsMacro.length < 11 && this.aactionsMacro.indexOf(`/aaction ${this.i18n.getName(this.l12n.getAction(new Reclaim().getIds()[0]))}`) === -1) {
-      this.aactionsMacro.push(`/aaction ${this.i18n.getName(this.l12n.getAction(new Reclaim().getIds()[0]))}`);
-    }
-    if (this.aactionsMacro.length < 11 && this.aactionsMacro.indexOf(`/aaction "${this.i18n.getName(this.l12n.getAction(new HastyTouch().getIds()[0]))}"`) === -1) {
-      this.aactionsMacro.push(`/aaction "${this.i18n.getName(this.l12n.getAction(new HastyTouch().getIds()[0]))}"`);
-    }
-    if (this.aactionsMacro.length > 11) {
-      this.tooManyAactions = true;
-    }
-    if (this.aactionsMacro.length > 0) {
-      this.aactionsMacro.push('/echo Cross class setup finished <se.4>');
-    }
-
-    const consumablesNotification = this.getConsumablesNotification();
-    if (consumablesNotification !== undefined) {
-      this.aactionsMacro.push(consumablesNotification);
     }
   }
 

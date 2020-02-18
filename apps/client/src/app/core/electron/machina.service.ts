@@ -1,20 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IpcService } from './ipc.service';
 import { UniversalisService } from '../api/universalis.service';
-import {
-  buffer,
-  debounceTime,
-  delayWhen,
-  distinctUntilChanged,
-  filter,
-  first,
-  map,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap,
-  withLatestFrom
-} from 'rxjs/operators';
+import { delayWhen, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { UserInventory } from '../../model/user/inventory/user-inventory';
 import { interval, merge, Observable, of, Subject } from 'rxjs';
 import { AuthFacade } from '../../+state/auth.facade';
@@ -24,6 +11,12 @@ import { ListsFacade } from '../../modules/list/+state/lists.facade';
 import { InventoryItem } from '../../model/user/inventory/inventory-item';
 import { ContainerType } from '../../model/user/inventory/container-type';
 import { InventoryFacade } from '../../modules/inventory/+state/inventory.facade';
+import { EorzeaFacade } from '../../modules/eorzea/+state/eorzea.facade';
+import { ofPacketType } from '../rxjs/of-packet-type';
+import { territories } from '../data/sources/territories';
+import { debounceBufferTime } from '../rxjs/debounce-buffer-time';
+import { ofPacketSubType } from '../rxjs/of-packet-subtype';
+import * as firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +40,7 @@ export class MachinaService {
 
   constructor(private ipc: IpcService, private userInventoryService: InventoryFacade,
               private universalis: UniversalisService, private authFacade: AuthFacade,
-              private listsFacade: ListsFacade) {
+              private listsFacade: ListsFacade, private eorzeaFacade: EorzeaFacade) {
     this.inventory$ = this.userInventoryService.inventory$.pipe(
       distinctUntilChanged((a, b) => {
         return _.isEqual(a, b);
@@ -58,13 +51,25 @@ export class MachinaService {
   }
 
   public init(): void {
+    const isCrafting$ = merge(
+      this.ipc.packets$.pipe(ofPacketType('eventStart')),
+      this.ipc.packets$.pipe(ofPacketType('eventFinish'))
+    ).pipe(
+      filter(packet => packet.eventId === 0xA0001),
+      map(packet => {
+        return packet.type === 'eventStart';
+      }),
+      startWith(false),
+      shareReplay(1)
+    );
+
     merge(this.ipc.itemInfoPackets$, this.ipc.currencyCrystalInfoPackets$).pipe(
       filter(packet => {
         return packet.slot >= 0
           && packet.slot < 32000
           && packet.catalogId < 40000;
       }),
-      buffer(this.ipc.itemInfoPackets$.pipe(debounceTime(1000))),
+      debounceBufferTime(1000),
       filter(packets => packets.length > 0),
       withLatestFrom(this.retainerSpawns$),
       tap(([itemInfos, lastRetainerSpawned]) => this.ipc.log('ItemInfos', itemInfos.length, lastRetainerSpawned)),
@@ -86,6 +91,11 @@ export class MachinaService {
                 };
               })
               .value();
+            if (isRetainer) {
+              Object.keys(inventory)
+                .filter(key => key.startsWith(lastRetainerSpawned))
+                .forEach(key => inventory[key] = {});
+            }
             groupedInfos.forEach(group => {
               const containerKey = isRetainer ? `${lastRetainerSpawned}:${group.containerId}` : `${group.containerId}`;
               inventory.items[containerKey] = {};
@@ -111,8 +121,8 @@ export class MachinaService {
       filter(inventory => {
         return inventory !== null;
       })
-    ).subscribe(inventory => {
-      inventory.lastZone = Date.now();
+    ).subscribe((inventory: UserInventory) => {
+      inventory.lastZone = firebase.firestore.Timestamp.now();
       this.userInventoryService.updateInventory(inventory);
     });
 
@@ -142,13 +152,14 @@ export class MachinaService {
             } catch (e) {
               console.log(packet);
               console.error(e);
+              this.ipc.log(e.message, JSON.stringify(packet));
             }
             return inventory;
           })
         );
       })
     ).subscribe(inventory => {
-      inventory.lastZone = Date.now();
+      inventory.lastZone = firebase.firestore.Timestamp.now();
       this.userInventoryService.updateInventory(inventory);
     });
 
@@ -156,27 +167,40 @@ export class MachinaService {
       filter(packet => {
         return packet.catalogId < 40000;
       }),
+      debounceBufferTime(500),
       withLatestFrom(this.retainerSpawns$),
-      switchMap(([packet, lastRetainerSpawned]) => {
+      switchMap(([packets, lastRetainerSpawned]) => {
         return this.inventory$.pipe(
           first(),
           map(inventory => {
-            const patch = inventory.updateInventorySlot(packet, lastRetainerSpawned);
-            if (patch) {
-              this._inventoryPatches$.next(patch);
-            }
+            packets.forEach(packet => {
+              const patch = inventory.updateInventorySlot(packet, lastRetainerSpawned);
+              if (patch) {
+                this._inventoryPatches$.next(patch);
+              }
+            });
             return inventory;
           })
         );
       })
     ).subscribe(inventory => {
-      inventory.lastZone = Date.now();
+      inventory.lastZone = firebase.firestore.Timestamp.now();
       this.userInventoryService.updateInventory(inventory);
     });
 
     this.inventoryPatches$
       .pipe(
-        filter(patch => patch.containerId < 10 || patch.containerId === ContainerType.Crystal),
+        filter(patch => {
+          return patch.containerId < 10
+            || patch.containerId === ContainerType.Crystal
+            || (patch.containerId >= ContainerType.ArmoryOff && patch.containerId <= ContainerType.ArmoryMain);
+        }),
+        withLatestFrom(isCrafting$),
+        filter(([patch, isCrafting]) => {
+          return (patch.containerId < ContainerType.ArmoryOff || patch.containerId > ContainerType.ArmoryMain)
+            || isCrafting;
+        }),
+        map(([patch]) => patch),
         withLatestFrom(this.listsFacade.autocompleteEnabled$, this.listsFacade.selectedList$),
         filter(([patch, autocompleteEnabled]) => autocompleteEnabled && patch.quantity > 0)
       )
@@ -184,10 +208,66 @@ export class MachinaService {
         const itemsEntry = list.items.find(i => i.id === patch.itemId);
         const finalItemsEntry = list.finalItems.find(i => i.id === patch.itemId);
         if (itemsEntry && itemsEntry.done < itemsEntry.amount) {
-          this.listsFacade.setItemDone(patch.itemId, itemsEntry.icon, false, patch.quantity, itemsEntry.recipeId, itemsEntry.amount, false, true);
+          this.listsFacade.setItemDone(patch.itemId, itemsEntry.icon, false, patch.quantity, itemsEntry.recipeId, itemsEntry.amount, false, true, patch.hq);
         } else if (!itemsEntry && finalItemsEntry && finalItemsEntry.done < finalItemsEntry.amount) {
-          this.listsFacade.setItemDone(patch.itemId, finalItemsEntry.icon, true, patch.quantity, finalItemsEntry.recipeId, finalItemsEntry.amount, false, true);
+          this.listsFacade.setItemDone(patch.itemId, finalItemsEntry.icon, true, patch.quantity, finalItemsEntry.recipeId, finalItemsEntry.amount, false, true, patch.hq);
         }
       });
+
+    this.ipc.packets$.pipe(
+      ofPacketType('initZone')
+    ).subscribe(packet => {
+      const realZoneId = territories[packet.zoneID.toString()];
+      this.eorzeaFacade.setZone(realZoneId);
+    });
+
+    this.ipc.packets$.pipe(
+      ofPacketSubType('fishingBaitMsg')
+    ).subscribe(packet => {
+      this.eorzeaFacade.setBait(packet.baitID);
+    });
+
+    this.ipc.packets$.pipe(
+      ofPacketSubType('playerSetup')
+    ).subscribe(packet => {
+      this.eorzeaFacade.setBait(packet.useBaitCatalogId);
+    });
+
+    this.ipc.packets$.pipe(
+      ofPacketSubType('statusEffectLose'),
+      filter(packet => packet.sourceActorSessionID === packet.targetActorSessionID)
+    ).subscribe(packet => {
+      this.eorzeaFacade.removeStatus(packet.param1);
+    });
+
+    this.ipc.packets$.pipe(
+      ofPacketType('actorControl'),
+      filter(packet => packet.category === 21 && packet.sourceActorSessionID === packet.targetActorSessionID)
+    ).subscribe(packet => {
+      this.eorzeaFacade.removeStatus(packet.param1);
+    });
+
+    this.ipc.packets$.pipe(
+      ofPacketType('updateClassInfo'),
+      distinctUntilChanged((a, b) => a.classId === b.classId)
+    ).subscribe(packet => {
+      this.eorzeaFacade.resetStatuses();
+    });
+
+    this.ipc.packets$.pipe(
+      ofPacketType('actorControl'),
+      filter(packet => packet.category === 20 && packet.sourceActorSessionID === packet.targetActorSessionID)
+    ).subscribe(packet => {
+      this.eorzeaFacade.addStatus(packet.param1);
+    });
+
+    this.ipc.packets$.pipe(
+      ofPacketType('effectResult'),
+      filter(packet => {
+        return packet.sourceActorSessionID === packet.targetActorSessionID && packet.actorID === packet.actorID1;
+      })
+    ).subscribe(packet => {
+      this.eorzeaFacade.addStatus(packet.effectID);
+    });
   }
 }

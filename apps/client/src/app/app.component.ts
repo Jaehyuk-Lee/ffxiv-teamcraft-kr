@@ -3,29 +3,11 @@ import { environment } from '../environments/environment';
 import { GarlandToolsService } from './core/api/garland-tools.service';
 import { TranslateService } from '@ngx-translate/core';
 import { IpcService } from './core/electron/ipc.service';
-import {
-  NavigationCancel,
-  NavigationEnd,
-  NavigationError,
-  NavigationStart,
-  Router,
-  RouterEvent
-} from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent } from '@angular/router';
 import { faDiscord, faGithub, faTwitter } from '@fortawesome/fontawesome-free-brands';
 import { faBell, faCalculator, faGavel, faMap } from '@fortawesome/fontawesome-free-solid';
 import fontawesome from '@fortawesome/fontawesome';
-import {
-  catchError,
-  delay,
-  distinctUntilChanged,
-  filter,
-  first,
-  map,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap
-} from 'rxjs/operators';
+import { catchError, delay, distinctUntilChanged, filter, first, map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 import { AuthFacade } from './+state/auth.facade';
 import { Character } from '@xivapi/angular-client';
@@ -43,7 +25,7 @@ import { AbstractNotification } from './core/notification/abstract-notification'
 import { RotationsFacade } from './modules/rotations/+state/rotations.facade';
 import { PlatformService } from './core/tools/platform.service';
 import { SettingsPopupService } from './modules/settings/settings-popup.service';
-import { BehaviorSubject, interval, of } from 'rxjs';
+import { BehaviorSubject, fromEvent, interval, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { CustomLinksFacade } from './modules/custom-links/+state/custom-links.facade';
@@ -61,6 +43,11 @@ import { MachinaService } from './core/electron/machina.service';
 import { UniversalisService } from './core/api/universalis.service';
 import { GubalService } from './core/api/gubal.service';
 import { InventoryFacade } from './modules/inventory/+state/inventory.facade';
+import { TextQuestionPopupComponent } from './modules/text-question-popup/text-question-popup/text-question-popup.component';
+import { Apollo } from 'apollo-angular';
+import { HttpLink } from 'apollo-angular-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { QuickSearchService } from './modules/quick-search/quick-search.service';
 
 declare const gtag: Function;
 
@@ -86,6 +73,8 @@ export class AppComponent implements OnInit {
   collapsedSidebar = this.media.isActive('lt-md') ? true : this.settings.compactSidebar;
 
   collapsedAlarmsBar = true;
+
+  sidebarState = this.settings.sidebarState;
 
   public notifications$ = this.notificationsFacade.notificationsDisplay$.pipe(
     isPlatformServer(this.platform) ? first() : tap()
@@ -125,9 +114,13 @@ export class AppComponent implements OnInit {
 
   private dirty = false;
 
-  public downloading = false;
+  public downloading: any;
+
+  public checkingForUpdate = false;
 
   public emptyInventory$: Observable<boolean>;
+
+  public pinnedList$ = this.listsFacade.pinnedList$;
 
   public randomTip$: Observable<string> = interval(600000).pipe(
     startWith(-1),
@@ -140,7 +133,9 @@ export class AppComponent implements OnInit {
         '3D_model',
         'Levequests',
         'Log_tracker',
-        'Desktop_app_overlay'
+        'Desktop_app_overlay',
+        'Start_desktop_before_game',
+        'Middle_click_share_button'
       ];
       return tips[Math.floor(Math.random() * tips.length)];
     }),
@@ -162,7 +157,24 @@ export class AppComponent implements OnInit {
               private layoutsFacade: LayoutsFacade, private lazyData: LazyDataService, private customItemsFacade: CustomItemsFacade,
               private dirtyFacade: DirtyFacade, private seoService: SeoService, private injector: Injector,
               private machina: MachinaService, private message: NzMessageService, private universalis: UniversalisService,
-              private inventoryService: InventoryFacade, private gubal: GubalService, @Inject(PLATFORM_ID) private platform: Object) {
+              private inventoryService: InventoryFacade, private gubal: GubalService, @Inject(PLATFORM_ID) private platform: Object,
+              private quickSearch: QuickSearchService, apollo: Apollo, httpLink: HttpLink) {
+
+
+    fromEvent(document, 'keypress').pipe(
+      filter((event: KeyboardEvent) => {
+        return event.ctrlKey && event.shiftKey && event.code === 'KeyF';
+      })
+    ).subscribe(() => {
+      this.quickSearch.openQuickSearch();
+    });
+
+    const link = httpLink.create({ uri: 'https://us-central1-ffxivteamcraft.cloudfunctions.net/gubal-proxy' });
+
+    apollo.create({
+      link: link,
+      cache: new InMemoryCache()
+    });
 
     this.showGiveaway = false;
 
@@ -208,7 +220,7 @@ export class AppComponent implements OnInit {
       }
       this.inventoryService.load();
 
-      this.firebase.object('maintenance')
+      this.firebase.object<boolean>('maintenance')
         .valueChanges()
         .pipe(
           isPlatformServer(this.platform) ? first() : tap()
@@ -216,6 +228,17 @@ export class AppComponent implements OnInit {
         .subscribe(maintenance => {
           if (maintenance && environment.production) {
             this.router.navigate(['maintenance']);
+          }
+        });
+
+      this.firebase.object<string>('version_lock')
+        .valueChanges()
+        .pipe(
+          isPlatformServer(this.platform) ? first() : tap()
+        )
+        .subscribe(version => {
+          if (semver.ltr(environment.version, version)) {
+            this.router.navigate(['version-lock']);
           }
         });
 
@@ -262,7 +285,7 @@ export class AppComponent implements OnInit {
           this.windowDecorator = value;
         });
         if (this.overlay) {
-          this.ipc.on(`overlay:${this.ipc.overlayUri}:opacity`, (value) => {
+          this.ipc.on(`overlay:${this.ipc.overlayUri}:opacity`, (e, value) => {
             this.overlayOpacity = value;
           });
           this.ipc.send('overlay:get-opacity', { uri: this.ipc.overlayUri });
@@ -285,7 +308,7 @@ export class AppComponent implements OnInit {
           if (this.platformService.isDesktop() || isPlatformServer(this.platform)) {
             return of(false);
           }
-          if (url.endsWith('/')) {
+          if (url && url.endsWith('/')) {
             url = url.substring(0, url.length - 1);
           }
           return this.http.get('http://localhost:7331/', { responseType: 'text' }).pipe(
@@ -318,9 +341,6 @@ export class AppComponent implements OnInit {
     if (this.platformService.isDesktop()) {
       this.ipc.on('apply-language', (e, newLang) => {
         this.use(newLang, true);
-      });
-      this.ipc.on('download-progress', (event, progress: any) => {
-        this.downloading = true;
       });
     }
 
@@ -360,6 +380,7 @@ export class AppComponent implements OnInit {
 
   updateDesktopApp(): void {
     this.ipc.send('update:check');
+    this.checkingForUpdate = true;
   }
 
   ngOnInit(): void {
@@ -466,6 +487,24 @@ export class AppComponent implements OnInit {
     }
   }
 
+  openLink(): void {
+    this.dialog.create({
+      nzTitle: this.translate.instant('COMMON.Open_link'),
+      nzContent: TextQuestionPopupComponent,
+      nzFooter: null
+    }).afterClose
+      .pipe(
+        filter(res => res !== undefined && res.startsWith('https://ffxivteamcraft.com/'))
+      )
+      .subscribe((data: string) => {
+        this.router.navigate(data.replace('https://ffxivteamcraft.com/', '').split('/'));
+      });
+  }
+
+  openInBrowser(url: string): void {
+    this.ipc.send('open-link', url);
+  }
+
   use(lang: string, fromIpc = false, skipStorage = false): void {
     if (this.settings.availableLocales.indexOf(lang) === -1) {
       lang = 'en';
@@ -492,16 +531,16 @@ export class AppComponent implements OnInit {
     this.settingsPopupService.openSettings();
   }
 
-  public goToDiscord1kGiveaway(event: any): void {
-    if (event.srcElement.tagName === 'A') {
-      return;
-    }
-    window.open('https://gleam.io/J1tAD/ffxiv-teamcrafts-final-fantasy-xiv-shadowbringers-collectors-edition-giveaway', '_blank');
-    localStorage.setItem('giveaway:1kdiscord', '5');
+  public openAlarmsOverlay(): void {
+    this.ipc.openOverlay('/alarms-overlay', '/alarms-overlay');
   }
 
-  public closeDiscord1kGiveaway(): void {
-    localStorage.setItem('giveaway:1kdiscord', '5');
+  public openFishingOverlay(): void {
+    this.ipc.openOverlay('/fishing-reporter-overlay', '/fishing-reporter-overlay');
+  }
+
+  public openListPanelOverlay(): void {
+    this.ipc.openOverlay('/list-panel-overlay', '/list-panel-overlay');
   }
 
   @HostListener('window:beforeunload', ['$event'])

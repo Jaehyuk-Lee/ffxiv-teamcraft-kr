@@ -33,7 +33,7 @@ export class ExtractorComponent implements OnInit {
   }
 
   ngOnInit() {
-    const chunks = _.chunk(Object.keys(this.lazyData.items), 100);
+    const chunks = _.chunk(Object.keys(this.lazyData.data.items), 100);
     this.totalTodo$.next(chunks.length);
     requestsWithDelay(chunks.map(itemIds => {
       return this.http.get<any[]>(`https://www.garlandtools.org/db/doc/item/en/3/${itemIds.join(',')}.json`).pipe(
@@ -54,7 +54,7 @@ export class ExtractorComponent implements OnInit {
           this.done$.next(this.done$.value + 1);
         })
       );
-    }), 10).subscribe(items => {
+    }), 200).subscribe(items => {
       const blob = new Blob([JSON.stringify([].concat.apply([], items))], { type: 'text/plain;charset:utf-8' });
       saveAs(blob, `extracts.json`);
     });

@@ -3,55 +3,45 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
   ConvertLists,
   CreateList,
-  CreateOptimisticListCompact,
   DeleteList,
-  ListCompactLoaded,
   ListDetailsLoaded,
   ListsActionTypes,
   ListsForTeamsLoaded,
-  LoadListCompact,
   LoadListDetails,
   LoadTeamLists,
   MyListsLoaded,
   SetItemDone,
   SharedListsLoaded,
   TeamListsLoaded,
-  UnloadListDetails,
   UpdateItem,
   UpdateList,
   UpdateListAtomic,
   UpdateListIndex
 } from './lists.actions';
-import {
-  catchError,
-  delay,
-  distinctUntilChanged,
-  filter,
-  first,
-  map,
-  mergeMap,
-  switchMap,
-  takeUntil,
-  tap,
-  withLatestFrom
-} from 'rxjs/operators';
+import { catchError, debounceTime, delay, distinctUntilChanged, filter, first, map, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { AuthFacade } from '../../../+state/auth.facade';
 import { TeamcraftUser } from '../../../model/user/teamcraft-user';
 import { combineLatest, EMPTY, from, of } from 'rxjs';
 import { ListsFacade } from './lists.facade';
-import { ListCompactsService } from '../list-compacts.service';
 import { List } from '../model/list';
 import { PermissionLevel } from '../../../core/database/permissions/permission-level.enum';
 import { Team } from '../../../model/team/team';
 import { TeamsFacade } from '../../teams/+state/teams.facade';
 import { DiscordWebhookService } from '../../../core/discord/discord-webhook.service';
 import { Router } from '@angular/router';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { ListCompletionPopupComponent } from '../list-completion-popup/list-completion-popup.component';
 import { TranslateService } from '@ngx-translate/core';
 import { NgSerializerService } from '@kaiu/ng-serializer';
-import { ListStore } from '../../../core/database/storage/list/list-store';
 import { FirestoreListStorage } from '../../../core/database/storage/list/firestore-list-storage';
+import { PushNotificationsService } from 'ng-push';
+import { PlatformService } from '../../../core/tools/platform.service';
+import { IpcService } from '../../../core/electron/ipc.service';
+import { SettingsService } from '../../settings/settings.service';
+import { I18nToolsService } from '../../../core/tools/i18n-tools.service';
+import { LocalizedDataService } from '../../../core/data/localized-data.service';
+import { LazyDataService } from '../../../core/data/lazy-data.service';
+import { onlyIfNotConnected } from '../../../core/rxjs/only-if-not-connected';
 
 @Injectable()
 export class ListsEffects {
@@ -63,8 +53,9 @@ export class ListsEffects {
     distinctUntilChanged(),
     switchMap((userId) => {
       this.localStore = this.serializer.deserialize<List>(JSON.parse(localStorage.getItem('offline-lists') || '[]'), [List]);
+      this.localStore.forEach(list => list.afterDeserialized());
       this.listsFacade.offlineListsLoaded(this.localStore);
-      return this.listCompactsService.getByForeignKey(TeamcraftUser, userId)
+      return this.listService.getByForeignKey(TeamcraftUser, userId)
         .pipe(
           map(lists => new MyListsLoaded(lists, userId))
         );
@@ -75,7 +66,7 @@ export class ListsEffects {
   loadTeamLists$ = this.actions$.pipe(
     ofType<LoadTeamLists>(ListsActionTypes.LoadTeamLists),
     mergeMap((action) => {
-      return this.listCompactsService.getByForeignKey(Team, action.teamId)
+      return this.listService.getByForeignKey(Team, action.teamId)
         .pipe(
           map(lists => new TeamListsLoaded(lists, action.teamId))
         );
@@ -83,21 +74,21 @@ export class ListsEffects {
   );
 
   @Effect()
-  loadListsWithWriteAccess$ = this.actions$.pipe(
+  loadSharedLists$ = this.actions$.pipe(
     ofType(ListsActionTypes.LoadSharedLists),
     first(),
     switchMap(() => combineLatest([this.authFacade.user$, this.authFacade.fcId$])),
     distinctUntilChanged(),
     switchMap(([user, fcId]) => {
       // First of all, load using user Id
-      return this.listCompactsService.getShared(user.$key).pipe(
+      return this.listService.getShared(user.$key).pipe(
         switchMap((lists) => {
           // If we don't have fc informations yet, return the lists directly.
           if (!fcId) {
             return of(lists);
           }
           // Else add fc lists
-          return this.listCompactsService.getShared(fcId).pipe(
+          return this.listService.getShared(fcId).pipe(
             map(fcLists => {
               const idEntry = user.lodestoneIds.find(l => l.id === user.defaultLodestoneId);
               const verified = idEntry && idEntry.verified;
@@ -118,24 +109,17 @@ export class ListsEffects {
   @Effect()
   loadListsForTeam$ = this.teamsFacade.myTeams$.pipe(
     switchMap((teams) => {
-      return combineLatest(teams.map(team => this.listCompactsService.getByForeignKey(Team, team.$key)));
+      return combineLatest(teams.map(team => this.listService.getByForeignKey(Team, team.$key)));
     }),
     map(listsArrays => [].concat.apply([], ...listsArrays)),
     map(lists => new ListsForTeamsLoaded(lists))
-  );
-
-  unloadListDetails$ = this.actions$.pipe(
-    ofType<UnloadListDetails>(ListsActionTypes.UnloadListDetails),
-    map(action => action.key)
   );
 
   @Effect()
   loadListDetails$ = this.actions$.pipe(
     ofType<LoadListDetails>(ListsActionTypes.LoadListDetails),
     filter(action => !/^offline\d+$/.test(action.key)),
-    withLatestFrom(this.listsFacade.allListDetails$),
-    filter(([action, allLists]) => allLists.find(list => list.$key === action.key) === undefined),
-    map(([action]) => action),
+    onlyIfNotConnected(this.listsFacade.allListDetails$, action => action.key),
     mergeMap((action: LoadListDetails) => {
       return this.authFacade.loggedIn$.pipe(
         switchMap(loggedIn => {
@@ -147,10 +131,7 @@ export class ListsEffects {
             loggedIn ? this.authFacade.mainCharacter$.pipe(map(c => c.FreeCompanyId)) : of(null),
             this.listService.get(action.key).pipe(catchError(() => of(null)))
           ]);
-        }),
-        takeUntil(this.unloadListDetails$.pipe(
-          filter(key => key === action.key)
-        ))
+        })
       );
     }),
     map(([listKey, user, userId, team, fcId, list]: [string, TeamcraftUser | null, string, Team, string | null, List]) => {
@@ -161,7 +142,7 @@ export class ListsEffects {
           fcId = null;
         }
       }
-      if (list !== null) {
+      if (list !== null && !list.notFound) {
         const permissionLevel = Math.max(list.getPermissionLevel(userId), list.getPermissionLevel(fcId), (team !== undefined && list.teamId === team.$key) ? 20 : 0);
         if (permissionLevel >= PermissionLevel.READ) {
           return [listKey, list];
@@ -194,17 +175,6 @@ export class ListsEffects {
   );
 
   @Effect()
-  createOptimisticListCompact$ = this.actions$.pipe(
-    ofType<CreateOptimisticListCompact>(ListsActionTypes.CreateOptimisticListCompact),
-    withLatestFrom(this.listsFacade.myLists$),
-    map(([action, lists]) => {
-      action.payload.$key = action.key;
-      delete action.payload.items;
-      return new MyListsLoaded([...lists, action.payload], action.payload.authorId);
-    })
-  );
-
-  @Effect()
   persistUpdateListIndex$ = this.actions$.pipe(
     ofType<UpdateListIndex>(ListsActionTypes.UpdateListIndex),
     mergeMap(action => {
@@ -212,15 +182,12 @@ export class ListsEffects {
         this.saveToLocalstorage(action.payload, false);
         return EMPTY;
       }
-      return combineLatest([
-        this.listCompactsService.pureUpdate(action.payload.$key, { index: action.payload.index }),
-        this.listService.pureUpdate(action.payload.$key, { index: action.payload.index })
-      ]);
+      return this.listService.pureUpdate(action.payload.$key, { index: action.payload.index });
     }),
     switchMap(() => EMPTY)
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   createListInDatabase$ = this.actions$.pipe(
     ofType(ListsActionTypes.CreateList),
     withLatestFrom(this.authFacade.userId$),
@@ -234,10 +201,7 @@ export class ListsEffects {
           this.saveToLocalstorage(list, true);
           return EMPTY;
         }
-        return this.listService.add(list)
-          .pipe(
-            map((key) => new CreateOptimisticListCompact(list, key))
-          );
+        return this.listService.add(list);
       }
     )
   );
@@ -245,19 +209,11 @@ export class ListsEffects {
   @Effect({ dispatch: false })
   updateListInDatabase$ = this.actions$.pipe(
     ofType<UpdateList>(ListsActionTypes.UpdateList),
+    debounceTime(2000),
+    filter(action => {
+      return !action.payload.isComplete();
+    }),
     switchMap(action => {
-      if (action.payload.offline) {
-        this.saveToLocalstorage(action.payload, false);
-        return of(null);
-      }
-      return this.listService.set(action.payload.$key, action.payload);
-    })
-  );
-
-  @Effect({ dispatch: false })
-  atomicListUpdate = this.actions$.pipe(
-    ofType<UpdateList>(ListsActionTypes.UpdateListAtomic),
-    switchMap((action) => {
       if (action.payload.offline) {
         this.saveToLocalstorage(action.payload, false);
         return of(null);
@@ -267,18 +223,18 @@ export class ListsEffects {
   );
 
   @Effect({ dispatch: false })
-  updateCompactInDatabase$ = this.actions$.pipe(
-    ofType<UpdateList>(ListsActionTypes.UpdateList),
-    filter(action => action.updateCompact),
-    switchMap(action => {
+  atomicListUpdate = this.actions$.pipe(
+    ofType<UpdateListAtomic>(ListsActionTypes.UpdateListAtomic),
+    debounceTime(2000),
+    filter(action => {
+      return !(action.payload.ephemeral && action.payload.isComplete());
+    }),
+    switchMap((action) => {
       if (action.payload.offline) {
-        return EMPTY;
+        this.saveToLocalstorage(action.payload, false);
+        return of(null);
       }
-      if (action.force) {
-        return this.listCompactsService.set(action.payload.$key, action.payload.getCompact());
-      } else {
-        return this.listCompactsService.update(action.payload.$key, action.payload.getCompact());
-      }
+      return this.listService.update(action.payload.$key, action.payload);
     })
   );
 
@@ -299,7 +255,11 @@ export class ListsEffects {
   @Effect({ dispatch: false })
   deleteListFromDatabase$ = this.actions$.pipe(
     ofType<DeleteList>(ListsActionTypes.DeleteList),
-    mergeMap(action => {
+    withLatestFrom(this.listsFacade.pinnedList$),
+    mergeMap(([action, pin]) => {
+      if (pin === action.key) {
+        this.listsFacade.unpin();
+      }
       if (action.offline) {
         this.removeFromLocalStorage(action.key);
         return EMPTY;
@@ -311,10 +271,23 @@ export class ListsEffects {
   @Effect()
   updateItemDone$ = this.actions$.pipe(
     ofType<SetItemDone>(ListsActionTypes.SetItemDone),
-    withLatestFrom(this.listsFacade.selectedList$, this.teamsFacade.selectedTeam$, this.authFacade.userId$),
-    map(([action, list, team, userId]) => {
+    withLatestFrom(this.listsFacade.selectedList$,
+      this.teamsFacade.selectedTeam$,
+      this.authFacade.userId$,
+      this.authFacade.fcId$,
+      this.listsFacade.autocompleteEnabled$,
+      this.listsFacade.completionNotificationEnabled$),
+    filter(([action, list, , , , autofillEnabled, completionNotificationEnabled]) => {
+      const item = list.getItemById(action.itemId, !action.finalItem, action.finalItem);
+      if (autofillEnabled && this.settings.enableAutofillHQFilter && (list as List).requiredAsHQ(item) > 0) {
+        return !action.fromPacket || action.hq;
+      }
+      return true;
+    }),
+    map(([action, list, team, userId, fcId, autofillEnabled, completionNotificationEnabled]) => {
+      const item = list.getItemById(action.itemId, !action.finalItem, action.finalItem);
       const historyEntry = list.modificationsHistory.find(entry => {
-        return entry.itemId === action.itemId && (Date.now() - entry.date < 60000);
+        return entry.itemId === action.itemId && (Date.now() - entry.date < 600000);
       });
       if (historyEntry !== undefined) {
         historyEntry.amount += action.doneDelta;
@@ -331,12 +304,43 @@ export class ListsEffects {
         });
       }
       if (team && list.teamId === team.$key && action.doneDelta > 0) {
-        this.discordWebhookService.notifyItemChecked(team, list, userId, action.doneDelta, action.itemId, action.totalNeeded, action.finalItem);
+        this.discordWebhookService.notifyItemChecked(team, list, userId, fcId, action.doneDelta, action.itemId, action.totalNeeded, action.finalItem);
+      }
+      if (autofillEnabled && completionNotificationEnabled && action.fromPacket) {
+        const itemDone = item.done + action.doneDelta >= item.amount;
+        if (itemDone) {
+          const notificationTitle = this.translate.instant('LIST_DETAILS.Autofill_notification_title');
+          const notificationBody = this.translate.instant('LIST_DETAILS.Autofill_notification_body', {
+            itemName: this.i18n.getName(this.l12n.getItem(action.itemId)),
+            listName: list.name
+          });
+          const notificationIcon = `https://xivapi.com${this.lazyData.data.itemIcons[action.itemId]}`;
+          const audio = new Audio(`./assets/audio/${this.settings.autofillCompletionSound}.mp3`);
+          audio.loop = false;
+          audio.volume = this.settings.autofillCompletionVolume;
+          audio.play();
+          if (this.platform.isDesktop()) {
+            this.ipc.send('notification', {
+              title: notificationTitle,
+              content: notificationBody,
+              icon: notificationIcon
+            });
+          }
+          this.notificationService.info(notificationTitle, notificationBody);
+        }
       }
       return [action, list];
     }),
     map(([action, list]: [SetItemDone, List]) => {
       list.setDone(action.itemId, action.doneDelta, !action.finalItem, action.finalItem, false, action.recipeId, action.external);
+      list.updateAllStatuses(action.itemId);
+      if (this.settings.autoMarkAsCompleted && action.doneDelta > 0) {
+        if (action.recipeId) {
+          this.markAsDoneInDoHLog(+(action.recipeId));
+        } else {
+          this.markAsDoneInDoLLog(action.itemId);
+        }
+      }
       return new UpdateListAtomic(list);
     })
   );
@@ -368,23 +372,13 @@ export class ListsEffects {
   );
 
   @Effect()
-  loadCompact$ = this.actions$.pipe(
-    ofType<LoadListCompact>(ListsActionTypes.LoadListCompact),
-    withLatestFrom(this.listsFacade.compacts$),
-    filter(([action, compacts]) => compacts.find(list => list.$key === (<LoadListCompact>action).key) === undefined),
-    map(([action]) => action),
-    mergeMap(action => this.listCompactsService.get(action.key)),
-    catchError(() => of({ notFound: true })),
-    map(listCompact => new ListCompactLoaded(listCompact))
-  );
-
-  @Effect()
   openCompletionPopup$ = this.actions$.pipe(
     ofType<SetItemDone>(ListsActionTypes.SetItemDone),
     withLatestFrom(this.listsFacade.selectedList$, this.authFacade.userId$),
     filter(([action, list, userId]) => {
       return !list.ephemeral && list.authorId === userId && list.isComplete();
     }),
+    debounceTime(2000),
     tap(([, list]) => {
       this.dialog.create({
         nzTitle: this.translate.instant('LIST.COMPLETION_POPUP.Title'),
@@ -404,15 +398,36 @@ export class ListsEffects {
     private actions$: Actions,
     private authFacade: AuthFacade,
     private listService: FirestoreListStorage,
-    private listCompactsService: ListCompactsService,
     private listsFacade: ListsFacade,
     private teamsFacade: TeamsFacade,
     private router: Router,
     private dialog: NzModalService,
     private translate: TranslateService,
     private discordWebhookService: DiscordWebhookService,
-    private serializer: NgSerializerService
+    private serializer: NgSerializerService,
+    private pushNotificationsService: PushNotificationsService,
+    private notificationService: NzNotificationService,
+    private platform: PlatformService,
+    private ipc: IpcService,
+    private settings: SettingsService,
+    private i18n: I18nToolsService,
+    private l12n: LocalizedDataService,
+    private lazyData: LazyDataService
   ) {
+  }
+
+  private markAsDoneInDoHLog(recipeId: number): void {
+    this.authFacade.user$.pipe(first()).subscribe(user => {
+      user.logProgression.push(recipeId);
+      this.authFacade.updateUser(user);
+    });
+  }
+
+  private markAsDoneInDoLLog(itemId: number): void {
+    this.authFacade.user$.pipe(first()).subscribe(user => {
+      user.gatheringLogProgression.push(itemId);
+      this.authFacade.updateUser(user);
+    });
   }
 
   private saveToLocalstorage(list: List, newList: boolean): void {

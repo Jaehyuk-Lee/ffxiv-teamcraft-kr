@@ -54,6 +54,14 @@ import { MapIdPipe } from './pipes/map-id.pipe';
 import { StatusIconPipe } from './pipes/status-icon.pipe';
 import { StatusNamePipe } from './pipes/status-name.pipe';
 import { RotationPipe } from './pipes/rotation.pipe';
+import { MapNamePipe } from './pipes/map-name.pipe';
+import { TradeIconPipe } from './pipes/trade-icon.pipe';
+import { BaseParamNamePipe } from './pipes/base-param-name.pipe';
+import { JobUnicodePipe } from './pipes/job-unicode.pipe';
+import { IlvlPipe } from './pipes/ilvl.pipe';
+import { RaceNamePipe } from './pipes/race-name.pipe';
+import { TribeNamePipe } from './pipes/tribe-name.pipe';
+import { FoodBonusesPipePipe } from './pipes/food-bonuses.pipe';
 
 @NgModule({
   declarations: [
@@ -112,7 +120,15 @@ import { RotationPipe } from './pipes/rotation.pipe';
     MapIdPipe,
     StatusIconPipe,
     StatusNamePipe,
-    RotationPipe
+    RotationPipe,
+    MapNamePipe,
+    TradeIconPipe,
+    BaseParamNamePipe,
+    JobUnicodePipe,
+    IlvlPipe,
+    RaceNamePipe,
+    TribeNamePipe,
+    FoodBonusesPipePipe
   ],
   exports: [
     ItemNamePipe,
@@ -170,7 +186,15 @@ import { RotationPipe } from './pipes/rotation.pipe';
     MapIdPipe,
     StatusIconPipe,
     StatusNamePipe,
-    RotationPipe
+    RotationPipe,
+    MapNamePipe,
+    TradeIconPipe,
+    BaseParamNamePipe,
+    JobUnicodePipe,
+    IlvlPipe,
+    RaceNamePipe,
+    TribeNamePipe,
+    FoodBonusesPipePipe
   ]
 })
 export class PipesModule {

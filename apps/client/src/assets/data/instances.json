@@ -748,7 +748,7 @@
     "en": "the Twinning",
     "ja": "異界遺構 シルクス・ツイニング",
     "de": "Der Kristallzwilling",
-    "fr": "la Macle de Syrcus",
+    "fr": "La Macle de Syrcus",
     "icon": "/i/061000/061801.png",
     "contentText": [
       21609,
@@ -770,7 +770,7 @@
     "en": "Mt. Gulg",
     "ja": "偽造天界 グルグ火山",
     "de": "Der Gulg",
-    "fr": "le Mont Gulg",
+    "fr": "Mont Gulg",
     "icon": "/i/061000/061801.png",
     "contentText": [
       20414,
@@ -789,10 +789,10 @@
     ]
   },
   "72": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "Holminster Switch",
+    "ja": "殺戮郷村 ホルミンスター",
+    "de": "Holminster",
+    "fr": "Holminster",
     "icon": "/i/061000/061801.png",
     "contentText": [
       22107,
@@ -800,17 +800,28 @@
     ]
   },
   "73": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "The Grand Cosmos",
+    "ja": "魔法宮殿 グラン・コスモス",
+    "de": "Chateau Cosmea",
+    "fr": "le Cosmos coruscant",
+    "icon": "/i/061000/061801.png",
+    "contentText": [
+      23440,
+      23400
+    ]
+  },
+  "74": {
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "5000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "5001": {
@@ -1122,10 +1133,10 @@
     ]
   },
   "5029": {
-    "en": "揺れる天秤",
+    "en": "The Hardened Heart",
     "ja": "揺れる天秤",
-    "de": "揺れる天秤",
-    "fr": "揺れる天秤",
+    "de": "Ob Mitleid oder Hass",
+    "fr": "Naissance d'un bourreau",
     "icon": "/i/061000/061805.png",
     "contentText": [
       21949,
@@ -1133,10 +1144,10 @@
     ]
   },
   "5030": {
-    "en": "古の大再生魔法",
+    "en": "The Lost and the Found",
     "ja": "古の大再生魔法",
-    "de": "古の大再生魔法",
-    "fr": "古の大再生魔法",
+    "de": "Alter Zauber",
+    "fr": "Magie ancestrale",
     "icon": "/i/061000/061805.png",
     "contentText": [
       22340,
@@ -1144,10 +1155,10 @@
     ]
   },
   "5031": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "Coming Clean",
+    "ja": "廃都ナバスアレン",
+    "de": "Vater und Bruder",
+    "fr": "Sur les rails de Nabaath Areng",
     "icon": "/i/061000/061805.png",
     "contentText": [
       22763,
@@ -1155,10 +1166,10 @@
     ]
   },
   "5032": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "Legend of the Not-so-hidden Temple",
+    "ja": "仕掛けと呪いと毒と",
+    "de": "Der Beichtstuhl von Toupasa dem Älteren",
+    "fr": "Le Confessionnal de Toupasa l'ancien",
     "icon": "/i/061000/061805.png",
     "contentText": [
       22679,
@@ -1166,10 +1177,10 @@
     ]
   },
   "5033": {
-    "en": "ナイルベルトの後悔",
+    "en": "Nyelbert's Lament",
     "ja": "ナイルベルトの後悔",
-    "de": "ナイルベルトの後悔",
-    "fr": "ナイルベルトの後悔",
+    "de": "Ein großes Opfer",
+    "fr": "Une cupidité bien généreuse",
     "icon": "/i/061000/061805.png",
     "contentText": [
       22539,
@@ -1177,10 +1188,10 @@
     ]
   },
   "5034": {
-    "en": "勇気の狩人",
+    "en": "The Hunter's Legacy",
     "ja": "勇気の狩人",
-    "de": "勇気の狩人",
-    "fr": "勇気の狩人",
+    "de": "Der Legende auf der Spur",
+    "fr": "La chasseuse de légende",
     "icon": "/i/061000/061805.png",
     "contentText": [
       22944,
@@ -1188,17 +1199,39 @@
     ]
   },
   "5035": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "Vows of Virtue, Deeds of Cruelty",
+    "ja": "白き誓約、黒き密約",
+    "de": "Der Wolf und der Drachenreiter",
+    "fr": "Vœux de vertu, actes de cruauté",
+    "icon": "/i/061000/061805.png",
+    "contentText": [
+      23832,
+      23800
+    ]
+  },
+  "5036": {
+    "en": "As the Heart Bids",
+    "ja": "この心が望むがままに",
+    "de": "Trubel im Traumland",
+    "fr": "À l'écoute de soi",
+    "icon": "/i/061000/061805.png",
+    "contentText": [
+      23948,
+      23900
+    ]
+  },
+  "5037": {
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "10000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "10001": {
@@ -1356,17 +1389,17 @@
     ]
   },
   "10015": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "15000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "15001": {
@@ -1546,17 +1579,17 @@
     ]
   },
   "15017": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "20000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "20001": {
@@ -2211,7 +2244,7 @@
     ]
   },
   "20062": {
-    "en": "the Dancing Plague",
+    "en": "The Dancing Plague",
     "ja": "ティターニア討滅戦",
     "de": "Offenbarung - Titania",
     "fr": "la Valse du Monarque",
@@ -2233,7 +2266,7 @@
     ]
   },
   "20064": {
-    "en": "the Crown of the Immaculate",
+    "en": "The Crown of the Immaculate",
     "ja": "イノセンス討滅戦",
     "de": "Offenbarung - Innozenz",
     "fr": "La Couronne de l'Immaculé",
@@ -2255,10 +2288,10 @@
     ]
   },
   "20066": {
-    "en": "the Dying Gasp",
+    "en": "The Dying Gasp",
     "ja": "ハーデス討滅戦",
     "de": "Offenbarung - Hades",
-    "fr": "Le Râle de l'Agonie",
+    "fr": "le Râle de l'Agonie",
     "icon": "/i/061000/061804.png",
     "contentText": [
       23033,
@@ -2266,17 +2299,28 @@
     ]
   },
   "20067": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "The Minstrel's Ballad: Hades's Elegy",
+    "ja": "極ハーデス討滅戦",
+    "de": "Letzte Läuterung - Hades",
+    "fr": "Le Râle de l'Agonie (extrême)",
+    "icon": "/i/061000/061804.png",
+    "contentText": [
+      23347,
+      23300
+    ]
+  },
+  "20068": {
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "25000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "25001": {
@@ -2302,17 +2346,17 @@
     ]
   },
   "25003": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "30000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "30001": {
@@ -2813,10 +2857,10 @@
     ]
   },
   "30048": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "30049": {
@@ -2904,7 +2948,7 @@
     "ja": "絶バハムート討滅戦",
     "de": "Endlose Schatten von Bahamut (fatal)",
     "fr": "l'Abîme infini de Bahamut (fatal)",
-    "icon": "/i/061000/061802.png",
+    "icon": "/i/061000/061832.png",
     "contentText": [
       18107,
       18100
@@ -3014,7 +3058,7 @@
     "ja": "絶アルテマウェポン破壊作戦",
     "de": "Heldenlied von Ultima (fatal)",
     "fr": "la Fantasmagorie d'Ultima (fatal)",
-    "icon": "/i/061000/061802.png",
+    "icon": "/i/061000/061832.png",
     "contentText": [
       19320,
       19300
@@ -3219,17 +3263,39 @@
     ]
   },
   "30086": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "The Epic of Alexander (Ultimate)",
+    "ja": "絶アレキサンダー討滅戦",
+    "de": "Alexander (fatal)",
+    "fr": "L'Odyssée d'Alexander (fatal)",
+    "icon": "/i/061000/061832.png",
+    "contentText": [
+      24018,
+      24000
+    ]
+  },
+  "30087": {
+    "en": "The Copied Factory",
+    "ja": "複製サレタ工場廃墟",
+    "de": "Die kopierte Fabrik",
+    "fr": "Réplique de l'usine désaffectée",
+    "icon": "/i/061000/061802.png",
+    "contentText": [
+      23611,
+      23500
+    ]
+  },
+  "30088": {
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "35000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "35001": {
@@ -3297,7 +3363,7 @@
   },
   "35010": {
     "en": "A Little Knight Music",
-    "ja": "首無し王者「クロムドゥーブ」",
+    "ja": "偶像の王者「クロムドゥーブ」",
     "de": "Crom Dubh - König der Götzen",
     "fr": "Crom Dubh, roi des idoles",
     "icon": "/i/061000/061836.png"
@@ -3360,7 +3426,7 @@
   },
   "35019": {
     "en": "On a Clear Day You Can Smell Forever",
-    "ja": "魅惑の芳香「アロマティック・アムーシャ」",
+    "ja": "魅惑の芳香「リフレクティブ・レベッカ」",
     "de": "Rebekkha - Verführerische Gerüche",
     "fr": "Miroir, mon beau miroir",
     "icon": "/i/061000/061836.png"
@@ -3408,66 +3474,101 @@
     "icon": "/i/061000/061836.png"
   },
   "35026": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "Papa Mia",
+    "ja": "豪腕の父親「フンババ・パパ」",
+    "de": "Papa Mia",
+    "fr": "Papa Humbaba, le paternel aux gros bras",
+    "icon": "/i/061000/061836.png"
+  },
+  "35027": {
+    "en": "Lock up Your Snorters",
+    "ja": "はないき爆破デスマッチ",
+    "de": "Explosives Schnaufen",
+    "fr": "Fungaaah! Et boum!",
+    "icon": "/i/061000/061836.png"
+  },
+  "35028": {
+    "en": "Dangerous When Dead",
+    "ja": "至妙の傀儡子「ドゥリン」",
+    "de": "Begnadeter Puppenspieler",
+    "fr": "Durinn, marionnettiste d'outre-tombe",
+    "icon": "/i/061000/061836.png"
+  },
+  "35029": {
+    "en": "Red, Fraught, and Blue",
+    "ja": "水と炎の歌",
+    "de": "Die Melodie von Feuer und Wasser",
+    "fr": "La mélodie du feu et de l'eau",
+    "icon": "/i/061000/061836.png"
+  },
+  "35030": {
+    "en": "The Catch of the Siegfried",
+    "ja": "世界一の剣士「ジークフリード」",
+    "de": "Siegfried, der beste Schwertkämpfer der Welt!",
+    "fr": "Siegfried, le plus grand bretteur du monde",
+    "icon": "/i/061000/061836.png"
+  },
+  "35031": {
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40001": {
-    "en": "the Fold",
-    "ja": "ザ・フォールド",
-    "de": "The Fold",
-    "fr": "The Fold",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40002": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40003": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40004": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40005": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40006": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40007": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40008": {
@@ -3478,10 +3579,10 @@
     "icon": "/i/061000/061806.png"
   },
   "40009": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40010": {
@@ -3492,24 +3593,24 @@
     "icon": "/i/061000/061806.png"
   },
   "40011": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40012": {
-    "en": "★The Feast (4 on 4 - Light Party)",
-    "ja": "★ザ・フィースト (4対4 / 固定ライトパーティ専用)",
-    "de": "★The Feast (4 gegen 4, bestehende Gruppe)",
-    "fr": "★The Feast (4x4/équipe préformée)",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40013": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40014": {
@@ -3520,10 +3621,10 @@
     "icon": "/i/061000/061806.png"
   },
   "40015": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40016": {
@@ -3534,10 +3635,10 @@
     "icon": "/i/061000/061806.png"
   },
   "40017": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40018": {
@@ -3548,17 +3649,17 @@
     "icon": "/i/061000/061806.png"
   },
   "40019": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40020": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "40021": {
@@ -3599,22 +3700,22 @@
   "40026": {
     "en": "the Feast (Team Custom Match - Crystal Tower)",
     "ja": "ザ・フィースト (クリスタルタワー演習場：チーム用カスタムマッチ)",
-    "de": "The Feast (Kristallturm-Arena: Team-Schaukampf)",
+    "de": "The Feast (Kristallturm-Arena: Team-Schaukampf) ",
     "fr": "The Feast (personnalisé/équipe JcJ/Tour de Cristal)",
     "icon": "/i/061000/061806.png"
   },
   "40027": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "50000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "50001": {
@@ -3622,20 +3723,24 @@
     "ja": "外縁遺跡群 (制圧戦)",
     "de": "Äußere Ruinen (Sicherung)",
     "fr": "les Ruines frontalières (annexion)",
-    "icon": "/i/061000/061806.png"
+    "icon": "/i/061000/061806.png",
+    "contentText": [
+      8910,
+      8910
+    ]
   },
   "50002": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "50003": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "50004": {
@@ -3661,17 +3766,28 @@
     ]
   },
   "50006": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": "Onsal Hakair (Danshig Naadam)",
+    "ja": "オンサル・ハカイル (終節戦)",
+    "de": "Onsal Hakair (Danshig Naadam)",
+    "fr": "Onsal Hakair (Danshig Naadam)",
+    "icon": "/i/061000/061806.png",
+    "contentText": [
+      23701,
+      23700
+    ]
+  },
+  "50007": {
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "51000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "51001": {
@@ -3683,23 +3799,23 @@
   },
   "51002": {
     "en": "Hidden Gorge",
-    "ja": "ヒドゥンゴージ（機工戦）",
+    "ja": "ヒドゥンゴージ (機工戦)",
     "de": "Verborgene Schlucht",
     "fr": "Gorge dérobée (machinerie)",
     "icon": "/i/061000/061806.png"
   },
   "51003": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "55000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "55001": {
@@ -3747,17 +3863,17 @@
     ]
   },
   "55005": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "55006": {
     "en": "The Dungeons of Lyhe Ghiah",
     "ja": "宝物庫 リェー・ギア・ダンジョン",
-    "de": "Verliese von Lyhe-Ghiah",
-    "fr": "le Donjon hypogéen du Lyhe-Ghiah",
+    "de": "Verliese von Lyhe Ghiah",
+    "fr": "le Donjon hypogéen du Lyhe Ghiah",
     "icon": "/i/061000/061808.png",
     "contentText": [
       12810,
@@ -3765,17 +3881,24 @@
     ]
   },
   "55007": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
+    "icon": null
+  },
+  "55008": {
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "60000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "60001": {
@@ -3923,122 +4046,122 @@
     "icon": "/i/061000/061824.png"
   },
   "60021": {
-    "en": "Heaven-on-High (Floors 1-10)",
+    "en": "Heaven-on-High  (Floors 1-10)",
     "ja": "アメノミハシラ 1～10層",
-    "de": "Himmelssäule (Ebenen 1 - 10)",
+    "de": "Himmelssäule (Ebenen 1-10)",
     "fr": "le Pilier des Cieux (étages 1-10)",
     "icon": "/i/061000/061824.png"
   },
   "60022": {
-    "en": "Heaven-on-High (Floors 11-20)",
+    "en": "Heaven-on-High  (Floors 11-20)",
     "ja": "アメノミハシラ 11～20層",
-    "de": "Himmelssäule (Ebenen 11 - 20)",
+    "de": "Himmelssäule (Ebenen 11-20)",
     "fr": "le Pilier des Cieux (étages 11-20)",
     "icon": "/i/061000/061824.png"
   },
   "60023": {
-    "en": "Heaven-on-High (Floors 21-30)",
+    "en": "Heaven-on-High  (Floors 21-30)",
     "ja": "アメノミハシラ 21～30層",
-    "de": "Himmelssäule (Ebenen 21 - 30)",
+    "de": "Himmelssäule (Ebenen 21-30)",
     "fr": "le Pilier des Cieux (étages 21-30)",
     "icon": "/i/061000/061824.png"
   },
   "60024": {
-    "en": "Heaven-on-High (Floors 31-40)",
+    "en": "Heaven-on-High  (Floors 31-40)",
     "ja": "アメノミハシラ 31～40層",
-    "de": "Himmelssäule (Ebenen 31 - 40)",
+    "de": "Himmelssäule (Ebenen 31-40)",
     "fr": "le Pilier des Cieux (étages 31-40)",
     "icon": "/i/061000/061824.png"
   },
   "60025": {
-    "en": "Heaven-on-High (Floors 41-50)",
+    "en": "Heaven-on-High  (Floors 41-50)",
     "ja": "アメノミハシラ 41～50層",
-    "de": "Himmelssäule (Ebenen 41 - 50)",
+    "de": "Himmelssäule (Ebenen 41-50)",
     "fr": "le Pilier des Cieux (étages 41-50)",
     "icon": "/i/061000/061824.png"
   },
   "60026": {
-    "en": "Heaven-on-High (Floors 51-60)",
+    "en": "Heaven-on-High  (Floors 51-60)",
     "ja": "アメノミハシラ 51～60層",
-    "de": "Himmelssäule (Ebenen 51 - 60)",
+    "de": "Himmelssäule (Ebenen 51-60)",
     "fr": "le Pilier des Cieux (étages 51-60)",
     "icon": "/i/061000/061824.png"
   },
   "60027": {
-    "en": "Heaven-on-High (Floors 61-70)",
+    "en": "Heaven-on-High  (Floors 61-70)",
     "ja": "アメノミハシラ 61～70層",
-    "de": "Himmelssäule (Ebenen 61 - 70)",
+    "de": "Himmelssäule (Ebenen 61-70)",
     "fr": "le Pilier des Cieux (étages 61-70)",
     "icon": "/i/061000/061824.png"
   },
   "60028": {
-    "en": "Heaven-on-High (Floors 71-80)",
+    "en": "Heaven-on-High  (Floors 71-80)",
     "ja": "アメノミハシラ 71～80層",
-    "de": "Himmelssäule (Ebenen 71 - 80)",
+    "de": "Himmelssäule (Ebenen 71-80)",
     "fr": "le Pilier des Cieux (étages 71-80)",
     "icon": "/i/061000/061824.png"
   },
   "60029": {
-    "en": "Heaven-on-High (Floors 81-90)",
+    "en": "Heaven-on-High  (Floors 81-90)",
     "ja": "アメノミハシラ 81～90層",
-    "de": "Himmelssäule (Ebenen 81 - 90)",
+    "de": "Himmelssäule (Ebenen 81-90)",
     "fr": "le Pilier des Cieux (étages 81-90)",
     "icon": "/i/061000/061824.png"
   },
   "60030": {
-    "en": "Heaven-on-High (Floors 91-100)",
+    "en": "Heaven-on-High  (Floors 91-100)",
     "ja": "アメノミハシラ 91～100層",
-    "de": "Himmelssäule (Ebenen 91 - 100)",
+    "de": "Himmelssäule (Ebenen 91-100)",
     "fr": "le Pilier des Cieux (étages 91-100)",
     "icon": "/i/061000/061824.png"
   },
   "60031": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "61000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "61001": {
     "en": "Novice Mahjong (Ranked)",
     "ja": "ドマ式麻雀：一般卓 (段位変動有り)",
-    "de": "Domanisches Mahjong: Anfänger (gewertet)",
+    "de": "Anfänger-Mahjong (gewertet)",
     "fr": "Mahjong domien: tous rangs (classé)",
     "icon": "/i/061000/061820.png"
   },
   "61002": {
     "en": "Advanced Mahjong (Ranked)",
     "ja": "ドマ式麻雀：有段卓 (段位変動有り)",
-    "de": "Domanisches Mahjong: Fortgeschrittene (gewertet)",
+    "de": "Fortgeschrittenen-Mahjong (gewertet)",
     "fr": "Mahjong domien: dan seulement (classé)",
     "icon": "/i/061000/061820.png"
   },
   "61003": {
     "en": "Four-player Mahjong (Kuitan Enabled)",
     "ja": "ドマ式麻雀：4人セット卓 (クイタン有り)",
-    "de": "Domanisches Mahjong:  4 Spieler (Kuitan aktiviert)",
+    "de": "4-Spieler-Mahjong (Kuitan aktiviert)",
     "fr": "Mahjong domien: 4 joueurs (avec kuitan)",
     "icon": "/i/061000/061820.png"
   },
   "61004": {
     "en": "Four-player Mahjong (Kuitan Disabled)",
     "ja": "ドマ式麻雀：4人セット卓 (クイタン無し)",
-    "de": "Domanisches Mahjong:  4 Spieler (Kuitan deaktiviert)",
+    "de": "4-Spieler-Mahjong (Kuitan deaktiviert)",
     "fr": "Mahjong domien: 4 joueurs (sans kuitan)",
     "icon": "/i/061000/061820.png"
   },
   "61005": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "62000": {
@@ -4063,17 +4186,17 @@
     "icon": "/i/061000/061820.png"
   },
   "65000": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   },
   "65001": {
-    "en": "",
-    "ja": "",
-    "de": "",
-    "fr": "",
+    "en": null,
+    "ja": null,
+    "de": null,
+    "fr": null,
     "icon": null
   }
 }

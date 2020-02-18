@@ -12,7 +12,6 @@ export enum ListsActionTypes {
 
   LoadListDetails = '[Lists] Load List',
   UnloadListDetails = '[Lists] Unload List',
-  LoadListCompact = '[Lists] Load List Compact',
   SelectList = '[Lists] Select List',
 
   SetItemDone = '[Lists] Set Item Done',
@@ -20,13 +19,11 @@ export enum ListsActionTypes {
 
   MyListsLoaded = '[Lists] My Lists Loaded',
   TeamListsLoaded = '[Lists] Team Lists Loaded',
-  ListCompactLoaded = '[Lists] List Compact Loaded',
   SharedListsLoaded = '[Lists] Shared Lists Loaded',
   ListDetailsLoaded = '[Lists] List Details Loaded',
 
 
   CreateList = '[Lists] Create List',
-  CreateOptimisticListCompact = '[Lists] Create List Compact',
   UpdateList = '[Lists] Update List',
   UpdateListAtomic = '[Lists] Update List Atomic',
   UpdateListIndex = '[Lists] Update List Index',
@@ -36,6 +33,9 @@ export enum ListsActionTypes {
 
   NeedsVerification = '[Lists] Needs character verification',
   ToggleAutocompletion = '[Lists] Toggle autocompletion',
+  ToggleCompletionNotification = '[Lists] Toggle completion notification',
+  PinList = '[Lists] Pin list',
+  UnPinList = '[Lists] Unpin list',
 }
 
 export class LoadMyLists implements Action {
@@ -70,26 +70,19 @@ export class ToggleAutocompletion implements Action {
   }
 }
 
+export class ToggleCompletionNotification implements Action {
+  readonly type = ListsActionTypes.ToggleCompletionNotification;
+
+  constructor(public readonly enabled: boolean) {
+  }
+}
+
 export class LoadSharedLists implements Action {
   readonly type = ListsActionTypes.LoadSharedLists;
 }
 
 export class LoadListDetails implements Action {
   readonly type = ListsActionTypes.LoadListDetails;
-
-  constructor(public readonly key: string) {
-  }
-}
-
-export class UnloadListDetails implements Action {
-  readonly type = ListsActionTypes.UnloadListDetails;
-
-  constructor(public readonly key: string) {
-  }
-}
-
-export class LoadListCompact implements Action {
-  readonly type = ListsActionTypes.LoadListCompact;
 
   constructor(public readonly key: string) {
   }
@@ -108,7 +101,8 @@ export class SetItemDone implements Action {
   constructor(public readonly itemId: number, public readonly itemIcon: number,
               public readonly finalItem: boolean, public readonly doneDelta: number,
               public readonly recipeId: string, public readonly totalNeeded: number,
-              public readonly external = false, public readonly fromPacket = false) {
+              public readonly external = false, public readonly fromPacket = false,
+              public readonly hq = false) {
   }
 }
 
@@ -154,24 +148,10 @@ export class ListDetailsLoaded implements Action {
   }
 }
 
-export class ListCompactLoaded implements Action {
-  readonly type = ListsActionTypes.ListCompactLoaded;
-
-  constructor(public payload: Partial<List>) {
-  }
-}
-
 export class CreateList implements Action {
   readonly type = ListsActionTypes.CreateList;
 
   constructor(public readonly payload: List) {
-  }
-}
-
-export class CreateOptimisticListCompact implements Action {
-  readonly type = ListsActionTypes.CreateOptimisticListCompact;
-
-  constructor(public readonly payload: List, public readonly key: string) {
   }
 }
 
@@ -210,6 +190,17 @@ export class ConvertLists implements Action {
   }
 }
 
+export class PinList implements Action {
+  readonly type = ListsActionTypes.PinList;
+
+  constructor(public readonly uid: string) {
+  }
+}
+
+export class UnPinList implements Action {
+  readonly type = ListsActionTypes.UnPinList;
+}
+
 export type ListsAction =
   LoadMyLists
   | MyListsLoaded
@@ -220,10 +211,7 @@ export type ListsAction =
   | SelectList
   | SetItemDone
   | ListDetailsLoaded
-  | CreateOptimisticListCompact
   | UpdateListIndex
-  | LoadListCompact
-  | ListCompactLoaded
   | LoadSharedLists
   | SharedListsLoaded
   | UpdateItem
@@ -231,8 +219,10 @@ export type ListsAction =
   | NeedsVerification
   | LoadTeamLists
   | TeamListsLoaded
-  | UnloadListDetails
   | ConvertLists
   | OfflineListsLoaded
   | ToggleAutocompletion
-  | UpdateListAtomic;
+  | ToggleCompletionNotification
+  | UpdateListAtomic
+  | PinList
+  | UnPinList;

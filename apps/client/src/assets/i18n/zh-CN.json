@@ -36,7 +36,8 @@
     "Reset_filters": "重置筛选",
     "Too_many_results_warning": "此搜索返回了超过 100 个物品。由于我们的数据源仅限 100 个，您可能需要增加筛选来找到所需的物品。",
     "Share_url": "将搜索链接复制到剪贴板",
-    "Share_url_copied": "搜索链接已复制到剪贴板"
+    "Share_url_copied": "搜索链接已复制到剪贴板",
+    "Only_craftable": "仅显示有配方的物品"
   },
   "Use_as_default_character": "设为默认角色",
   "Download_desktop_app": "下载客户端",
@@ -142,7 +143,17 @@
     "User": "用户",
     "Tables": "表格",
     "Pie_charts": "饼状图",
-    "Read_more_on_wiki": "在wiki上阅读更多详细信息"
+    "Read_more_on_wiki": "在wiki上阅读更多详细信息",
+    "Apply": "应用",
+    "Open_link": "在浏览器中打开",
+    "Unknown": "未知",
+    "Minimum": "最小",
+    "Maximum": "最大",
+    "Average": "平均",
+    "Hq": "高品质",
+    "Nq": "普通品质",
+    "Share_link_copied": "分享链接已复制到剪贴板",
+    "Copy": "复制"
   },
   "ALARMS": {
     "Title": "闹钟",
@@ -159,7 +170,8 @@
     "Add_note": "添加备注",
     "Volume": "音量",
     "Macro_copied": "宏已复制到剪贴板",
-    "Open_overlay": "打开浮动窗口",
+    "Open_overlay": "打开悬浮窗",
+    "Open_alarms_overlay": "打开闹钟悬浮窗",
     "More_available": "还有 {{amount}} 个…",
     "Node_content": "采集点物品",
     "Toggle_collapse": "折叠/展开分组",
@@ -336,6 +348,8 @@
     "no_panel_borders": "隐藏面板边框",
     "Desktop": "客户端",
     "Always_on_top": "总在最上层",
+    "Start_minimized": "启动时最小化到托盘",
+    "Always_quit": "关闭窗口时退出 (而不是最小化)",
     "Check_for_update": "检查更新",
     "Downloading_update": "正在下载更新",
     "No_update_available": "已是最新版本",
@@ -372,10 +386,17 @@
     "Clickthrough_overlay": "悬浮窗鼠标穿透",
     "Disable_search_history": "关闭搜索记录",
     "Disable_search_debounce": "防止搜索误操作（仅在按下回车后搜索）",
-    "Enable_packet_capture": "Enabled packet capture (adds realtime inventory features)",
-    "Packet_capture_info": "Capturing packets is against ToS, the same reason why ACT is against ToS. But Square Enix tolerates it unless you brag about it to everyone ingame. Just don't and you won't risk anything.",
-    "Contribute_to_universalis": "Contribute to Universalis",
-    "Persist_inventory": "Save inventory in database (to share with web version)",
+    "Enable_packet_capture": "启用数据包捕获（增加实时背包等功能）",
+    "Packet_capture_info": "针对国际服玩家：数据包捕获功能是违反 ToS 的，ACT 也因此违反 ToS。但在其他玩家不知晓的情况下，Square Enix 并不会进行处理，因此您可以私下使用而无需担心风险。",
+    "Enable_autofill_by_default": "默认启用自动填充",
+    "Enable_autofill_notification_by_default": "默认启用自动填充通知",
+    "Enable_autofill_hq_filter": "当物品被标记为需要 HQ 时，仅使用 HQ 物品自动填充",
+    "Contribute_to_universalis": "向 Universalis 提交数据",
+    "Track_items_on_sale": "追踪雇员出售的物品（需要重启应用或刷新页面）",
+    "Performance_mode": "性能模式",
+    "Performance_mode_explain": "移除列表中的物品图标和菜单（仅保留按钮）以降低浏览器及应用的压力。",
+    "Change_email": "修改电子邮箱",
+    "Change_email_success": "电子邮箱已更改",
     "COLORS": {
       "Background": "背景颜色",
       "Primary": "主体色",
@@ -388,6 +409,13 @@
     "COPY_TYPE": {
       "Classic": "复制物品名称",
       "Isearch": "复制搜索宏"
+    },
+    "CATEGORIES": {
+      "Autofill_completion": "自动填充完成提示音",
+      "Packet_capture": "数据包捕获",
+      "Theme": "界面主题",
+      "Search": "搜索",
+      "Other": "其他"
     }
   },
   "PROFILE": {
@@ -406,8 +434,8 @@
     "User_not_verified": "用户未验证，点击验证",
     "More_than_100_lists_created": "现有 100+ 个清单",
     "Veteran": "老玩家",
-    "Autofill_from_packets": "Autofill stats using packet capture",
-    "Autofill_stats_explain": "Switch to the desired job in order to update it, close this popup once you're done. Please make sure you don't have any active food, else it'll save your stats with the food active.",
+    "Autofill_from_packets": "使用数据包捕获自动填充状态。",
+    "Autofill_stats_explain": "切换到相应的职业以更新其属性，更新完成后可关闭此弹窗。请确保当前没有正在生效的食物效果，否则记录的属性中会包含食物的加成。",
     "VERIFICATION": {
       "Title": "角色验证",
       "Guide": "若要认证您的账户，复制这个代码{{userId}}到Lodestone个人资料中，并点击下方的按键。更多信息在<a href=\"https://wiki.ffxivteamcraft.com/guides/verify-your-character\">wiki</a>。",
@@ -425,7 +453,7 @@
     "Lists_merged": "清单合并成功！",
     "Shared_lists": "与您共享的清单",
     "Add_selection": "添加选中物品到清单",
-    "Add_selection_to_list": "Add selection to list",
+    "Add_selection_to_list": "将选中物品添加到清单",
     "Your_lists": "我的清单",
     "Outdated_tag": "已过期",
     "No_lists": "没有清单",
@@ -464,16 +492,31 @@
     "Copy_list_as_text": "将整个清单复制为文本",
     "Copied_as_text": "内容已复制到剪贴板",
     "Total_price": "总费用(金币+其他货币)",
+    "Ignore_currency": "忽略此货币（仅在有其他购买方式时生效）",
     "Total_trade_price": "合计: ",
     "Add_all_alarms": "为该清单添加所有闹钟",
     "History": "历史记录",
     "Items_count": "{{amount}} 个物品",
     "Show_craftable_amount": "显示可制作的数量",
+    "Show_vendors": "显示第一个出售物品的商人",
     "Optimized_full_path": "显示完整最优路径 (最便宜且最快)",
     "Quick_layout_swap": "快速布局切换",
     "Offline": "离线",
     "Offline_help": "离线清单储存在您的浏览器或桌面APP中，因此不能通过其他渠道查看及分享，但是他们不受龟速网络影响——比较快。",
     "Mark_whole_panel_done": "将这一大类标记为已完成",
+    "Set_color": "设置清单颜色",
+    "Go_to_pinned": "转到固定清单（右键单击取消固定）",
+    "Reset_panel": "重置此面板的所有物品",
+    "COLORS": {
+      "RED": "红色",
+      "GREEN": "绿色",
+      "YELLOW": "黄色",
+      "BLUE": "蓝色",
+      "PURPLE": "紫色",
+      "ORANGE": "橙色",
+      "PINK": "粉色",
+      "NONE": "无"
+    },
     "ROTATION": {
       "Attach": "附加手法",
       "Detach": "删去手法",
@@ -505,7 +548,7 @@
   },
   "LIST_DETAILS": {
     "List_finished": "清单已完成",
-    "Public_list_description": "将该清单公开分享给所有人。注意：只是与其他人分享清单并不需要将其设为社区清单。",
+    "Public_list_description": "将该清单公开分享给所有人。注意：只是与其他人分享清单并不需要将其设为共享清单。",
     "Missing_tags_before_button": "此清单已公开分享为共享清单，但它没有标签，请使用 为它添加标签。",
     "Missing_tags_after_button": " 按钮添加标签。",
     "Add_remove_amount": "增加/减少",
@@ -522,14 +565,23 @@
     "Disable_HQ_suggestions": "禁用自动显示HQ图标",
     "Amount_craftable": "你可以制作 {{amount}} 个",
     "Add_item": "添加物品",
+    "List_large": "这个清单太长了",
+    "Enable_performance_mode": "您可以在设置中启用性能模式来加快渲染速度",
     "List_too_large": "清单过长",
     "List_too_large_description": "该清单过长，携带了太多信息，可能会受到数据库大小限制。为确保你不会丢失信息，该清单无法再添加物品了。",
     "Add_to_another_list": "添加到另一个清单",
     "New_tag": "新标签",
-    "Amount_ilvl": "Amount (ilvl)",
+    "Amount_ilvl": "数量 (ilvl)",
     "Contributions_popup": "贡献统计",
-    "Autofill_details": "Input progression as you obtain items ingame, using packet capture. This is disabled if you leave the list page, to avoid unwanted inputs.",
+    "Autofill_details": "当您在游戏中获得物品时自动填写进度。此功能通过数据包捕获实现。为避免非预期的改动，此功能在离开清单页面时自动禁用。",
     "Autofill": "自动填写",
+    "Autofill_notification_details": "在某一物品通过自动填充达到所需数量时显示通知。",
+    "Autofill_notification": "完成通知",
+    "Autofill_notification_title": "物品已完成",
+    "Autofill_notification_body": "{{listName}} 清单中的 {{itemName}} 已制作完成",
+    "Fill_with_inventory": "使用物品栏信息填充（只会使用个人物品栏的内容）",
+    "Filter_items_done": "忽略已完成的物品",
+    "Inventory_synthesis": "Inventory synthesis (items per inventory)",
     "LAYOUT_DIALOG": {
       "Title": "布局",
       "Add_panel": "新建面板",
@@ -567,6 +619,11 @@
       "Order_by": "排序方式",
       "Order": "顺序",
       "Tag_filter": "标签筛选"
+    },
+    "OVERLAY": {
+      "Open": "打开清单悬浮窗",
+      "No_display": "请在主窗口中打开一个清单",
+      "No_panel_selected": "使用上面的按钮选择一个面板"
     }
   },
   "LIST_TAGS": {
@@ -645,6 +702,7 @@
     "Title": "最优路线",
     "Steps": "步骤",
     "Loading_path": "正在加载最优路径 (可能需要几秒)",
+    "You_are_here": "当前位置",
     "STEP": {
       "Gathering": "采集{{amount}}（总计：{{total}}）",
       "Hunting": "打怪获取{{amount}}（总计：{{total}}）",
@@ -721,9 +779,11 @@
   },
   "SIMULATOR": {
     "Title": "生产模拟器",
+    "Include_stats": "Include stats",
     "Fixed_notification_number": "固定提示音",
     "Starting_echo_number": "提示音",
     "Break_on_reclaim": "在无法使用回收前拆分宏",
+    "Break_before_byregots_blessing": "在“比尔格的祝福”前拆分宏",
     "Include_consumables_notification": "添加消耗品提示",
     "Consumable_notification": "使用 {{buffs}}",
     "Extra_wait": "单独延迟",
@@ -788,6 +848,8 @@
     "Rotation_solver": "手法求解器",
     "Recipe_picker_placeholder": "输入您想要制作的配方",
     "Could_not_find_minstats": "找不到这个手法的最低属性要求",
+    "Remove_final_appraisal": "移除 “Final Appraisal” 状态",
+    "Total_macro_duration": "宏执行时间：{{duration}}秒。",
     "STATE": {
       "Excellent": "最高品质",
       "Good": "高品质",
@@ -888,7 +950,7 @@
       "No_medicine": "无强化药",
       "No_fc_buffs": "无部队特效",
       "Quest_warning": "要触发“魔匠的闪念”，请确保你完成了 70 级职业任务",
-      "Starting_quality": "Starting quality",
+      "Starting_quality": "初始品质",
       "STATS": {
         "CP": "制作力",
         "Craftsmanship": "作业精度",
@@ -906,26 +968,20 @@
     "ROTATION_TIPS": {
       "Use_inner_quiet": "如果你的目标是制作HQ成品，那么几乎所有手法都要包括内静。内静能够提供很大的品质增益，并触发“比尔格的祝福”等技能。",
       "Use_inner_quiet_before_quality_increase": "应在提高制品品质前使用内静，否则就是在浪费内静层数。",
-      "Use_ingenuity_I_instead": "应使用新颖替换新颖II，这已经足够完成制作并可以节约 8 点 CP。",
-      "Use_cz_earlier": "应向前移动安逸，以更早获得回复效果。",
-      "Use_reclaim": "剩余 CP 足以使用回收，你应该将其加入循环确保你能在制作失败时回收素材。",
-      "Use_byregot_brow_low_iq_stacks": "低于6层内静时使用了比尔格的祝福。替换为比尔格的技巧更好，因为这将获得更高的品质。",
       "Use_byregot_blessing_high_iq_stacks": "高于6层内静时使用了比尔格的技巧。替换为比尔格的祝福更好，因为这将获得更高的品质。",
-      "Use_sh1_instead": "在第 {{index}} 步时使用的稳手II 替换为稳手也可以完成制作并可以节约3点CP。",
-      "Use_sh2_instead": "在第 {{index}} 步时使用的稳手I 替换为稳手II 会多消耗 3 点 CP 但提供更高的成功率。",
-      "Use_pbp_first": "应该在使用任何加工系技能前使用渐进，因为渐进是基于剩余加工进度推进的。",
-      "Use_mume_if_pbp": "在第一步时应当使用坚信而不是渐进，可以节约 9 点 CP",
       "Use_observe_before_focused": "在第 {{index}} 步的注视系技能前应该使用观察，以获得 100% 成功率。",
       "Use_durability_restoration_later": "在第 {{index}} 使用的耐久回复技能应该向后移动，避免浪费耐久回复。",
       "Use_patient_touch_faster": "应在增加内静层数前使用专心加工，避免失败时浪费内静层数。",
-      "Use_advanced_touch_instead": "在第 {{index}} 步的加工和上级加工应该被替换为两个中级加工，可以少消耗 2 点 CP 获得同样的效果。",
       "Do_not_overlap_buffs": "在第 {{overlappedIndex}} 步的 buff 和第 {{overlappingIndex}} 步已有的 buff 重叠了。第二个 buff 应当推迟以获得最佳效果。",
       "Use_byregot_brow_5_stacks": "应使用比尔格的技巧替换比尔格的祝福，可获得同样质量并节约 6 点 CP。",
       "Use_ingenuity_before_byregot": "应在使用比尔格技能前使用新颖以提升品质收益。",
       "Use_more_quality_actions": "在结束制作前你还有剩余耐久，应使用更多加工系技能提升品质。",
-      "Use_prudent_touch_manipulation": "66+ 级应使用 掌握II + 俭约加工 来提升品质，以获得最高稳定性和收益",
+      "Use_prudent_touch_manipulation": "66 级以上应使用 掌握 + 俭约加工 来提升品质，以获得最高的稳定性和收益",
       "Use_rapid_synthesis_earlier": "高速制作不是100%成功，不应将其用作收尾技能。建议更早地使用高速制作以备万一，即使失败也能调整后续手法。",
-      "Use_reflect_earlier": "应更早使用专精绝技：闲静使其增益后续加工系技能。"
+      "Do_not_use_brand_without_name": "不要在没有“元素之美名”状态时使用“元素之印记”。",
+      "Avoid_using_good_actions": "避免在宏中使用需要“高品质”状态的技能，因为你无法预测技能执行时物品的状态。",
+      "Requires_reuse_to_proc": "您的循环需要触发“再利用”才能正常工作，请确保其在没有触发“再利用”时也能运行。",
+      "Use_reuse": "您的手法达到了 100% 的品质，且有足够的制作力使用“再利用”。请考虑将其添加到手法中以节约素材。"
     }
   },
   "PRICING": {
@@ -956,6 +1012,7 @@
     "Global_exp": "全局经验联动",
     "More_on_gamerescape": "Gamer Escape 上的详细信息",
     "Deliver_to": "交付到 {{placename}}",
+    "Hide_large": "隐藏大规模理符任务",
     "INTRO": {
       "Title": "理符任务",
       "First_line": "在此页面您可以搜索一个或多个理符，并将结果添加至清单",
@@ -1019,7 +1076,8 @@
       "LIST_PROGRESSION": "查看材料进度",
       "FINAL_LIST_PROGRESSION": "查看产出进度",
       "USER_ASSIGNMENT": "用户分配",
-      "ITEM_COMPLETION": "项目完成"
+      "ITEM_COMPLETION": "项目完成",
+      "ITEM_PROGRESSION": "物品进展"
     }
   },
   "MARKETBOARD": {
@@ -1068,7 +1126,8 @@
   "UPDATE": {
     "New_update_available": "发现新版本！ ",
     "New_update_available_desktop": "有新的更新！点击此处下载并安装。",
-    "Web_instructions": "请刷新页面以使用最新版本。"
+    "Web_instructions": "请刷新页面以使用最新版本。",
+    "Downloading_update": "正在下载更新，完成后会提醒您进行安装"
   },
   "LOG_TRACKER": {
     "Title": "笔记追踪",
@@ -1289,9 +1348,74 @@
     "Currencies": "货币",
     "Rowena_splendor": "罗薇娜显赫商会（带星=奖励+20%）",
     "Unlocks": "解锁",
+    "Jump_to_page": "快速跳转到其他页面",
+    "Ishgard_restoration": "伊修加德重建",
     "ITEM": {
       "Masterpiece_base": "BASE",
       "Masterpiece_bonus": "奖励"
+    },
+    "FISH": {
+      "Hour": "上钩时间",
+      "Etime": "艾欧泽亚时间",
+      "Misses_popup_title": "Misses for this spot",
+      "Show_misses": "Show misses",
+      "Baits": "使用钓饵",
+      "Hookset_and_tug": "捉钩和咬饵",
+      "Weathers": "天气",
+      "Weather_transitions": "天气转换",
+      "Hooksets": "捉钩",
+      "Tugs": "咬饵",
+      "Seconds": "秒",
+      "Bite_time": "咬钩时间",
+      "Spots": "钓场",
+      "Min_gathering": "采集力要求",
+      "Min_size": "最小尺寸",
+      "Max_size": "最大尺寸",
+      "Avg_size": "平均尺寸",
+      "Used_as_mooch_for": "以小钓大",
+      "No_known_mooch_usage": "根据已知记录，这条鱼不能用于以小钓大",
+      "No_spot_filter": "未过滤钓场",
+      "Chances_for_transition": "转换发生的概率",
+      "Weather_chances": "每种天气下出现的概率",
+      "Bait": "钓饵",
+      "Refresh_data": "更新数据",
+      "TUG": {
+        "Light": "轻杆",
+        "Medium": "中杆",
+        "Big": "重杆"
+      },
+      "OVERLAY": {
+        "Open": "打开钓鱼悬浮窗",
+        "Bait": "当前钓饵",
+        "Tug": "咬饵",
+        "Hookset": "捉钩",
+        "Fishing": "正在钓鱼",
+        "Mooch": "上次抛竿使用了以小钓大",
+        "Mooch_report": "以小钓大",
+        "Current_weather": "当前天气",
+        "Previous_weather": "上一天气",
+        "Spot": "钓场",
+        "Possible_fish": "可能钓上的鱼",
+        "Stats": "属性",
+        "Statuses": "特效",
+        "No_statuses": "无相关特效",
+        "Total_reports": "本次垂钓记录总数",
+        "Last_report": "最近一次垂钓记录",
+        "Fish": "鱼",
+        "Size": "尺寸",
+        "ERRORS": {
+          "Unknown_map": "未知地图，请通过切换区域载入。",
+          "No_bait": "未检测到钓饵，请重新“选饵”"
+        }
+      }
+    },
+    "FISHING_SPOT": {
+      "Next": "下一次",
+      "Possible_weathers": "可能的天气",
+      "Available_fishes": "可获得的鱼",
+      "Fish_per_weather": "不同天气的上钩概率",
+      "Fish_per_bait": "不同钓饵的上钩概率",
+      "Fish_per_tug": "不同咬饵的上钩概率"
     },
     "NODE": {
       "Items": "物品",
@@ -1444,7 +1568,8 @@
     "Status": "状态",
     "Trait": "特性",
     "Any": "任何",
-    "Achievement": "成就"
+    "Achievement": "成就",
+    "Fishing-spot": "钓场"
   },
   "SEARCH_FILTERS": {
     "Level": "等级",
@@ -1461,7 +1586,9 @@
     "3D_model": "您可以在数据库中预览物品的3D外观。",
     "Levequests": "您可以在理符任务页面内制作理符清单和预览理符任务经验。",
     "Log_tracker": "您可以在笔记追踪页面中追踪您的采集、生产、捕鱼等笔记进度。",
-    "Desktop_app_overlay": "使用桌面应用程序时，您可以开启闹钟悬浮窗(应用下载链接见侧边栏)。"
+    "Desktop_app_overlay": "使用桌面应用程序时，您可以开启闹钟悬浮窗(应用下载链接见侧边栏)。",
+    "Start_desktop_before_game": "记得在启动游戏前启动 TeamCraft，以确保数据准确性",
+    "Middle_click_share_button": "在桌面应用中，可以使用鼠标中键点击顶栏的分享按钮，在浏览器中打开当前页面"
   },
   "RECIPE_FINDER": {
     "Title": "配方检索器",
@@ -1480,13 +1607,13 @@
     "Add_item": "添加物品",
     "Clipboard_content_malformed": "剪贴板内容格式不正确",
     "Import_from_clipboard": "从剪切板导入",
-    "Extension_tip": "您可以使用Lodestone inventory grabber插件复制您的雇员的背包到剪贴板： ",
+    "Extension_tip": "针对国际服玩家：您可以使用 Lodestone inventory grabber 插件将雇员的背包复制到剪贴板： ",
     "Extension_link": "从Chrome商店获取该插件",
     "Clear": "清空物品列表",
     "Clipboard_import_duplicates": "此处列出显示两次的物品，因为lodestone显示堆叠数，所以它们您的雇员背包内显示为分开的两格。",
     "Inventory": "目录",
-    "Copy_to_clipboard": "复制背包到剪贴板",
-    "Pool_copied": "背包已复制到您的剪贴板",
+    "Copy_to_clipboard": "将物品栏复制到剪贴板",
+    "Pool_copied": "物品栏已复制到剪贴板",
     "Sort_alphabetically": "按字母顺序整理",
     "Pages_range_label": "{{ total }} 物品中的{{ range0 }}-{{ range1 }}"
   },
@@ -1528,31 +1655,147 @@
     "Other": "其他"
   },
   "PACKET_CAPTURE": {
-    "Banner_title": "Packet capture is available",
-    "Button_label": "Enable packet capture",
-    "Banner_description": "You can enable packet capture to allow Teamcraft to read your FFXIV packets (a checkbox is also inside settings to enable/disable it), this allows to autofill lists as you obtain items, and to contribute data to Universalis, the marketboard aggragator.",
-    "Banner_description_warning": "Packet capture is against ToS, which is why it's disabled by default, please make sure to avoid telling everybody ingame and you'll be fine.",
-    "Empty_inventory": "Your inventory hasn't been loaded yet",
-    "Please_zone": "Please teleport to a random location and open your chocobo saddlebag once you are arrived to initialize the inventory system properly.",
-    "No_character_id": "No ingame character id set",
-    "Please_relog": "In order to contribute to Universalis, we need you to log out and in (ingame), this is only needed once.",
-    "Inventory_outdated": "Your inventory is outdated",
-    "Please_update_inventory_popup": "Please change zone (by either teleporting or entering a house) in order to update your inventory. This popup will close once it's done."
+    "Banner_title": "数据包捕获功能可用",
+    "Button_label": "启用数据包捕获",
+    "Banner_description": "您可以启用数据包捕获功能，以允许 Teamcraft 读取游戏的数据包（设置中也提供了此功能的开关）。此功能可以在您获得物品时自动填写清单中的内容，并向市场聚合平台 Universalis 贡献数据。",
+    "Banner_description_warning": "数据包捕获功能是违反 ToS 的，因此其默认被禁用。使用此功能时请不要告知其他玩家，以避免风险。",
+    "Empty_inventory": "您的物品栏尚未加载",
+    "Please_zone": "为了正确初始化物品栏数据，请传送至任意地点并在传送完成后打开陆行鸟鞍囊。",
+    "No_character_id": "未设置游戏内角色 ID",
+    "Please_relog": "为了向 Universalis 提交数据，您需要在游戏中登出并重新登录。此操作只需要执行一次。",
+    "Inventory_outdated": "您的物品栏尚未更新",
+    "Please_update_inventory_popup": "请切换区域（传送或进入房间）以更新物品栏内容。操作完成后此提示会自动关闭。"
   },
   "INVENTORY": {
-    "Title": "Inventory",
-    "Empty": "Empty inventory",
-    "Estimate_total_price": "Estimate total inventory price",
-    "Copy_to_clipboard": "Copy inventory to clipboard",
-    "Copied_to_clipboard": "Inventory copied to clipboard",
-    "Click_to_add_to_progression": "Click to add to item progression",
-    "Contribute_to_universalis": "Contribute data to universalis",
-    "Reset_inventory": "Reset this inventory",
+    "Title": "物品栏",
+    "Empty": "清空物品栏",
+    "Estimate_total_price": "估计物品栏总价格",
+    "Copy_to_clipboard": "将物品栏复制到剪贴板",
+    "Copied_to_clipboard": "物品栏已复制到剪贴板",
+    "Click_to_add_to_progression": "点击添加到物品进展",
+    "Contribute_to_universalis": "向 Universalis 提交数据",
+    "Reset_inventory": "重置此物品栏",
+    "Clean_all": "重置所有物品栏",
+    "Search_for_an_item": "搜索物品",
     "BAG": {
       "SaddleBag": "陆行鸟鞍囊",
-      "FC_chest": "FC chest",
-      "Bag": "物品栏",
-      "Other": "Other inventory"
+      "FC_chest": "部队储物柜",
+      "Bag": "背包",
+      "Other": "其他物品栏",
+      "Armory": "兵装库",
+      "RetainerMarket": "雇员出售列表"
     }
+  },
+  "INVENTORY_OPTIMIZER": {
+    "Title": "物品栏优化器",
+    "Ignore_item": "忽略对此物品的提示",
+    "Remove_ignore_item": "不再忽略对此物品的提示",
+    "Ignore_container": "忽略对此物品栏的提示",
+    "Remove_ignore_container": "不再忽略对此物品栏的提示",
+    "Show_ignored": "显示被忽略的物品",
+    "No_optimizations": "没有可用的优化",
+    "CAN_BE_BOUGHT": {
+      "Title": "可使用金币购买的物品",
+      "Message": "此物品可从 NPC 处购买，且没有蛮族声望限制。"
+    },
+    "DUPLICATES": {
+      "Title": "存放在多个物品栏的物品",
+      "Message": "物品还存放于： {{containers}}。"
+    },
+    "HAS_TOO_FEW": {
+      "Title": "持有数量非常少的物品",
+      "Message": "这件物品你只有 {{amount}} 个，值得保留吗？",
+      "Threshold_amount": "阀值"
+    }
+  },
+  "VERSION_LOCK": {
+    "Outdated": "你正在使用的 Teamcraft 版本已过期，无法正常工作",
+    "Refresh_or_download_latest": "如果您正在使用网页版，请按 Ctrl + F5 强制刷新；如果您正在使用桌面应用，请在这里下载最新版本： "
+  },
+  "GEARSETS": {
+    "Title": "配装",
+    "Rename_gearset": "修改配装名称",
+    "View_gearset": "查看配装",
+    "Edit_gearset": "修改配装",
+    "generate_list": "生成清单",
+    "Content": "Content",
+    "Stat_name": "Stat",
+    "Current_value": "Current value",
+    "Cap_value": "Cap",
+    "Add_materia": "添加魔晶石",
+    "No_materia": "无魔晶石",
+    "Value": "Value",
+    "Empty_slot": "可用孔",
+    "Filters": "Filters",
+    "Total_stats": "总属性",
+    "Total_materias_needed": "共需要魔晶石",
+    "Materia": "魔晶石",
+    "Amount_needed": "Amount",
+    "Modal_editor": "{{itemName}} 的魔晶石",
+    "Unavailable_slot": "此孔不可用",
+    "Job_cannot_be_changed": "Cannot be changed after creation",
+    "Pick_a_job": "选择一个职业",
+    "New_gearset": "新建配装",
+    "Please_input_ariyala_link": "请输入 Ariyala 链接",
+    "Link_not_supported": "不支持此链接",
+    "Compare_gearset": "Compare this gearset with another",
+    "Stats": "Stats",
+    "Materias": "魔晶石",
+    "Pieces": "Gear pieces",
+    "Import_from_ariyala": "从 Ariyala 导入",
+    "Import_from_lodestone": "从 Lodestone 导入",
+    "Import_using_pcap": "使用数据包捕获导入",
+    "Your_gearsets": "您的配装",
+    "Delete_gearset": "删除配装",
+    "Import_from_pcap_notice": "Switch to the desired gearset with the corresponding job to import it.",
+    "No_food_selected": "没有选择食物",
+    "Generate_list": "生成清单",
+    "Clone_gearset": "将此配装复制到您的账号",
+    "You_have_no_gearsets": "没有配装",
+    "Favorite_gearsets": "收藏配装",
+    "Update_from_pcap": "使用数据包捕获更新",
+    "Copy_as_text": "复制为文本",
+    "SLOT": {
+      "Body": "身体",
+      "Ears": "耳部",
+      "Feet": "脚部",
+      "FingerL": "左指",
+      "FingerR": "右指",
+      "Gloves": "手臂",
+      "Head": "头部",
+      "Legs": "腿部",
+      "MainHand": "主手",
+      "Neck": "颈部",
+      "OffHand": "副手",
+      "SoulCrystal": "灵魂水晶",
+      "Waist": "腰带",
+      "Wrists": "腕部"
+    },
+    "COMPARISON": {
+      "Compare_popup_title": "比较 {{setName}} ...",
+      "Error_title": "无法比较配装",
+      "Error_description": "请确保您输入的配装存在，且与当前配装类型相同（主属性相同）",
+      "Type": "配装类型",
+      "Ariyala": "来自 Ariyala 的配装",
+      "External_gearset": "其他人的 Teamcraft 配装",
+      "Personal_gearset": "您的配装",
+      "Paste_link_step_title": "配装链接",
+      "Pick_your_gearset": "选择您的配装",
+      "Submit": "比较",
+      "Your_gearset": "您的配装",
+      "Other_gearset": "其他配装",
+      "Diff": "差异",
+      "Avg_melding_chances": "平均禁忌镶嵌成功率"
+    }
+  },
+  "FOLDERS": {
+    "New_folder": "新建文件夹",
+    "Delete_folder": "删除文件夹",
+    "Rename_folder": "重命名文件夹",
+    "View_folder": "打开文件夹",
+    "Content": "内容",
+    "Folder_not_found": "找不到文件夹",
+    "Your_folders": "您的文件夹",
+    "Favorite_folders": "收藏文件夹"
   }
 }

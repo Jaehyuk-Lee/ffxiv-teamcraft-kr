@@ -36,7 +36,8 @@
     "Reset_filters": "Réinitialiser les filtres",
     "Too_many_results_warning": "Cette recherche a donné plus de 100 résultats. Notre source de données est limitée à 100 résultats, vous devriez affiner vos filtres pour obtenir un résultat plus spécifique.",
     "Share_url": "Copier l'url de recherche dans le presse-papiers",
-    "Share_url_copied": "Url de recherche copié dans le presse-papiers"
+    "Share_url_copied": "Url de recherche copié dans le presse-papiers",
+    "Only_craftable": "Recettes uniquement"
   },
   "Use_as_default_character": "Utiliser comme personnage par défaut",
   "Download_desktop_app": "Télécharger l'application",
@@ -142,7 +143,17 @@
     "User": "Utilisateur",
     "Tables": "Tableau",
     "Pie_charts": "Graphiques circulaires",
-    "Read_more_on_wiki": "Lire plus de détails sur le wiki"
+    "Read_more_on_wiki": "Lire plus de détails sur le wiki",
+    "Apply": "Appliquer",
+    "Open_link": "Ouvrir un lien du site web",
+    "Unknown": "Inconnu",
+    "Minimum": "Minimum",
+    "Maximum": "Maximum",
+    "Average": "Moyenne",
+    "Hq": "HQ",
+    "Nq": "QN",
+    "Share_link_copied": "Lien copié dans le presse-papiers",
+    "Copy": "Copier"
   },
   "ALARMS": {
     "Title": "Alarmes",
@@ -160,6 +171,7 @@
     "Volume": "Volume",
     "Macro_copied": "Macro copiée dans votre presse-papiers",
     "Open_overlay": "Ouvrir l'overlay",
+    "Open_alarms_overlay": "Ouvrir l'overlay des alarmes",
     "More_available": "et {{amount}} autres...",
     "Node_content": "Contenu du point de récolte",
     "Toggle_collapse": "Ouvrir/fermer tous les groupes",
@@ -249,7 +261,7 @@
   "Login": "Identification",
   "Disconnect": "Déconnexion",
   "Password": "Mot de passe",
-  "Password_Confirmation": "Confirmation",
+  "Password_Confirmation": "Confirmez le mot de passe",
   "Submit": "Soumettre",
   "Invalid_credentials": "Mauvais email ou mot de passe",
   "Not_verified": "Non vérifié",
@@ -336,6 +348,8 @@
     "no_panel_borders": "Désactiver les bordures autour des panneaux dans les pages du site",
     "Desktop": "Appli",
     "Always_on_top": "Toujours au premier plan",
+    "Start_minimized": "Démarrer en mode réduit",
+    "Always_quit": "Quitter en cliquant sur le bouton de fermeture (au lieu de minimiser)",
     "Check_for_update": "Chercher une mise à jour",
     "Downloading_update": "Téléchargement en cours...",
     "No_update_available": "Pas de mise à jour disponible",
@@ -374,8 +388,15 @@
     "Disable_search_debounce": "Désactiver la recherche auto (seul appuyer sur Entrée déclenchera la recherche)",
     "Enable_packet_capture": "Capture de paquets activée (ajoute des fonctionnalités d'inventaire en temps réel)",
     "Packet_capture_info": "Capturer des paquets est contre le CLUF (Contrat de license de l'utilisateur final), la même raison pour laquelle ACT est contre le CLUF. Mais Square Enix le tolère à moins que vous ne vous soyez entrain de le répéter à tout le monde en jeu. Ne faites rien et vous ne risquerez rien.",
+    "Enable_autofill_by_default": "Activer le remplissage automatique par défaut",
+    "Enable_autofill_notification_by_default": "Activer la notification de complétion automatique par défaut",
+    "Enable_autofill_hq_filter": "Remplissage automatique uniquement en utilisant des éléments hq lorsque l'élément est requis comme HQ",
     "Contribute_to_universalis": "Contribuer à Universalis",
-    "Persist_inventory": "Enregistrer l'inventaire en base de données (pour partager avec la version web)",
+    "Track_items_on_sale": "Suivre les objets en vente par vos servants (nécessite un redémarrage/rafraîchissement)",
+    "Performance_mode": "Mode hautes perfs",
+    "Performance_mode_explain": "Supprime les images des éléments dans les listes, ainsi que les menus (conserve uniquement les boutons) pour réduire le stress sur le navigateur et l'application",
+    "Change_email": "Changer votre email",
+    "Change_email_success": "Email modifié",
     "COLORS": {
       "Background": "Couleur d'arrière-plan",
       "Primary": "Couleur principale",
@@ -388,6 +409,13 @@
     "COPY_TYPE": {
       "Classic": "Copier le nom de l'objet",
       "Isearch": "Copier la macro de recherche en jeu (/isearch)"
+    },
+    "CATEGORIES": {
+      "Autofill_completion": "Son de notification de complétion",
+      "Packet_capture": "Capture de paquets",
+      "Theme": "Thème",
+      "Search": "Recherche",
+      "Other": "Autre"
     }
   },
   "PROFILE": {
@@ -425,7 +453,7 @@
     "Lists_merged": "Listes fusionnées avec succès !",
     "Shared_lists": "Listes partagées avec vous",
     "Add_selection": "Ajouter la sélection à une liste",
-    "Add_selection_to_list": "Add selection to list",
+    "Add_selection_to_list": "Ajouter la sélection la liste",
     "Your_lists": "Vos listes",
     "Outdated_tag": "Pas à jour",
     "No_lists": "Vous n'avez pas de listes",
@@ -464,16 +492,31 @@
     "Copy_list_as_text": "Copier la liste en format textuel",
     "Copied_as_text": "Contenu copié dans le presse-papiers",
     "Total_price": "Prix total (échanges et gils)",
+    "Ignore_currency": "Ignorer cette devise (ne fonctionne que s'il y a une autre façon d'acheter)",
     "Total_trade_price": "Total : ",
     "Add_all_alarms": "Ajouter toutes les alarmes pour cette liste",
     "History": "Historique",
     "Items_count": "{{amount}} items",
     "Show_craftable_amount": "Voir la quantité fabricable",
+    "Show_vendors": "Afficher le premier vendeur disponible pour chaque objet",
     "Optimized_full_path": "Afficher le chemin optimisé complet (le moins cher et le plus rapide)",
     "Quick_layout_swap": "Changement de layout rapide",
     "Offline": "Hors ligne",
     "Offline_help": "Les listes hors ligne sont stockées dans le navigateur ou l'application, elles sont uniquement disponibles dans cette instance et ne peuvent pas être partagées, mais elles sont plus rapides car elles ne nécessitent pas d'appels réseau.",
     "Mark_whole_panel_done": "Marquer le contenu du panneau comme terminé",
+    "Set_color": "Attribuer une couleur",
+    "Go_to_pinned": "Aller à la liste épinglée (clic droit pour désépingler)",
+    "Reset_panel": "Réinitialiser tous les objets de ce panneau",
+    "COLORS": {
+      "RED": "Rouge",
+      "GREEN": "Vert",
+      "YELLOW": "Jaune",
+      "BLUE": "Bleu",
+      "PURPLE": "Violet",
+      "ORANGE": "Orange",
+      "PINK": "Rose",
+      "NONE": "Aucune"
+    },
     "ROTATION": {
       "Attach": "Attacher une rotation",
       "Detach": "Détacher la rotation",
@@ -522,6 +565,8 @@
     "Disable_HQ_suggestions": "Désactiver les suggestions HQ",
     "Amount_craftable": "Vous pouvez fabriquer {{amount}}",
     "Add_item": "Ajouter un objet",
+    "List_large": "Ceci est une grande liste",
+    "Enable_performance_mode": "Vous pouvez activer le mode hautes performances dans les paramètres afin d'obtenir un rendu plus rapide",
     "List_too_large": "Liste trop longue",
     "List_too_large_description": "Cette liste est trop longue et pourrait être supprimée automatiquement par le système de base de données en raison de quotas imposés si vous y ajoutez plus d'objets.",
     "Add_to_another_list": "Ajouter à une autre liste",
@@ -530,6 +575,13 @@
     "Contributions_popup": "Statistiques des contributions",
     "Autofill_details": "Saisissez la progression au fur et à mesure que vous obtenez des éléments ingame, en utilisant la capture de paquets. Ceci est désactivé si vous quittez la page de liste, pour éviter les entrées non désirées.",
     "Autofill": "Saisie auto",
+    "Autofill_notification_details": "Afficher une notification lorsqu'un élément est terminé avec le remplissage automatique.",
+    "Autofill_notification": "Notification de complétion",
+    "Autofill_notification_title": "Objet complété",
+    "Autofill_notification_body": "{{itemName}} est maintenant complété pour la liste {{listName}}",
+    "Fill_with_inventory": "Remplir avec l'inventaire (utilise uniquement l'inventaire personnel)",
+    "Filter_items_done": "Ignorer les objets complétés",
+    "Inventory_synthesis": "Synthèse de l'inventaire (éléments par inventaire)",
     "LAYOUT_DIALOG": {
       "Title": "Affichage",
       "Add_panel": "Ajouter une catégorie",
@@ -567,6 +619,11 @@
       "Order_by": "Trier par",
       "Order": "Ordre",
       "Tag_filter": "Filtre de tags"
+    },
+    "OVERLAY": {
+      "Open": "Ouvrir l'overlay de liste",
+      "No_display": "Ouvrir une liste dans la fenêtre principale pour commencer",
+      "No_panel_selected": "Sélectionnez un panneau en utilisant les boutons ci-dessus"
     }
   },
   "LIST_TAGS": {
@@ -645,6 +702,7 @@
     "Title": "Parcours optimisé",
     "Steps": "Étapes",
     "Loading_path": "Chargement du chemin optimisé (peut prendre plusieurs secondes)",
+    "You_are_here": "Vous êtes ici",
     "STEP": {
       "Gathering": "Récolter {{amount}} (total : {{total}})",
       "Hunting": "Obtenir {{amount}} sur les monstres (total : {{total}})",
@@ -721,9 +779,11 @@
   },
   "SIMULATOR": {
     "Title": "Simulateur de crafts",
+    "Include_stats": "Inclure les stats",
     "Fixed_notification_number": "Notification fixe",
     "Starting_echo_number": "Numéro de référence",
     "Break_on_reclaim": "Découper la macro de manière à pouvoir utiliser Récupération",
+    "Break_before_byregots_blessing": "Diviser les macros avant la bénédiction de Byregot",
     "Include_consumables_notification": "Inclure une notification pour les consommables",
     "Consumable_notification": "Utilisez {{buffs}}",
     "Extra_wait": "Temps d'attente supp.",
@@ -788,6 +848,8 @@
     "Rotation_solver": "Résolveur de rotations",
     "Recipe_picker_placeholder": "Entrez le nom de la recette que vous voulez simuler",
     "Could_not_find_minstats": "Impossible de trouver les statistiques minimales pour cette rotation",
+    "Remove_final_appraisal": "Supprimer le buff \"Dernières vérifications\"",
+    "Total_macro_duration": "Durée totale de la macro : {{duration}}s.",
     "STATE": {
       "Excellent": "Excellent",
       "Good": "Bon",
@@ -906,26 +968,20 @@
     "ROTATION_TIPS": {
       "Use_inner_quiet": "Si vous souhaitez ajouter de la qualité sur votre rotation, elle se doit d'intégrer Calme Intérieur afin d'ajouter un bonus non négligeable et de pouvoir utiliser des actions comme la Bénédiction de Byregot.",
       "Use_inner_quiet_before_quality_increase": "Calme Intérieur doit être appliqué avant toute autre action afin de maximiser le gain en qualité.",
-      "Use_ingenuity_I_instead": "Utiliser Ingéniosité I au lieu d'Ingéniosité II est suffisant pour finir la fabrication et ainsi économiser 8 PS.",
-      "Use_cz_earlier": "Zone de confort devrait être placé plus tôt dans la rotation pour profiter plus rapidement de l'effet de restauration",
-      "Use_reclaim": "Vous disposez d'assez de PS pour utiliser Récupération, il peut être judicieux de l'ajouter pour récupérer les matériaux si jamais le fabrication venait à rater",
-      "Use_byregot_brow_low_iq_stacks": "Vous avez utilisé Bénédiction de Byregot avec moins de 6 cumuls de Calme Intérieur. Utiliser Contenance de Byregot à la place permettrait de gagner plus de qualité.",
       "Use_byregot_blessing_high_iq_stacks": "Vous avez utilisé Contenance de Byregot avec plus de 6 cumuls de Calme Intérieur. Utiliser Bénédiction de Byregot à la place permettrait de gagner plus de qualité.",
-      "Use_sh1_instead": "Utiliser Main Sûre I au lieu de Main Sûre II au tour {{index}} produirait le même résultat pour 3 PS de moins.",
-      "Use_sh2_instead": "Utiliser Main Sûre II au lieu de Main Sûre I au tour {{index}} permettrait de gagner en fiabilité sur la rotation pour 3 PS de plus.",
-      "Use_pbp_first": "Pièce par pièce doit être utilisé avant toute autre action de progression afin de maximiser son effet car il se base sur la progression restante",
-      "Use_mume_if_pbp": "Vous devriez utiliser Mémoire Musculaire au premier tour pour remplacer Pièce par Pièce et gagner 9 PS",
       "Use_observe_before_focused": "Vous devriez utiliser Observation avant l'action au tour {{index}} afin de monter son taux de réussite à 100%.",
       "Use_durability_restoration_later": "Vous devriez utiliser l'action de réparation au tour {{index}} plus tôt afin d'éviter de gâcher une partie de son effet.",
       "Use_patient_touch_faster": "Vous devriez utiliser Ouvrage appliqué avant toute autre action de qualité afin de minimiser la perte de cumuls de Calme Intérieur en cas d'échec.",
-      "Use_advanced_touch_instead": "Vous avez utilisé Ouvrage de base puis Ouvrage avancé au tour {{index}}, utiliser deux Ouvrages standards produit le même résultat pour 2 PS de moins.",
       "Do_not_overlap_buffs": "Vous avez écrasé le buff appliqué au tour {{overlappedIndex}} avec le buff appliqué au tour {{overlappingIndex}}, vous appliquer le second buff plus tard pour éviter de perdre des tours d'effet sur le premier.",
       "Use_byregot_brow_5_stacks": "Vous avez utilisé Bénédiction de Byregot avec 5 cumuls de Calme Intérieur. Utiliser Contenance de Byregot à la place permettrait de gagner autant de qualité en dépensant 6 PS de moins.",
       "Use_ingenuity_before_byregot": "Vous devriez utiliser Ingeniosité avant l'action de Byregot afin d'obtenir un bonus sur le gain de qualité.",
       "Use_more_quality_actions": "Vous avez encore de la solidité à la fin de l'artisanat, vous devriez probablement l'utiliser pour ajouter des actions de qualité.",
-      "Use_prudent_touch_manipulation": "Comme vous êtes niveau 66+, vous devriez utiliser le combo Manipulation II + Ouvrage parcimonieux afin d'obtenir un avantage maximum de qualité et plus de fiabilité.",
+      "Use_prudent_touch_manipulation": "Comme vous êtes niveau 66+, vous devriez utiliser le combo Manipulation + Ouvrage parcimonieux afin d'obtenir un avantage maximum de qualité et plus de fiabilité.",
       "Use_rapid_synthesis_earlier": "Vous ne devriez pas utiliser la Synthèse Rapide comme une action finale, la mettre plus tôt pour pouvoir gérer l'échec de l'action est mieux pour la fiabilité de votre rotation.",
-      "Use_reflect_earlier": "Vous devriez utiliser l'action \"Atout : Sérénité\" plus tôt pour augmenter a puissance des actions de qualité suivantes."
+      "Do_not_use_brand_without_name": "N'utilisez pas de Marque des Éléments sans Nom des Éléments actifs.",
+      "Avoid_using_good_actions": "Évitez d'utiliser des actions qui nécessitent un état \"Bon\" dans une macro, car cet état n'est pas prédictible",
+      "Requires_reuse_to_proc": "Votre rotation nécessite récupération de chutes pour fonctionner correctement, assurez-vous qu'elle peut fonctionner sans proc.",
+      "Use_reuse": "Votre rotation atteint 100% HQ et vous avez assez de PS pour utiliser Récupération de chutes, pensez à l'ajouter pour récupérer des ingrédients supplémentaires."
     }
   },
   "PRICING": {
@@ -956,6 +1012,7 @@
     "Global_exp": "Utiliser l'exp global",
     "More_on_gamerescape": "Plus d'informations sur gamerescape",
     "Deliver_to": "Remettre à {{placename}}",
+    "Hide_large": "Masquer les grands mandats",
     "INTRO": {
       "Title": "Mandats",
       "First_line": "Cette page vous permet de chercher un ou plusieurs mandat(s) pour créer une liste à partir d'un ou plusieurs résultat(s)",
@@ -1019,7 +1076,8 @@
       "LIST_PROGRESSION": "Avancement des matériaux",
       "FINAL_LIST_PROGRESSION": "Avancement des objets finaux",
       "USER_ASSIGNMENT": "Affectation d'un utilisateur",
-      "ITEM_COMPLETION": "Progression"
+      "ITEM_COMPLETION": "Progression",
+      "ITEM_PROGRESSION": "Progression d'un objet"
     }
   },
   "MARKETBOARD": {
@@ -1068,7 +1126,8 @@
   "UPDATE": {
     "New_update_available": "Une nouvelle mise à jour est disponible ! ",
     "New_update_available_desktop": "Une nouvelle mise à jour est disponible !\nCliquez ici pour la télécharger et l'installer.",
-    "Web_instructions": "Veuillez recharger la page pour obtenir la version la plus récente."
+    "Web_instructions": "Veuillez recharger la page pour obtenir la version la plus récente.",
+    "Downloading_update": "Téléchargement de la mise à jour en cours, un redémarrage vous sera proposé une fois celle-ci téléchargée"
   },
   "LOG_TRACKER": {
     "Title": "Carnets",
@@ -1289,9 +1348,74 @@
     "Currencies": "Devises",
     "Rowena_splendor": "Splendeurs de Rowena (étoile = +20% bonus)",
     "Unlocks": "Déverrouille",
+    "Jump_to_page": "Accès rapide à une autre page",
+    "Ishgard_restoration": "Restauration d'Ishgard",
     "ITEM": {
       "Masterpiece_base": "BASE",
       "Masterpiece_bonus": "BONUS"
+    },
+    "FISH": {
+      "Hour": "Heure du jour",
+      "Etime": "Heure éorzéenne",
+      "Misses_popup_title": "Ratés sur ce spot",
+      "Show_misses": "Afficher les echecs",
+      "Baits": "Appât utilisé",
+      "Hookset_and_tug": "Ferrages et touches",
+      "Weathers": "Météo",
+      "Weather_transitions": "Transitions météorologiques",
+      "Hooksets": "Ferrages",
+      "Tugs": "Touches",
+      "Seconds": "Secondes",
+      "Bite_time": "Temps entre le lancé et la touche",
+      "Spots": "Points de récolte",
+      "Min_gathering": "Collecte min",
+      "Min_size": "Taille min",
+      "Max_size": "Taille max",
+      "Avg_size": "Taille moy",
+      "Used_as_mooch_for": "Utilisé comme vif pour",
+      "No_known_mooch_usage": "Aucune utilisation en tant que vif connue pour ce poisson",
+      "No_spot_filter": "Aucun filtre de spot",
+      "Chances_for_transition": "Chances que cette transition se produise",
+      "Weather_chances": "Chances pour chaque météo d'apparaître",
+      "Bait": "Appât",
+      "Refresh_data": "Actualiser les données",
+      "TUG": {
+        "Light": "Légère",
+        "Medium": "Normale",
+        "Big": "Puissante"
+      },
+      "OVERLAY": {
+        "Open": "Ouvrir l'overlay de pêche",
+        "Bait": "Appât utilisé",
+        "Tug": "Touche",
+        "Hookset": "Ferrage",
+        "Fishing": "Pêche",
+        "Mooch": "Dernier lancé était un vif",
+        "Mooch_report": "Vif",
+        "Current_weather": "Météo actuelle",
+        "Previous_weather": "Météo précédente",
+        "Spot": "Point de pêche",
+        "Possible_fish": "Poissons possibles",
+        "Stats": "Stats",
+        "Statuses": "Buffs",
+        "No_statuses": "Aucun buff pertinent",
+        "Total_reports": "Nombre de rapports pour cette session",
+        "Last_report": "Dernier rapport",
+        "Fish": "Poisson",
+        "Size": "Taille",
+        "ERRORS": {
+          "Unknown_map": "Carte inconnue, changer de zone pour la charger.",
+          "No_bait": "Aucun appât détecté, changez d'appât une fois pour régler le soucis."
+        }
+      }
+    },
+    "FISHING_SPOT": {
+      "Next": "Suivant",
+      "Possible_weathers": "Météos possibles",
+      "Available_fishes": "Poissons disponibles",
+      "Fish_per_weather": "Poisson par météo",
+      "Fish_per_bait": "Poisson par appât",
+      "Fish_per_tug": "Poisson par touche"
     },
     "NODE": {
       "Items": "Objets",
@@ -1444,7 +1568,8 @@
     "Status": "État ",
     "Trait": "Trait",
     "Any": "Tout",
-    "Achievement": "Haut-fait"
+    "Achievement": "Haut-fait",
+    "Fishing-spot": "Point de pêche"
   },
   "SEARCH_FILTERS": {
     "Level": "Niveau",
@@ -1461,7 +1586,9 @@
     "3D_model": "Vous pouvez visualiser le modèle 3D des éléments à l'intérieur de la base de données.",
     "Levequests": "Vous pouvez préparer des listes de mandats et prévisualiser leur exp dans la page Mandats.",
     "Log_tracker": "Vous pouvez suivre la progression de votre journal (collecte, fabrication, pêche) à l'intérieur de la page carnets.",
-    "Desktop_app_overlay": "Vous pouvez avoir une fenêtre flottante pour afficher vos alarmes avec l'application de bureau Teamcraft, lien dans la barre latérale."
+    "Desktop_app_overlay": "Vous pouvez avoir une fenêtre flottante pour afficher vos alarmes avec l'application de bureau Teamcraft, lien dans la barre latérale.",
+    "Start_desktop_before_game": "N'oubliez pas de démarrer l'application de bureau avant le jeu pour assurer l'intégrité maximale des données",
+    "Middle_click_share_button": "Dans l'application de bureau, cliquez avec le bouton molette sur le bouton de partage dans la barre supérieure pour ouvrir la page actuelle dans le navigateur"
   },
   "RECIPE_FINDER": {
     "Title": "Recherche de recette",
@@ -1548,11 +1675,127 @@
     "Click_to_add_to_progression": "Cliquez pour ajouter à la progression de l'élément",
     "Contribute_to_universalis": "Contribution des données à l'universalis",
     "Reset_inventory": "Réinitialiser cet inventaire",
+    "Clean_all": "Réinitialiser tous vos inventaires",
+    "Search_for_an_item": "Rechercher un objet",
     "BAG": {
       "SaddleBag": "Sacoche Chocobo",
       "FC_chest": "Coffre de compagnie",
       "Bag": "Inventaire",
-      "Other": "Autre inventaire"
+      "Other": "Autre inventaire",
+      "Armory": "Arsenal",
+      "RetainerMarket": "En vente par les servants"
     }
+  },
+  "INVENTORY_OPTIMIZER": {
+    "Title": "Optimiseur d'inventaire",
+    "Ignore_item": "Ignorer cette astuce pour cet objet",
+    "Remove_ignore_item": "Ne plus ignorer cette astuce pour cet objet",
+    "Ignore_container": "Ignorer cette astuce pour cet inventaire",
+    "Remove_ignore_container": "Ne plus ignorer cette astuce pour cet inventaire",
+    "Show_ignored": "Afficher les objets ignorés",
+    "No_optimizations": "Aucune optimisation disponible",
+    "CAN_BE_BOUGHT": {
+      "Title": "Objets qui peuvent être achetés avec des gils",
+      "Message": "Cet objet peut être acheté aux PNJ avec des gils et n'a pas besoin de réputation de tribu."
+    },
+    "DUPLICATES": {
+      "Title": "Éléments qui sont dupliqués à travers plusieurs conteneurs",
+      "Message": "Cet objet est également présent dans : {{containers}}."
+    },
+    "HAS_TOO_FEW": {
+      "Title": "Objets que vous avez en très petite quantité",
+      "Message": "Vous n'avez que {{amount}} de cet objet, est-ce nécessaire de les stocker?",
+      "Threshold_amount": "Seuil minimum"
+    }
+  },
+  "VERSION_LOCK": {
+    "Outdated": "Vous utilisez une version obsolète de Teamcraft",
+    "Refresh_or_download_latest": "Si vous utilisez le site, appuyez simplement sur Ctrl + F5 pour rafraîchir la page et le cache, si vous utilisez l'application de bureau, téléchargez la dernière version ici : "
+  },
+  "GEARSETS": {
+    "Title": "Tenues",
+    "Rename_gearset": "Renommer la tenue",
+    "View_gearset": "Voir la tenue",
+    "Edit_gearset": "Modifier la tenue",
+    "generate_list": "Générer une liste",
+    "Content": "Contenu",
+    "Stat_name": "Stat",
+    "Current_value": "Valeur actuelle",
+    "Cap_value": "Max.",
+    "Add_materia": "Ajouter une matéria",
+    "No_materia": "Aucune matéria",
+    "Value": "Valeur",
+    "Empty_slot": "Emplacement vide",
+    "Filters": "Filtres",
+    "Total_stats": "Stats totales",
+    "Total_materias_needed": "Total des matérias requises",
+    "Materia": "Matéria",
+    "Amount_needed": "Quantité",
+    "Modal_editor": "Matérias pour {{itemName}}",
+    "Unavailable_slot": "Emplacement indisponible",
+    "Job_cannot_be_changed": "Ne peut pas être modifié après la création",
+    "Pick_a_job": "Choisir un job",
+    "New_gearset": "Nouvelle tenue",
+    "Please_input_ariyala_link": "Veuillez entrer un lien ariyala",
+    "Link_not_supported": "Lien non pris en charge",
+    "Compare_gearset": "Comparer cette tenue avec une autre",
+    "Stats": "Stats",
+    "Materias": "Matérias",
+    "Pieces": "Pièces d'équipement",
+    "Import_from_ariyala": "Importer depuis Ariyala",
+    "Import_from_lodestone": "Importer depuis Lodestone",
+    "Import_using_pcap": "Importer en utilisant la capture de paquets",
+    "Your_gearsets": "Vos tenues",
+    "Delete_gearset": "Supprimer la tenue",
+    "Import_from_pcap_notice": "Changez pour la tenue voulue en jeu, avec le job désigné pour l'importer dans Teamcraft.",
+    "No_food_selected": "Aucune nourriture sélectionnée",
+    "Generate_list": "Générer une liste",
+    "Clone_gearset": "Créer une copie sur votre compte",
+    "You_have_no_gearsets": "Vous n'avez pas de tenues",
+    "Favorite_gearsets": "Tenues favorites",
+    "Update_from_pcap": "Mettre à jour en utilisant la capture de paquets",
+    "Copy_as_text": "Copy this gearset as text",
+    "SLOT": {
+      "Body": "Torse",
+      "Ears": "Oreilles",
+      "Feet": "Pieds",
+      "FingerL": "Doigt gauche",
+      "FingerR": "Doigt droit",
+      "Gloves": "Gants",
+      "Head": "Tête",
+      "Legs": "Jambes",
+      "MainHand": "Main directrice",
+      "Neck": "Cou",
+      "OffHand": "Main secondaire",
+      "SoulCrystal": "Cristal d’âme",
+      "Waist": "Taille",
+      "Wrists": "Poignets"
+    },
+    "COMPARISON": {
+      "Compare_popup_title": "Comparer {{setName}} avec...",
+      "Error_title": "Impossible de comparer ces deux tenues",
+      "Error_description": "Merci de vérifier que la seconde tenue existe et utilise le même type d'équipement (la même stat principale)",
+      "Type": "Type de tenue",
+      "Ariyala": "Une tenue Ariyala",
+      "External_gearset": "Une tenue Teamcraft d'un autre joueur",
+      "Personal_gearset": "Une de vos tenues",
+      "Paste_link_step_title": "Lien vers la tenue",
+      "Pick_your_gearset": "Choisissez votre tenue",
+      "Submit": "Comparer",
+      "Your_gearset": "Votre tenue",
+      "Other_gearset": "L'autre tenue",
+      "Diff": "Différence",
+      "Avg_melding_chances": "Chances moyennes de sertissage"
+    }
+  },
+  "FOLDERS": {
+    "New_folder": "Nouveau dossier",
+    "Delete_folder": "Supprimer le dossier",
+    "Rename_folder": "Renommer le dossier",
+    "View_folder": "Ouvrir le dossier",
+    "Content": "Contenu",
+    "Folder_not_found": "Dossier non trouvé",
+    "Your_folders": "Vos dossiers",
+    "Favorite_folders": "Dossiers favoris"
   }
 }

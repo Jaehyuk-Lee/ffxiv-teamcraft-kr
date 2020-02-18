@@ -17,13 +17,13 @@
            nz-tooltip target="_blank">
           <i nz-icon nzType="question-circle"></i>
         </a>
-        <div *ngIf="(newVersionAvailable$ | async) && platformService.isDesktop() && !downloading">
+        <div *ngIf="(newVersionAvailable$ | async ) && platformService.isDesktop() && !checkingForUpdate && !downloading">
           <button (click)="updateDesktopApp()" [nzTitle]="'UPDATE.New_update_available_desktop' | translate" nz-button nz-tooltip
                   nzPlacement="bottom"
                   nzShape="circle"
                   nzType="primary"><i nz-icon nzType="download"></i></button>
         </div>
-        <div *ngIf="downloading" class="download-spinner">
+        <div *ngIf="checkingForUpdate" class="download-spinner" nz-tooltip [nzTitle]="'UPDATE.Downloading_update' | translate">
           <nz-spin [nzSimple]="true"></nz-spin>
         </div>
         <div class="tips-container" fxFlex="1 1 auto" fxLayout="column" fxLayoutAlign="center center">
@@ -33,6 +33,7 @@
                 <i nz-icon nzType="arrow-left"></i>
               </button>
               <button (cbOnSuccess)="afterPathNameCopy()" cbContent="https://ffxivteamcraft.com{{getPathname()}}" ngxClipboard nz-button
+                      (mouseup)="$event.which === 2 ? openInBrowser('https://ffxivteamcraft.com' + getPathname()) : null"
                       nzShape="circle">
                 <i nz-icon nzTheme="outline" nzType="share-alt"></i>
               </button>
@@ -46,6 +47,16 @@
           </div>
         </div>
         <ul [nzMode]="'horizontal'" [nzTheme]="'dark'" class="right-menu" nz-menu>
+          <ng-container *ngIf="pinnedList$ | async as pinnedList">
+            <li *ngIf="pinnedList !== 'none'"
+                class="ant-menu-item"
+                nzPlacement="bottom"
+                (contextmenu)="$event.preventDefault();listsFacade.unpin()"
+                nz-tooltip [nzTitle]="'LIST.Go_to_pinned' | translate"
+                routerLink="/list/{{pinnedList}}">
+              <i nz-icon nzType="pushpin" nzTheme="outline"></i>
+            </li>
+          </ng-container>
           <li class="ant-menu-item" fxFlex fxHide.lt-sm fxLayout="column" fxShow routerLink="/support-us"
               routerLinkActive="ant-menu-item-selected">
             {{'SUPPORT_US.Title' | translate}}
@@ -58,6 +69,10 @@
             <a (click)="openedApp()" [href]="desktopUrl">
               <i iconfont="icon-openinapp" nz-icon></i>
             </a>
+          </li>
+          <li *ngIf="platformService.isDesktop()" [nzTitle]="'COMMON.Open_link' | translate" class="clock ant-menu-item" fxFlex fxHide.lt-sm fxShow
+              nz-tooltip nzPlacement="bottom" (click)="openLink()">
+            <i nz-icon nzType="laptop" nzTheme="outline"></i>
           </li>
           <li *ngIf="notifications$ | async as notifications" [nzContent]="notificationsTemplate" class="ant-menu-item" nz-popover
               nzPlacement="bottomRight">
@@ -170,7 +185,7 @@
         <div class="flex-container" fxLayout="column" fxLayoutAlign="space-between">
           <div>
             <ul [nzInlineCollapsed]="collapsedSidebar" [nzMode]="'inline'" [nzTheme]="'dark'" nz-menu>
-              <li [nzOpen]="true" nz-submenu>
+              <li [(nzOpen)]="sidebarState.general" (nzOpenChange)="settings.sidebarState = sidebarState" nz-submenu>
                 <span title>
                   <i nz-icon nzType="home"></i>
                   <span>{{'SIDEBAR.General' | translate}}</span>
@@ -206,9 +221,16 @@
                       <span class="nav-text">{{'SIMULATOR.Rotations' | translate}}</span>
                   </span>
                 </a>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/gearsets"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span fxLayout="row">
+                      <span class="companion-svg svg-icon">&#x0F202;</span>
+                      <span class="nav-text">{{'GEARSETS.Title' | translate}}</span>
+                  </span>
+                </a>
               </li>
 
-              <li [nzOpen]="true" nz-submenu>
+              <li [(nzOpen)]="sidebarState.sharing" (nzOpenChange)="settings.sidebarState = sidebarState" nz-submenu>
                 <span title>
                   <i nz-icon nzType="share-alt"></i>
                   <span>{{'SIDEBAR.Sharing' | translate}}</span>
@@ -229,7 +251,7 @@
                 </a>
               </li>
 
-              <li [nzOpen]="true" nz-submenu>
+              <li [(nzOpen)]="sidebarState.gathering" (nzOpenChange)="settings.sidebarState = sidebarState" nz-submenu>
                 <span title>
                   <i class="companion-svg anticon">
                     &#xF121;
@@ -253,11 +275,18 @@
                 </a>
               </li>
 
-              <li nz-submenu>
+              <li [(nzOpen)]="sidebarState.helpers" (nzOpenChange)="settings.sidebarState = sidebarState" nz-submenu>
                 <span title>
                   <i nz-icon nzType="appstore"></i>
                   <span>{{'SIDEBAR.Helpers' | translate}}</span>
                 </span>
+                <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/inventory-optimizer"
+                   routerLinkActive="ant-menu-item-selected">
+                  <span>
+                      <i nz-icon nzType="container"></i>
+                      <span class="nav-text">{{'INVENTORY_OPTIMIZER.Title' | translate}}</span>
+                  </span>
+                </a>
                 <a (click)="onNavLinkClick()" class="menu-link" nz-menu-item routerLink="/levequests"
                    routerLinkActive="ant-menu-item-selected">
                   <span>
@@ -323,7 +352,7 @@
                 </a>
               </li>
 
-              <li nz-submenu>
+              <li [(nzOpen)]="sidebarState.other" (nzOpenChange)="settings.sidebarState = sidebarState" nz-submenu>
                 <span title>
                   <i nz-icon nzType="info-circle"></i>
                   <span>{{'SIDEBAR.Other' | translate}}</span>
@@ -345,7 +374,27 @@
               </li>
             </ul>
           </div>
-          <div [fxLayout]="collapsedSidebar?'column':'row'" class="social-buttons" fxLayoutAlign="center center"
+
+          <div fxFlex="1 1 auto"></div>
+
+          <div [fxLayout]="collapsedSidebar?'column':'row'" fxLayoutAlign="center center" fxLayoutGap="5px" class="overlay-buttons" *ngIf="desktop">
+            <button nz-button nzShape="circle" nz-tooltip [nzTitle]="'ALARMS.Open_alarms_overlay' | translate" (click)="openAlarmsOverlay()">
+              <i nz-icon nzType="bell"></i>
+            </button>
+            <button nz-button nzShape="circle"
+                    *ngIf="ipc.machinaToggle"
+                    nz-tooltip [nzTitle]="'DB.FISH.OVERLAY.Open' | translate"
+                    (click)="openFishingOverlay()" class="button-with-img">
+              <img src="./assets/icons/classjob/fisher.png" alt="">
+            </button>
+            <button nz-button nzShape="circle"
+                    nz-tooltip [nzTitle]="'LIST_DETAILS.OVERLAY.Open' | translate"
+                    (click)="openListPanelOverlay()">
+              <i nz-icon nzType="unordered-list" nzTheme="outline"></i>
+            </button>
+          </div>
+
+          <div fxLayout="row" class="bottom-buttons" fxLayoutAlign="center center"
                fxLayoutGap="5px">
             <a *ngIf="!collapsedSidebar" class="social-fab twitter" href="https://twitter.com/FFXIVTeamcraft" nz-button
                nz-tooltip
@@ -392,7 +441,8 @@
               {{'UPDATE.Web_instructions' | translate}}
             </ng-template>
           </nz-alert>
-          <nz-alert (nzOnClose)="settings.hideMachinaBanner = true" *ngIf="platformService.isDesktop() && !settings.hideMachinaBanner && !ipc.machinaToggle" [nzCloseText]="'Close' | translate"
+          <nz-alert (nzOnClose)="settings.hideMachinaBanner = true" *ngIf="platformService.isDesktop() && !settings.hideMachinaBanner && !ipc.machinaToggle"
+                    [nzCloseText]="'Close' | translate"
                     [nzDescription]="description"
                     [nzMessage]="'PACKET_CAPTURE.Banner_title' | translate"
                     class="new-version-alert"
@@ -413,7 +463,8 @@
             </ng-template>
           </nz-alert>
           <ng-container *ngIf="platformService.isDesktop() && ipc.machinaToggle && !overlay">
-            <nz-alert *ngIf="emptyInventory$ | async" [nzDescription]="'PACKET_CAPTURE.Please_zone' | translate" [nzMessage]="'PACKET_CAPTURE.Empty_inventory' | translate"
+            <nz-alert *ngIf="emptyInventory$ | async" [nzDescription]="'PACKET_CAPTURE.Please_zone' | translate"
+                      [nzMessage]="'PACKET_CAPTURE.Empty_inventory' | translate"
                       class="new-version-alert"
                       nzBanner
                       nzShowIcon
@@ -445,7 +496,7 @@
         <ng-template #alarmsTrigger>
           <i nz-icon nzType="bell"></i>
         </ng-template>
-        <app-alarms-sidebar *ngIf="!(loading$ | async)"></app-alarms-sidebar>
+        <app-alarms-sidebar *ngIf="!(loading$ | async)" appLazyComponent></app-alarms-sidebar>
       </nz-sider>
     </nz-layout>
     <nz-footer [fxHide]="!overlay" class="footer" fxShow.lt-sm>

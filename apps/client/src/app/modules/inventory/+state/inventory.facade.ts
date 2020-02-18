@@ -4,10 +4,12 @@ import { select, Store } from '@ngrx/store';
 
 import { InventoryPartialState } from './inventory.reducer';
 import { inventoryQuery } from './inventory.selectors';
-import { LoadInventory, UpdateInventory } from './inventory.actions';
+import { LoadInventory, ResetInventory, UpdateInventory } from './inventory.actions';
 import { ContainerType } from '../../../model/user/inventory/container-type';
 import { UserInventory } from '../../../model/user/inventory/user-inventory';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, shareReplay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Memoized } from '../../../core/decorators/memoized';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +17,17 @@ import { filter, map } from 'rxjs/operators';
 export class InventoryFacade {
   loaded$ = this.store.pipe(select(inventoryQuery.getLoaded));
 
-  inventory$ = this.store.pipe(
+  inventory$: Observable<UserInventory> = this.store.pipe(
     select(inventoryQuery.getInventory),
     filter(inventory => inventory !== null),
-    map(inventory => inventory.clone())
+    map((inventory: UserInventory) => inventory.clone()),
+    shareReplay(1)
   );
 
   constructor(private store: Store<InventoryPartialState>) {
   }
 
+  @Memoized()
   public getContainerName(containerId: number): string {
     switch (containerId) {
       case ContainerType.Bag0:
@@ -39,6 +43,8 @@ export class InventoryFacade {
       case ContainerType.RetainerBag5:
       case ContainerType.RetainerBag6:
         return 'RetainerBag';
+      case ContainerType.RetainerMarket:
+        return 'RetainerMarket';
       case ContainerType.SaddleBag0:
       case ContainerType.SaddleBag1:
       case ContainerType.PremiumSaddleBag0:
@@ -48,6 +54,20 @@ export class InventoryFacade {
       case ContainerType.FreeCompanyBag1:
       case ContainerType.FreeCompanyBag2:
         return 'FC_chest';
+      case ContainerType.ArmoryOff:
+      case ContainerType.ArmoryHead:
+      case ContainerType.ArmoryBody:
+      case ContainerType.ArmoryHand:
+      case ContainerType.ArmoryWaist:
+      case ContainerType.ArmoryLegs:
+      case ContainerType.ArmoryFeet:
+      case ContainerType.ArmoryNeck:
+      case ContainerType.ArmoryEar:
+      case ContainerType.ArmoryWrist:
+      case ContainerType.ArmoryRing:
+      case ContainerType.ArmorySoulCrystal:
+      case ContainerType.ArmoryMain:
+        return 'Armory';
     }
     return 'Other';
   }
@@ -58,5 +78,9 @@ export class InventoryFacade {
 
   updateInventory(inventory: UserInventory, force = false): void {
     this.store.dispatch(new UpdateInventory(inventory, force));
+  }
+
+  resetInventory(): void {
+    this.store.dispatch(new ResetInventory());
   }
 }

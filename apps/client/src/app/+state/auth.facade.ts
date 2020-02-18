@@ -23,17 +23,7 @@ import {
 } from './auth.actions';
 import { auth } from 'firebase/app';
 import { UserCredential } from '@firebase/auth-types';
-import {
-  distinctUntilChanged,
-  distinctUntilKeyChanged,
-  filter,
-  first,
-  map,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap
-} from 'rxjs/operators';
+import { catchError, distinctUntilChanged, distinctUntilKeyChanged, filter, first, map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { PlatformService } from '../core/tools/platform.service';
 import { IpcService } from '../core/electron/ipc.service';
@@ -50,6 +40,7 @@ import { OauthService } from '../core/auth/oauth.service';
 import { ConvertLists } from '../modules/list/+state/lists.actions';
 import { Character } from '@xivapi/angular-client';
 import { UserService } from '../core/database/user.service';
+import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
   providedIn: 'root'
@@ -63,17 +54,46 @@ export class AuthFacade {
   user$ = this.store.select(authQuery.getUser).pipe(filter(u => u !== undefined && u !== null));
   favorites$ = this.user$.pipe(map(user => user.favorites));
 
+  idToken$ = this.af.user.pipe(
+    filter(user => user !== null),
+    switchMap(user => {
+      return from(user.getIdTokenResult())
+        .pipe(
+          map((token) => ([user, token]))
+        );
+    }),
+    switchMap(([user, token]: [any, any]) => {
+      if (token.claims['https://hasura.io/jwt/claims'] === undefined) {
+        console.log('Token missing claims for hasura');
+        return this.fns.httpsCallable('setCustomUserClaims')({
+          uid: user.uid
+        }).pipe(
+          switchMap(() => {
+            return from(user.getIdTokenResult(true));
+          })
+        );
+      }
+      return of(token);
+    }),
+    shareReplay(1)
+  );
+
   characters$ = this.user$.pipe(
+    filter(u => u.lodestoneIds !== undefined),
     switchMap((user: TeamcraftUser) => {
       return combineLatest(user.lodestoneIds.map(entry => {
         if (entry.id > 0) {
-          return this.userService.getCharacter(entry.id);
+          return this.userService.getCharacter(entry.id)
+            .pipe(
+              catchError(err => of(null))
+            );
         }
         return of({
           Character: user.customCharacters.find(c => c.ID === entry.id)
         });
       }));
     }),
+    map(characters => characters.filter(c => c !== null)),
     distinctUntilChanged((a, b) => a.length === b.length),
     shareReplay(1)
   );
@@ -116,17 +136,18 @@ export class AuthFacade {
       return a.FreeCompanyId === b.FreeCompanyId;
     }),
     map(([character, user]) => {
-      if (character === null || character.FreeCompanyId === undefined || character.FreeCompanyId === null
+      if (!character || !character.FreeCompanyId || !character.FreeCompanyId
         || character.FreeCompanyId.toString() === user.currentFcId) {
-        return null;
+        return { id: user.currentFcId, save: false };
       }
-      return character.FreeCompanyId.toString();
+      return { id: character.FreeCompanyId.toString(), save: true };
     }),
-    tap(fcId => {
-      if (fcId !== null) {
-        this.store.dispatch(new SetCurrentFcId(fcId));
+    tap(entry => {
+      if (entry.save) {
+        this.store.dispatch(new SetCurrentFcId(entry.id));
       }
     }),
+    map(entry => entry.id),
     startWith('')
   );
 
@@ -177,7 +198,8 @@ export class AuthFacade {
   constructor(private store: Store<{ auth: AuthState }>, private af: AngularFireAuth,
               private platformService: PlatformService, private ipc: IpcService,
               private dialog: NzModalService, private translate: TranslateService,
-              private oauthService: OauthService, private userService: UserService) {
+              private oauthService: OauthService, private userService: UserService,
+              private fns: AngularFireFunctions) {
     this.ipc.cid$.subscribe(packet => {
       this.setCID(packet.contentID);
     });
@@ -189,6 +211,15 @@ export class AuthFacade {
 
   resetPassword(email: string): void {
     this.af.auth.sendPasswordResetEmail(email);
+  }
+
+  changeEmail(newEmail: string): Observable<void> {
+    return this.af.user.pipe(
+      first(),
+      switchMap(user => {
+        return from(user.updateEmail(newEmail));
+      })
+    );
   }
 
   public addCharacter(useAsDefault = false, disableClose = false): void {

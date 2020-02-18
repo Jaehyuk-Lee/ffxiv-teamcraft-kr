@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LazyDataService } from '../../../core/data/lazy-data.service';
 
 @Component({
   selector: 'app-item-icon',
   templateUrl: './item-icon.component.html',
-  styleUrls: ['./item-icon.component.less']
+  styleUrls: ['./item-icon.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemIconComponent {
 
@@ -50,7 +51,7 @@ export class ItemIconComponent {
     if (this.icon && this.icon.toString() === this.icon && this.icon.indexOf('custom/') > -1 && !this.icon.startsWith('t/')) {
       return this.icon;
     }
-    return `https://xivapi.com${this.lazyData.icons[this.itemId]}`;
+    return `https://xivapi.com${this.lazyData.data.itemIcons[this.itemId]}`;
   }
 
 }

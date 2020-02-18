@@ -2,6 +2,1012 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.1"></a>
+## [7.0.1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v7.0.0...v7.0.1) (2020-02-14)
+
+
+### Bug Fixes
+
+* **desktop:** firewall permissions are now applied on app startup ([48c822f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/48c822f))
+* **gearsets:** fixed an issue with foods not being listed ([8acaf6f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8acaf6f))
+* **pcap:** fixed an issue with outdated inventory popup showing in overlays ([fe275cb](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fe275cb))
+* **search:** fixed a bug with selection checkboxes not adding items to a list ([30394a1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/30394a1))
+* **ux:** various UX fixes for gearset editor ([753aea1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/753aea1))
+
+
+### Features
+
+* **gearsets:** added a checkbox to include all tools for DoH and DoL sets ([598f3c1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/598f3c1))
+
+
+
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.12...v7.0.0) (2020-02-13)
+
+
+### Bug Fixes
+
+* **db:** quick list created fom db page now take amount properly ([6d83235](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6d83235))
+* **list:** fixed an issue with list update on last item checked ([f289182](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f289182))
+* **list:** fixed an issue with marketboard popup not showing properly ([477891c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/477891c))
+* **list:** fixed an issue with working on it being applied several times ([a778cbb](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a778cbb))
+* **trades:** fixed an issue with total trades for a panel being off for HQ items ([c8f2bf2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c8f2bf2))
+* **ux:** better count for total items in inventory optimizers ([4c2b276](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4c2b276))
+
+
+### Features
+
+* **list-details:** new inventory synthesis popup to show items per container ([3a4b294](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3a4b294))
+* **simulator:** new tip to add reuse when you can ([90a7227](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/90a7227))
+* added gearsets system ([846e008](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/846e008)), closes [#485](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/485)
+* **cn:** update data for CN 5.1 ([ed6674f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ed6674f))
+* **desktop:** middle click on share button opens the current page in browser ([8474cb2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8474cb2))
+
+
+
+<a name="6.5.12"></a>
+## [6.5.12](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.11...v6.5.12) (2020-02-05)
+
+
+### Bug Fixes
+
+* **db:** fixed reset filters and style in spot misses popup ([aa77045](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/aa77045))
+* **desktop:** fixing a bug with always on top not applied properly ([2f2aba6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2f2aba6))
+* **fishing:** fixed an issue with mooch not being detected in some cases ([52f7d74](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/52f7d74))
+* **list:** check validity of inventory on autofill enable by default too ([28e419d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/28e419d))
+* **list:** performance improvements ([23cb7ca](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/23cb7ca))
+* **lists:** fixed an issue with lists shared to FC not loading properly ([9cda4b0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9cda4b0))
+* **macro-translator:** fixed a bug with actions that do not exist in KR/CN game ([30ed025](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/30ed025))
+* **recipe-finder:** fixed import button not showing with smaller window size ([9b592a2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9b592a2))
+* **search:** performance improvements for results display ([f7ca1b3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f7ca1b3))
+
+
+### Features
+
+* **core:** support for CN server 5.10 ([2b7e4dc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2b7e4dc))
+
+
+
+<a name="6.5.11"></a>
+## [6.5.11](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.10...v6.5.11) (2020-01-30)
+
+
+### Bug Fixes
+
+* **db:** do not show *used for nothing* for fishes ([1d37533](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1d37533))
+* **fishing:** fixed unexpected statuses reset when fishing ([e4dce86](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e4dce86))
+* **list:** fixed an issue with lists page loading ([8c6fb20](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8c6fb20))
+* **list:** fixed an issue withinventory autofill reporting wrong amount in some cases ([4b37c06](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4b37c06))
+* **lists:** fixed an issue with ephemeral lists not always deleting ([f6d840a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f6d840a))
+* **log:** avoid duplicates in CRP crafting log ([d172384](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d172384))
+* **theme:** fixed an issue preventing some pages from loading with specific theme settings ([accaff6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/accaff6))
+* **user-picker:** fixed an issue preventing "user not found" message from showing ([acd094b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/acd094b))
+
+
+### Features
+
+* display desktop notification when app launches in background ([#1334](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1334)) ([f28aa9e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f28aa9e))
+* **db:** added misses popup to spot pages ([b370f2e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b370f2e))
+
+
+
+<a name="6.5.10"></a>
+## [6.5.10](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.9...v6.5.10) (2020-01-23)
+
+
+### Bug Fixes
+
+* **data:** fixed missing aetherytes and skybuilders nodes ([ed1806c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ed1806c))
+* **db:** fix korean localization ([ca6ea9f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ca6ea9f))
+* **desktop:** fixed an issue with always on top acting up ([26d4239](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/26d4239))
+* **desktop:** reduced the amount of state propagations for less CPU usage ([bd11e81](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/bd11e81))
+* **list:** avoid multiple "what to do with this list" popups opening ([93824ca](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/93824ca))
+
+
+### Features
+
+* **data:** optimize filling of extended language & add Chinese to all i18n names supported ([4385414](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4385414))
+* **data:** update Chinese data ([f07601c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f07601c))
+* **db:** support for korean v5.05 update ([43569d6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/43569d6))
+* **list:** "only recipes" checkbox is now saved in local storage ([f980733](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f980733))
+
+
+
+<a name="6.5.9"></a>
+## [6.5.9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.8...v6.5.9) (2020-01-17)
+
+
+### Bug Fixes
+
+* **desktop:** fixed an issue with marketboard uploader ([916d2b1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/916d2b1))
+* **desktop:** fixed an issue with retainers inventory not updating ([025324d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/025324d))
+
+
+
+<a name="6.5.8"></a>
+## [6.5.8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.7...v6.5.8) (2020-01-17)
+
+
+### Bug Fixes
+
+* **desktop:** packet capture doesn't increase CPU usage in crowded areas anymore ([f38c668](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f38c668))
+* **fishing:** fixed an issue with mooch not being detected properly in some cases ([ab39749](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ab39749))
+* **fishing:** fixed an issue with reporter not reporting properly ([efbd034](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/efbd034))
+* **inventory-optimizer:** fixed an issue that may happen with optimizer loading ([ae99ede](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ae99ede))
+* **inventory-optimizer:** now loads properly even if you have no lists at all ([7c09781](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7c09781))
+* **list:** added debounce of 2s to list update to avoid rollbacks when checking several items ([3c52f60](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3c52f60))
+
+
+### Features
+
+* **auth:** added a cache layer to character loading for better perfs ([d1ccaf6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d1ccaf6))
+* **desktop:** application is now quitting by default when clicking close button ([feda18d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/feda18d))
+
+
+
+<a name="6.5.7"></a>
+## [6.5.7](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.6...v6.5.7) (2020-01-13)
+
+
+### Bug Fixes
+
+* **alarms:** fixed an issue with "create all alarms" button not working properly ([b183393](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b183393))
+* **db:** fixed an issue with comments crashing in some cases ([61b37e6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/61b37e6))
+* **db:** fixed various missing data (fish baits and hidden flag on items) ([baf6025](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/baf6025))
+* **desktop:** fixed an issue with google oauth on 2FA accounts ([3f51249](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3f51249)), closes [#1269](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1269)
+* **fishing:** fixed an issue with fishes in Eulmore area ([43f4f18](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/43f4f18))
+* **fishing:** fixed an issue with fishing state not being detected properly ([2382732](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2382732))
+* **list:** fixed an issue with japanese items search ([1227c4f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1227c4f)), closes [#1318](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1318)
+
+
+### Features
+
+* **fishing-spot:** added new "hour of the day" chart ([0903dfd](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0903dfd))
+* **list:** lists created before 6.1.0 will now be considered as outdated ([59b3c8c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/59b3c8c))
+* **simulator:** added level to craft stats display in main block ([cd26ab6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/cd26ab6))
+
+
+
+<a name="6.5.6"></a>
+## [6.5.6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.5...v6.5.6) (2019-12-29)
+
+
+### Bug Fixes
+
+* **desktop:** fixed log-in with google system ([00a46e4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/00a46e4))
+* **desktop:** fixed memory leak when moving to a crowded area ([d5adf18](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d5adf18))
+* **levequests:** fixed an issue with global exp not reporting properly ([52c0737](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/52c0737))
+
+
+
+<a name="6.5.5"></a>
+## [6.5.5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.4...v6.5.5) (2019-12-27)
+
+
+### Bug Fixes
+
+* **desktop:** fixed an issue with start minimized option not being applied properly ([af2cf3d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/af2cf3d))
+* **inventory:** fixed an issue with quality lower action not being tracked properly ([d9d0e54](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d9d0e54))
+* **list:** fixed an issue with masterbooks not showing properly ([2463cd1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2463cd1))
+
+
+### Features
+
+* **auth:** added change email button in settings, account section ([69ccaee](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/69ccaee))
+* **desktop:** app will now open on the same page you left it ([ff89b8c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ff89b8c))
+* **patreon:** new god of the hand: Post Mortem ([af37616](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/af37616))
+
+
+
+<a name="6.5.4"></a>
+## [6.5.4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.5.3...v6.5.4) (2019-12-26)
+
+
+### Bug Fixes
+
+* **db:** Fixed gardening showing up on all items and updated link as HTTPS is no longer supported ([b4cf0dc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b4cf0dc))
+* **db:** Remove forgotten console.log ([744aa67](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/744aa67))
+* **layout:** fixed an issue with IS_CRAFT filter also accepting non-craft rows ([86f6968](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/86f6968))
+* **levequests:** leves below lvl 70 now give 3k exp when you're above lvl 70 ([69ce689](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/69ce689))
+* **list:** fixed a possible performance issue with item sources ([6ca7eb5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6ca7eb5))
+* **list:** fixed an issue with "open in simulator" button crashing ([d5ef37b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d5ef37b))
+* **macro-translator:** fixed an issue with new skills not being translated to korean properly ([81d9550](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/81d9550))
+* **simulator:** fixed behavior for step state modification system ([1635daf](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1635daf))
+* **total-trades:** fixed an issue with augmentation tokens not being accounted properly ([8f72a28](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8f72a28))
+
+
+### Features
+
+* support for korean v5.01 update ([0129db8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0129db8))
+* **db:** added 5.18 data ([15d50e6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/15d50e6))
+* **list:** added a 'copy to clipboard" button to crystals panel ([12838dc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/12838dc))
+* **pcap:** support for 5.18 packets update ([3cc578f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3cc578f))
+
+
+
+<a name="6.5.3"></a>
+## [6.5.3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.4.2...v6.5.3) (2019-12-22)
+
+
+### Bug Fixes
+
+* **autofill:** fixed an issue with autofill on gear pieces ([164e7be](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/164e7be))
+* **desktop:** fixed an issue with fullscreen state not saved properly ([8588fe4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8588fe4))
+* **fishing-spot:** fixed missalignment for hover focus ([62291d1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/62291d1))
+* **inventory:** fixed an issue with split action in retainer ([01de086](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/01de086))
+* **layout:** various fixes for layouts system with new data layer ([057bf84](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/057bf84))
+* **list:** fixed an issue with gatherable final items not showing properly ([40897ab](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/40897ab))
+* **list:** fixed an issue with lists not being created properly ([721900e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/721900e))
+* **list:** fixed an issue with recipes having yield > 1 ([1260ab9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1260ab9))
+* **list:** hotfix for list details not loading properly ([bbbd7a6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/bbbd7a6))
+* **list:** various performance-related fixes, reverting lazy component changes ([3edd0fc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3edd0fc))
+* **log-tracker:** fixed pages labels for masterbook recipes and housing ([1e15213](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1e15213))
+* **performances:** added performance mode for large lists and improved performances in general ([57eeb19](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/57eeb19))
+* **rotation-overlay:** fixed an issue with overlay using wrong icons ([d1f8d8f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d1f8d8f))
+* **search:** fixed an issue with recipe toggle on kr and cn data ([1b1bf4c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1b1bf4c))
+
+
+### Features
+
+* **desktop:** new overlay: list details ([743f81e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/743f81e))
+* added only recipe flag in item picker ([14e90de](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/14e90de))
+* added quick search shortcut: Ctrl + Shift + F ([03d76f4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/03d76f4))
+* **list:** added a button to reset items of a given display panel ([1009aaa](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1009aaa))
+* **lists:** added a setting to enable autofill notification by default ([e0f6f01](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e0f6f01))
+* **teams:** added new webhook setting: item progression ([64dd0d3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/64dd0d3))
+
+
+
+<a name="6.5.2"></a>
+## [6.5.2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.4.2...v6.5.2) (2019-12-21)
+
+
+### Bug Fixes
+
+* **autofill:** fixed an issue with autofill on gear pieces ([164e7be](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/164e7be))
+* **desktop:** fixed an issue with fullscreen state not saved properly ([8588fe4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8588fe4))
+* **fishing-spot:** fixed missalignment for hover focus ([62291d1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/62291d1))
+* **inventory:** fixed an issue with split action in retainer ([01de086](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/01de086))
+* **list:** fixed an issue with gatherable final items not showing properly ([40897ab](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/40897ab))
+* **list:** fixed an issue with lists not being created properly ([721900e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/721900e))
+* **list:** hotfix for list details not loading properly ([bbbd7a6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/bbbd7a6))
+* **log-tracker:** fixed pages labels for masterbook recipes and housing ([1e15213](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1e15213))
+* **performances:** added performance mode for large lists and improved performances in general ([57eeb19](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/57eeb19))
+* **rotation-overlay:** fixed an issue with overlay using wrong icons ([d1f8d8f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d1f8d8f))
+* **search:** fixed an issue with recipe toggle on kr and cn data ([1b1bf4c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1b1bf4c))
+
+
+### Features
+
+* **desktop:** new overlay: list details ([743f81e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/743f81e))
+* added only recipe flag in item picker ([14e90de](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/14e90de))
+* added quick search shortcut: Ctrl + Shift + F ([03d76f4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/03d76f4))
+* **list:** added a button to reset items of a given display panel ([1009aaa](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1009aaa))
+* **lists:** added a setting to enable autofill notification by default ([e0f6f01](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e0f6f01))
+* **teams:** added new webhook setting: item progression ([64dd0d3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/64dd0d3))
+
+
+
+<a name="6.5.1"></a>
+## [6.5.1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.4.2...v6.5.1) (2019-12-21)
+
+
+### Bug Fixes
+
+* **autofill:** fixed an issue with autofill on gear pieces ([164e7be](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/164e7be))
+* **desktop:** fixed an issue with fullscreen state not saved properly ([8588fe4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8588fe4))
+* **fishing-spot:** fixed missalignment for hover focus ([62291d1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/62291d1))
+* **inventory:** fixed an issue with split action in retainer ([01de086](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/01de086))
+* **list:** fixed an issue with lists not being created properly ([721900e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/721900e))
+* **list:** hotfix for list details not loading properly ([bbbd7a6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/bbbd7a6))
+* **log-tracker:** fixed pages labels for masterbook recipes and housing ([1e15213](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1e15213))
+* **performances:** added performance mode for large lists and improved performances in general ([57eeb19](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/57eeb19))
+* **rotation-overlay:** fixed an issue with overlay using wrong icons ([d1f8d8f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d1f8d8f))
+* **search:** fixed an issue with recipe toggle on kr and cn data ([1b1bf4c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1b1bf4c))
+
+
+### Features
+
+* **desktop:** new overlay: list details ([743f81e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/743f81e))
+* added only recipe flag in item picker ([14e90de](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/14e90de))
+* added quick search shortcut: Ctrl + Shift + F ([03d76f4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/03d76f4))
+* **list:** added a button to reset items of a given display panel ([1009aaa](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1009aaa))
+* **lists:** added a setting to enable autofill notification by default ([e0f6f01](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e0f6f01))
+* **teams:** added new webhook setting: item progression ([64dd0d3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/64dd0d3))
+
+
+
+<a name="6.5.0"></a>
+# [6.5.0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.4.2...v6.5.0) (2019-12-21)
+
+
+### Bug Fixes
+
+* **autofill:** fixed an issue with autofill on gear pieces ([164e7be](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/164e7be))
+* **desktop:** fixed an issue with fullscreen state not saved properly ([8588fe4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8588fe4))
+* **fishing-spot:** fixed missalignment for hover focus ([62291d1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/62291d1))
+* **inventory:** fixed an issue with split action in retainer ([01de086](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/01de086))
+* **log-tracker:** fixed pages labels for masterbook recipes and housing ([1e15213](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1e15213))
+* **performances:** added performance mode for large lists and improved performances in general ([57eeb19](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/57eeb19))
+* **rotation-overlay:** fixed an issue with overlay using wrong icons ([d1f8d8f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d1f8d8f))
+* **search:** fixed an issue with recipe toggle on kr and cn data ([1b1bf4c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1b1bf4c))
+
+
+### Features
+
+* **desktop:** new overlay: list details ([743f81e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/743f81e))
+* added only recipe flag in item picker ([14e90de](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/14e90de))
+* added quick search shortcut: Ctrl + Shift + F ([03d76f4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/03d76f4))
+* **list:** added a button to reset items of a given display panel ([1009aaa](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1009aaa))
+* **lists:** added a setting to enable autofill notification by default ([e0f6f01](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e0f6f01))
+* **teams:** added new webhook setting: item progression ([64dd0d3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/64dd0d3))
+
+
+
+<a name="6.4.2"></a>
+## [6.4.2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.4.1...v6.4.2) (2019-12-13)
+
+
+### Bug Fixes
+
+* **core:** go away from version lock when it's up to date ([f3bdc5c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f3bdc5c))
+* **db:** removed empty line for used as bait db block ([3ba4ada](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3ba4ada))
+* **fishing-reporter:** fixed an issue with Release reporting as miss ([209e767](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/209e767))
+* **packets:** reset statuses when switching job ([e8c76e1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e8c76e1))
+
+
+### Features
+
+* **simulation:** new rotation tip for rotations that require reuse to proc to work ([a7c3344](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a7c3344))
+
+
+
+<a name="6.4.1"></a>
+## [6.4.1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.4.0...v6.4.1) (2019-12-11)
+
+
+### Bug Fixes
+
+* **inventory:** fixed an issue with autofill not taking armory into account ([7579b30](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7579b30))
+* **list:** fixed an issue with HQ filter in setting blocking input somehow ([74d5657](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/74d5657))
+* **log-tracker:** fixed empty pages in log tracker ([2d12345](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2d12345))
+
+
+### Features
+
+* **inventory:** added retainer sale as inventories in the inventory page ([c369a67](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c369a67))
+
+
+
+<a name="6.4.0"></a>
+# [6.4.0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.3.3...v6.4.0) (2019-12-10)
+
+
+### Bug Fixes
+
+* **db:** changed bite times display for easier reading (graph was useless) ([0f1808f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0f1808f))
+* **db:** fixed an issue with some place names not displayed properly ([655ba1a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/655ba1a))
+* **db:** fixed position name for some npcs ([d08d294](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d08d294))
+* **desktop:** fixed an issue with always on top option not saved properly ([4c73767](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4c73767)), closes [#1278](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1278)
+* **desktop:** ignore packets inside overlays ([59cfe15](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/59cfe15))
+* **fish:** fixed misses detection on fishing reporter ([f4d3c72](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f4d3c72))
+* **i18n:** fixed a typo in recipe finder ([76c64c4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/76c64c4))
+* **i18n:** fixed missing translation for fishing data reloader ([df3a6dc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/df3a6dc))
+* **list:** fixed a bug with item move event counted as item obtention ([80a85e6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/80a85e6))
+* **list:** fixed an issue with masterbooks button not being reloaded properly ([0414e32](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0414e32))
+* **permissions:** fixed an issue with list permissions propagation ([85f1c24](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/85f1c24))
+
+
+### Features
+
+* **core:** 5.15 content update ([b6e4683](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b6e4683))
+* **core:** gathering popups now use node type as icon ([dc7c259](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/dc7c259))
+* **db:** automatically select spot if there's only one available ([9122f22](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9122f22))
+* **db:** fishing spot pages ([#1282](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1282)) ([f499c27](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f499c27))
+* **desktop:** added an option to autofill only using HQ items when item has HQ flag ([8b34727](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8b34727)), closes [#1281](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1281)
+* **desktop:** added overlay for fishing data reporter ([17ebb89](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/17ebb89))
+* **desktop:** removed sync in database option entirely, as it was causing too many issues ([0ef7173](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0ef7173))
+* **inventory:** added armory containers as tracked inventories ([f287a45](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f287a45))
+* **layout:** added an option to show first available vendor on each item of the list ([0d94635](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0d94635))
+
+
+
+<a name="6.3.3"></a>
+## [6.3.3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.3.2...v6.3.3) (2019-12-03)
+
+
+### Bug Fixes
+
+* **desktop:** various fixes for sign-in and auto updater ([80c1ad3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/80c1ad3)), closes [#1269](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1269)
+* **reporter:** fix for data reporting by adding version number to the data ([ea2420f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ea2420f))
+* **solver:** fixed a small issue for when worker isn't supported ([27aa33c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/27aa33c))
+
+
+### Features
+
+* support for korean v5.00 update ([0fe1d39](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0fe1d39))
+
+
+
+<a name="6.3.2"></a>
+## [6.3.2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.3.1...v6.3.2) (2019-12-02)
+
+
+### Bug Fixes
+
+* **desktop:** fixed an issue with desktop app creating too many firewall entries ([b143e4b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b143e4b))
+* **fish:** avoid multiple reports for the same event ([8efe8cf](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8efe8cf))
+* **fishing-data:** fixed statuses tracking and various issues ([ba420f8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ba420f8))
+* **inventory:** fixed an issue with inventory updating in database ([066e6f0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/066e6f0))
+* **log:** fixed duplicate entries for CRP ([bd18f5e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/bd18f5e))
+* **resets:** fixed icon in reset timers page for desktop app ([af28c8d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/af28c8d))
+
+
+### Features
+
+* **db:** add usual details about fishes below graphs ([ee52017](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ee52017))
+* **db:** add weather % chances and weather transition % chances when filtering on a spot ([697ff06](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/697ff06))
+* **db:** added fish links inside bait db pages ([a9f872e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a9f872e))
+* **desktop:** switching to nsis-web to enable differential updates (testing that) ([e758882](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e758882))
+
+
+
+<a name="6.3.1"></a>
+## [6.3.1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.3.0...v6.3.1) (2019-12-01)
+
+
+### Bug Fixes
+
+* **db:** hotfix for missing https cert in gubal API ([c6db630](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c6db630))
+
+
+
+<a name="6.3.0"></a>
+# [6.3.0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.12...v6.3.0) (2019-12-01)
+
+
+### Bug Fixes
+
+* **list:** fixed an issue with item completion not being edited properly ([d2fbf38](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d2fbf38))
+* **lists:** fixed an issue with small lists drag events not registering properly ([67e5737](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/67e5737))
+
+
+### Features
+
+* **db:** added a lot of details on fish db pages, using data captured ([#1262](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1262)) ([7e53923](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7e53923))
+* **list:** added a button to fill current list with inventory ([9432222](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9432222))
+* **solver:** solver is way faster, as it's now running as a web worker ([b9e51ad](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b9e51ad))
+
+
+
+<a name="6.2.12"></a>
+## [6.2.12](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.11...v6.2.12) (2019-11-30)
+
+
+### Bug Fixes
+
+* **data:** fixed dungeon names ([1b014b7](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1b014b7))
+* **profile:** fixed an issue with stats filling not reloading stats after fill operation ([25dbce9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/25dbce9))
+* **rotations:** fixed an issue with rotation picker when opening from list ([d3f0028](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d3f0028))
+
+
+### Features
+
+* **desktop:** added an option inside settings page to enable autofill by default ([ebd0e47](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ebd0e47))
+
+
+
+<a name="6.2.11"></a>
+## [6.2.11](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.10...v6.2.11) (2019-11-28)
+
+
+### Bug Fixes
+
+* **custom-items:** fixed an issue with custom items not importing properly ([dfc0693](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/dfc0693))
+* **desktop:** fixed updateInventorySlot packet ([160980a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/160980a))
+* **inventory:** fixed an issue with inventory item names being wrong ([a91ee3a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a91ee3a))
+* **optimizer:** updated grammar in optimizer l10n ([37e1c57](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/37e1c57))
+
+
+
+<a name="6.2.10"></a>
+## [6.2.10](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.9...v6.2.10) (2019-11-27)
+
+
+### Bug Fixes
+
+* **alarms:** fixed a layout issue with compact display mode ([040309d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/040309d))
+* **alarms:** fixed an issue when creating an alarm for some items ([be4e1bd](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/be4e1bd))
+* **layout:** fixed an issue when creating a new layout ([08da8c5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/08da8c5))
+* **levequests:** fixed an issue with levequests page being unresponsive ([b7889a1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b7889a1))
+* **optimizer:** fixed an issue with ignored containers not affecting total count ([0983e32](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0983e32))
+
+
+
+<a name="6.2.9"></a>
+## [6.2.9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.7...v6.2.9) (2019-11-26)
+
+
+### Bug Fixes
+
+* fix for playTime packet file in machina wrapper ([b4a3723](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b4a3723))
+* **desktop:** fixed an issue with desktop app being started again when in tray ([504ac4e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/504ac4e))
+* **list:** fixed an issue breaking offline lists entirely ([8bad892](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8bad892))
+
+
+
+<a name="6.2.8"></a>
+## [6.2.8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.7...v6.2.8) (2019-11-26)
+
+
+### Bug Fixes
+
+* **desktop:** fixed an issue with desktop app being started again when in tray ([504ac4e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/504ac4e))
+* **list:** fixed an issue breaking offline lists entirely ([8bad892](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8bad892))
+
+
+
+<a name="6.2.7"></a>
+## [6.2.7](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.6...v6.2.7) (2019-11-24)
+
+
+### Bug Fixes
+
+* **alarms:** fixed a layout issue with compact display ([ad02575](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ad02575))
+* **db:** fixed leve turn-ins count for leves ([66e2944](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/66e2944))
+* **desktop:** prevent too many firewall rules addition ([c7295ac](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c7295ac))
+* **inventory:** fixed an issue with inventory persistence in database ([b1f4a96](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b1f4a96))
+* **optimizer:** added more ignored container for handins and gil inventories ([e8bb672](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e8bb672))
+* **packets:** fixed packet capture for inventory stuff ([c1c730a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c1c730a))
+* **search:** Fix recipe search not showing any items in some cases ([a13249c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a13249c))
+* **search:** fixed an issue with some search terms not returning results at all ([21d5abc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/21d5abc))
+* Correct world ID not changing for data uploads when appropriate ([8ab5186](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8ab5186))
+
+
+### Features
+
+* **core:** added new tip in the pool: Start_desktop_before_game ([d2bf3d5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d2bf3d5))
+* **data:** added fishing data capture inside desktop app ([19b44cc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/19b44cc))
+* **desktop:** app now stays in tray when closing (with an option to always quit) ([ee85a38](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ee85a38))
+* **desktop:** new option to start the app as minimized in tray ([a634072](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a634072))
+
+
+
+<a name="6.2.6"></a>
+## [6.2.6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.4...v6.2.6) (2019-11-16)
+
+
+### Bug Fixes
+
+* **alarms:** fixed alarm overlay toggle not working properly ([0738167](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0738167))
+* **inventory:** fixed an issue with ishgard deliveries counting as if they were obtained ([3bfc38a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3bfc38a))
+* **inventory:** inventory search is no longer case-sensitive ([eb88f1b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/eb88f1b))
+* **inventory:** inventory sync in database will only happen every 30 seconds now ([29e9bdb](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/29e9bdb))
+* **list:** fixed an issue with final items not being marked as done properly ([1ad8106](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1ad8106))
+* **list:** smaller lists will now be more reactive ([a96abb8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a96abb8))
+* **optimizer:** fixed an issue with inventory optimizer not loading properly ([85239fc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/85239fc))
+* **rotation:** rotation picker search is no longer case-sensitive ([73469e4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/73469e4))
+* **search:** removed dated items from search results ([7a2f264](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7a2f264))
+* **simulator:** fixed an issue with dirty warning popup spawning way too much ([6ce73ee](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6ce73ee))
+
+
+### Features
+
+* **desktop:** added a button to open a website link in desktop ([7676b39](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7676b39))
+* **simulator:** added Ishgard restoration collectability breakpoints ([a51459c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a51459c))
+* **simulator:** added total macro duration to macro popup ([65502bf](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/65502bf))
+
+
+
+<a name="6.2.5"></a>
+## [6.2.5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.4...v6.2.5) (2019-11-16)
+
+
+### Bug Fixes
+
+* **alarms:** fixed alarm overlay toggle not working properly ([0738167](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0738167))
+* **inventory:** fixed an issue with ishgard deliveries counting as if they were obtained ([3bfc38a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3bfc38a))
+* **inventory:** inventory search is no longer case-sensitive ([eb88f1b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/eb88f1b))
+* **inventory:** inventory sync in database will only happen every 30 seconds now ([29e9bdb](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/29e9bdb))
+* **list:** smaller lists will now be more reactive ([a96abb8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a96abb8))
+* **optimizer:** fixed an issue with inventory optimizer not loading properly ([85239fc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/85239fc))
+* **rotation:** rotation picker search is no longer case-sensitive ([73469e4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/73469e4))
+* **search:** removed dated items from search results ([7a2f264](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7a2f264))
+* **simulator:** fixed an issue with dirty warning popup spawning way too much ([6ce73ee](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6ce73ee))
+
+
+### Features
+
+* **desktop:** added a button to open a website link in desktop ([7676b39](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7676b39))
+* **simulator:** added Ishgard restoration collectability breakpoints ([a51459c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a51459c))
+* **simulator:** added total macro duration to macro popup ([65502bf](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/65502bf))
+
+
+
+<a name="6.2.4"></a>
+## [6.2.4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.3...v6.2.4) (2019-11-13)
+
+
+### Bug Fixes
+
+* **desktop:** fixed an issue making Teamcraft start in tray bar ([6fad935](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6fad935))
+* **inventory:** saving inventory in database will now use less resources and be more reactive ([dd2a46c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/dd2a46c))
+
+
+
+<a name="6.2.3"></a>
+## [6.2.3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.2...v6.2.3) (2019-11-12)
+
+
+### Bug Fixes
+
+* Update opcode for class stats to fix stat autofill ([8b02a67](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8b02a67))
+
+
+
+<a name="6.2.2"></a>
+## [6.2.2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.2.1...v6.2.2) (2019-11-12)
+
+
+### Bug Fixes
+
+* **desktop:** fixed an issue when opening a link from website ([af543f4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/af543f4))
+* **list:** fixed an issue with lists not being updated properly ([a57644d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a57644d))
+* **macro:** fixed some checkboxes being checked by default ([a6c27d2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a6c27d2))
+
+
+### Features
+
+* **data:** 5.11 content update ([0fa4afc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0fa4afc))
+* **packet-capture:** 5.11 packet structure updates ([dc0b154](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/dc0b154))
+
+
+
+<a name="6.2.1"></a>
+## [6.2.1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.12...v6.2.1) (2019-11-11)
+
+
+### Bug Fixes
+
+* **core:** fixed an issue with $key property being overwritten ([5db46a0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5db46a0))
+* **links:** fixed an issue with custom links not loading properly ([03e0ab9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/03e0ab9))
+* **list:** fixed a bug with colors not being reset properly after list reset ([3df9ced](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3df9ced))
+* **list:** fixed an issue with "show craftable amount" option ([7a7d2b2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7a7d2b2))
+* **list:** fixed an issue with some replica items not being added properly to a list ([2f98db4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2f98db4))
+* **list:** reduced bandwidth usage when updating a list by ~90% ([fd10f19](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fd10f19))
+* **log:** fixed an issue with auto mark as done in log not working properly ([7855f0f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7855f0f))
+* **marketboard:** fixed an issue with marketboard data sometimes crashing ([cdf7a47](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/cdf7a47))
+* **perf:** big performance optimization for CPU usage on big lists with autofill ([d2fda9c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d2fda9c)), closes [#1196](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1196)
+* **profile:** fixed an issue with character linking with lodestone ID ([6cd11cb](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6cd11cb))
+* **rotations:** fixed an issue with favorite rotations breaking in some cases ([ea420c7](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ea420c7))
+* **search:** fixed an issue with japanese language not working with a short query ([f7d01c3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f7d01c3)), closes [#1211](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1211)
+* **settings:** added categories to the settings popup for better display ([b685da8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b685da8))
+* **simulator:** fix brand of elements tip incorrectly triggering ([9c34eb1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9c34eb1))
+* **simulator:** possible fix for hq ingredients selection being empty ([e2655c9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e2655c9))
+* **trades:** currency ignore button now disappears if there's no alternative ([5011e34](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5011e34))
+* **ux:** fixed an issue with item names not being updated properly when switching language ([941ec19](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/941ec19))
+
+
+### Features
+
+* **autofill:** added an option to change notification sound and volume ([47c62fc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/47c62fc))
+* **inventory:** you can now search for an item in the inventory page ([24d6a95](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/24d6a95))
+* **list:** you can now pin a list to be able to access it easily from anywhere ([986de63](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/986de63))
+* **list:** you can now set custom color for list panels ([0b9507b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0b9507b))
+* **optimizer:** you can now ignore an entire inventory ([f3948f2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f3948f2))
+* **packet capture:** CN-region packet capture is now supported ^^ ([a21e382](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a21e382))
+* **simulator:** Remember all macro settings ([6db6f76](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6db6f76))
+
+
+
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.12...v6.2.0) (2019-11-11)
+
+
+### Bug Fixes
+
+* **links:** fixed an issue with custom links not loading properly ([03e0ab9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/03e0ab9))
+* **list:** fixed a bug with colors not being reset properly after list reset ([3df9ced](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/3df9ced))
+* **list:** fixed an issue with "show craftable amount" option ([7a7d2b2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7a7d2b2))
+* **list:** fixed an issue with some replica items not being added properly to a list ([2f98db4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2f98db4))
+* **list:** reduced bandwidth usage when updating a list by ~90% ([fd10f19](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fd10f19))
+* **marketboard:** fixed an issue with marketboard data sometimes crashing ([cdf7a47](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/cdf7a47))
+* **perf:** big performance optimization for CPU usage on big lists with autofill ([d2fda9c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d2fda9c)), closes [#1196](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1196)
+* **profile:** fixed an issue with character linking with lodestone ID ([6cd11cb](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6cd11cb))
+* **rotations:** fixed an issue with favorite rotations breaking in some cases ([ea420c7](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ea420c7))
+* **search:** fixed an issue with japanese language not working with a short query ([f7d01c3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f7d01c3)), closes [#1211](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1211)
+* **settings:** added categories to the settings popup for better display ([b685da8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b685da8))
+* **simulator:** fix brand of elements tip incorrectly triggering ([9c34eb1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9c34eb1))
+* **simulator:** possible fix for hq ingredients selection being empty ([e2655c9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e2655c9))
+* **trades:** currency ignore button now disappears if there's no alternative ([5011e34](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5011e34))
+
+
+### Features
+
+* **autofill:** added an option to change notification sound and volume ([47c62fc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/47c62fc))
+* **inventory:** you can now search for an item in the inventory page ([24d6a95](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/24d6a95))
+* **list:** you can now pin a list to be able to access it easily from anywhere ([986de63](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/986de63))
+* **list:** you can now set custom color for list panels ([0b9507b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0b9507b))
+* **optimizer:** you can now ignore an entire inventory ([f3948f2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f3948f2))
+* **packet capture:** CN-region packet capture is now supported ^^ ([a21e382](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a21e382))
+* **simulator:** Remember all macro settings ([6db6f76](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6db6f76))
+
+
+
+<a name="6.1.12"></a>
+## [6.1.12](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.11...v6.1.12) (2019-11-08)
+
+
+### Bug Fixes
+
+* **list:** better fix for item rows not changing color ([4948dff](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4948dff))
+* **list:** performance improvements for CPU usage in lists with autofill ([36127da](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/36127da))
+
+
+### BREAKING CHANGES
+
+* **list:** Please make sure that everybody using your list has latest version, else you'll have to regenerate the list everytime someone contributes with an outdated version
+
+
+
+<a name="6.1.11"></a>
+## [6.1.11](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.10...v6.1.11) (2019-11-07)
+
+
+### Bug Fixes
+
+* **auth:** fixed an issue with deleted characters not being loaded properly ([39e87dc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/39e87dc))
+* **desktop:** fixed an issue with firewall permissions not updated properly ([d917d06](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d917d06))
+* **list:** fixed an issue with item color not changing properly ([6029fac](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6029fac))
+* **lists:** fixed lists page not loading for some users ([2f8ff77](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2f8ff77))
+
+
+### Features
+
+* **core:** added a version lock system, to avoid outdated versions after this one ([b73d67d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b73d67d))
+* **sidebar:** sidebar state is now saved in localstorage ([8d67645](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8d67645))
+
+
+
+<a name="6.1.10"></a>
+## [6.1.10](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.9...v6.1.10) (2019-11-06)
+
+
+### Bug Fixes
+
+* **list:** fixed an issue with some lists having no details on their items at all ([4ac02b3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4ac02b3))
+* **optimizer:** performance optimizations for inventory optimizer ([68937bd](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/68937bd))
+
+
+### Features
+
+* **fates:** added all positions of fates (kudos to Icarus for the data) ([fc1541d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fc1541d))
+* **inventory:** added a button to clear all your inventories at once ([c277e34](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c277e34))
+* **inventory:** new setting to track retainer's market inventory too ([a51449c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a51449c)), closes [#1194](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1194)
+* **layout:** second default layout: Default layout without vendors ([98616e7](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/98616e7))
+
+
+
+<a name="6.1.9"></a>
+## [6.1.9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.6...v6.1.9) (2019-11-05)
+
+
+### Bug Fixes
+
+* **inventory:** fixed an issue with price not taking quantity into account ([53499b3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/53499b3))
+* **list:** fixed a case where lists would load before lazy data, making them empty ([ec43716](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ec43716))
+* **list:** fixed an issue with new lists crashing upon update that is not item update ([cd0f13a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/cd0f13a))
+* **list:** fixed an issue with some lists not loading properly ([60b9dd2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/60b9dd2))
+* **list:** fixed high CPU usage when marking an item as done in a large list ([9fc0706](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9fc0706)), closes [#1196](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1196)
+* **lists:** fixed an issue with some lists not loading properly in workshops or team panels ([539f574](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/539f574))
+* **rotation-tips:** fixed an issue with "avoid using good actions" tip ([e715f27](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e715f27))
+* fixed a case where the confirmation popup for unsaved change popped too often ([5b3db30](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5b3db30))
+* **search:** removed dated items from search results ([a7fd33f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a7fd33f))
+* **team:** no more hook messages when user doesn't have permission to edit the list ([fa1e163](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fa1e163))
+
+
+### Features
+
+* **list:** you can now ignore a currency in total panel price popup ([5fcb2f5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5fcb2f5))
+* **simulator:** new rotation tip: avoid using actions that require Good ([39c7c64](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/39c7c64))
+* **simulator:** remember end of macro sound option ([4551687](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4551687))
+
+
+
+<a name="6.1.8"></a>
+## [6.1.8](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.6...v6.1.8) (2019-11-05)
+
+
+### Bug Fixes
+
+* **inventory:** fixed an issue with price not taking quantity into account ([53499b3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/53499b3))
+* **list:** fixed an issue with new lists crashing upon update that is not item update ([cd0f13a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/cd0f13a))
+* **rotation-tips:** fixed an issue with "avoid using good actions" tip ([e715f27](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/e715f27))
+* fixed a case where the confirmation popup for unsaved change popped too often ([5b3db30](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5b3db30))
+* **list:** fixed a case where lists would load before lazy data, making them empty ([ec43716](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ec43716))
+* **list:** fixed high CPU usage when marking an item as done in a large list ([9fc0706](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9fc0706)), closes [#1196](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1196)
+* **search:** removed dated items from search results ([a7fd33f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a7fd33f))
+* **team:** no more hook messages when user doesn't have permission to edit the list ([fa1e163](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fa1e163))
+
+
+### Features
+
+* **list:** you can now ignore a currency in total panel price popup ([5fcb2f5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5fcb2f5))
+* **simulator:** new rotation tip: avoid using actions that require Good ([39c7c64](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/39c7c64))
+* **simulator:** remember end of macro sound option ([4551687](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4551687))
+
+
+
+<a name="6.1.7"></a>
+## [6.1.7](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.6...v6.1.7) (2019-11-05)
+
+
+### Bug Fixes
+
+* fixed a case where the confirmation popup for unsaved change popped too often ([5b3db30](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5b3db30))
+* **inventory:** fixed an issue with price not taking quantity into account ([53499b3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/53499b3))
+* **list:** fixed a case where lists would load before lazy data, making them empty ([ec43716](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ec43716))
+* **list:** fixed high CPU usage when marking an item as done in a large list ([9fc0706](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9fc0706)), closes [#1196](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1196)
+* **search:** removed dated items from search results ([a7fd33f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/a7fd33f))
+* **team:** no more hook messages when user doesn't have permission to edit the list ([fa1e163](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fa1e163))
+
+
+### Features
+
+* **list:** you can now ignore a currency in total panel price popup ([5fcb2f5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5fcb2f5))
+* **simulator:** new rotation tip: avoid using actions that require Good ([39c7c64](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/39c7c64))
+* **simulator:** remember end of macro sound option ([4551687](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4551687))
+
+
+
+<a name="6.1.6"></a>
+## [6.1.6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.5...v6.1.6) (2019-11-03)
+
+
+### Bug Fixes
+
+* **data:** fixed missing folklore book entries ([1a5aea9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1a5aea9))
+* **data:** fixed missing folklore book entries for fisher ([5d618b2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5d618b2))
+* **db:** fixed xivapi error when searching for ANY type ([017e9e1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/017e9e1))
+* **inventory:** don't show items on sale as if they were in retainer's inventory ([d1cfb41](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d1cfb41))
+* **list:** fixed realtime position tracking in zone breakdown ([78c0641](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/78c0641))
+* **log:** fixed first CRP page showing duplicates ([fd2aaa3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fd2aaa3))
+* **optimizer:** fixed an issue with not ignoring a tip anymore clearing the ignored tips ([c60c972](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c60c972))
+* **optimizer:** fixed missing translation label ([9855a57](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/9855a57))
+* **optimizer:** ignoring crystal containers ([f015a2f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f015a2f))
+* **simulator:** fixed ingenuity accuracy for lower levels ([aeedfb2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/aeedfb2))
+
+
+### Features
+
+* **layout:** added new layout row filter: IS_HQ ([d5618d1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d5618d1))
+* **list:** you can now enable a notification when you finished an item with autofill ([6839738](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6839738))
+* **search:** Ignore HQ and Collectable symbols in search ([b110979](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/b110979))
+
+
+
+<a name="6.1.5"></a>
+## [6.1.5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.4...v6.1.5) (2019-11-02)
+
+
+### Bug Fixes
+
+* **community-lists:** fixed an out of memory error with community lists loading ([8fa0fb5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8fa0fb5))
+* **inventory:** fixed an issue with drag and drop actions not being tracked ([6446396](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6446396))
+* **list:** fixed an issue with attached rotations that have been deleted crashing the page ([f23acc2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f23acc2))
+* **lists:** fixed an issue with "saving in database" loading indefinitely ([d6154be](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d6154be))
+* **optimizer:** removed retainer gear from optimization checks ([f76fa5b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f76fa5b))
+* **simulator:** fixed an issue with Ingenuity import with FR language ([0db78e5](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/0db78e5))
+* **simulator:** Use Durability Restorating Tip Later incorrectly triggering ([150c4f6](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/150c4f6))
+
+
+### Features
+
+* **db:** added new search field to quickly hop to another db page ([dc7e227](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/dc7e227))
+* **list:** final items display is now persisted in inventory view ([beb944a](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/beb944a))
+* **optimizer:** new optimizer: items that you have in very small stacks ([8127353](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8127353))
+
+
+
+<a name="6.1.4"></a>
+## [6.1.4](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.3...v6.1.4) (2019-11-01)
+
+
+### Bug Fixes
+
+* **desktop:** switched back to raw socket as default capture mode ([86fea67](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/86fea67))
+* **list:** fixed an issue with lists page breaking on broken lists ([5dd201c](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/5dd201c))
+* **list:** fixed an issue with lists page breaking on broken lists ([cc12b2e](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/cc12b2e))
+* **lists:** fixed an issue with lists disappearing after you opened them ([55ac45f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/55ac45f))
+* **lists:** fixed an issue with lists not loaded properly ([6872ccd](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6872ccd))
+* **optimizer:** fixed an issue with duplicates not being computed properly ([207b37f](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/207b37f))
+* **search:** fixed list loading popup hanging ([de20d8b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/de20d8b))
+
+
+### Features
+
+* **layout:** added new ordering: SLOT ([cede9dd](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/cede9dd))
+* **simulator:** support for statusoff Final Appraisal in macro import ([7023125](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7023125))
+* **solver:** updated solver for 5.1 rotations ([fde9be9](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/fde9be9))
+
+
+
+<a name="6.1.3"></a>
+## [6.1.3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.2...v6.1.3) (2019-10-31)
+
+
+### Bug Fixes
+
+* **data:** added missing foods ands weathers ([917c578](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/917c578))
+* **i18n:** fixed typo in inventory optimizer ([6059a77](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6059a77))
+* **inventory-optimizer:** don't consider items that are on sale anymore ([d226c69](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d226c69))
+* **list:** fixed an issue with regeneration not taking WVR changes into account ([40fda6b](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/40fda6b)), closes [#1173](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1173)
+* **stats:** fixed specialist CP bonus not being applied properly ([8882382](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8882382)), closes [#1179](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/issues/1179)
+* **tips:** fixed IQ tip when using Reflect instead ([bdd8ea3](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/bdd8ea3))
+
+
+### Features
+
+* **desktop:** switched back to winpcap monitor by default ([afe3770](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/afe3770))
+* **optimizer:** added copy isearch on item name click ([6f67847](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/6f67847))
+* **simulator:** added a custom action to remove final appraisal in rotation ([2f337d0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/2f337d0))
+* **simulator:** Option to split macro before byregot's blessing ([1e43bbc](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1e43bbc))
+
+
+
+<a name="6.1.2"></a>
+## [6.1.2](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.1...v6.1.2) (2019-10-31)
+
+
+### Bug Fixes
+
+* **alarms:** fixed an issue with some alarms not showing properly ([37cc2e0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/37cc2e0))
+* **data:** multiple missing data fixes ([8c0ee83](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/8c0ee83))
+* **db:** possible fix for quota exceeded ([ab805b1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ab805b1))
+
+
+
+<a name="6.1.1"></a>
+## [6.1.1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.1.0...v6.1.1) (2019-10-30)
+
+
+### Bug Fixes
+
+* **data:** fixed missing map backgrounds ([1bbf34d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1bbf34d))
+* **data:** fixed missing map data ([c990493](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c990493))
+* **simulator:** fixed final appraisal buff icon ([bd0f812](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/bd0f812))
+* **simulator:** fixed macro import ([7417a02](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/7417a02))
+* **simulator:** fixed multiple inaccuracies ([f78906d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f78906d))
+
+
+### Features
+
+* **levequests:** added label for exp computing with global exp mode ([c6607d1](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/c6607d1))
+* **simulator:** Allow saving stats to profile after apply ([4a09171](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/4a09171))
+* **simulator:** removed additional actions macro ([f781e1d](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/f781e1d))
+* **simulator:** removed consumables checkbox ([48e0011](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/48e0011))
+
+
+
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.0.16...v6.1.0) (2019-10-30)
+
+
+### Bug Fixes
+
+* **inventory:** fixed an issue with items being sent via mail or trade ([1bddd19](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/1bddd19))
+* **inventory:** fixed an issue with marketboard price estimate ([443f4b7](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/443f4b7))
+* **item-picker:** fixed single item pick in list item addition popup ([72e2fd0](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/72e2fd0))
+
+
+### Features
+
+* **data:** add support for 5.1 data ([d026269](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/d026269))
+* **inventory:** added inventory optimizer under helpers ([20b8438](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/20b8438))
+* **list:** added realtime position marker on zone breakdowns ([ab171be](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/commit/ab171be))
+
+
+
 <a name="6.0.16"></a>
 ## [6.0.16](https://github.com/ffxiv-teamcraft/ffxiv-teamcraft/compare/v6.0.15...v6.0.16) (2019-10-27)
 

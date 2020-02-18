@@ -12,7 +12,7 @@ import { LocalizedDataService } from '../../../core/data/localized-data.service'
 import { I18nToolsService } from '../../../core/tools/i18n-tools.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DataExtractorService } from '../../../modules/list/data/data-extractor.service';
-import { ListRow } from '../../../modules/list/model/list-row';
+import { getItemSource, ListRow } from '../../../modules/list/model/list-row';
 import { SearchResult } from '../../../model/search/search-result';
 import { ListPickerService } from '../../../modules/list-picker/list-picker.service';
 import { ListsFacade } from '../../../modules/list/+state/lists.facade';
@@ -32,6 +32,10 @@ import { Craft } from '../../../model/garland-tools/craft';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ModelViewerComponent } from './model-viewer/model-viewer.component';
 import { SettingsService } from '../../../modules/settings/settings.service';
+import { hwdSupplies } from '../../../core/data/sources/hwd-supplies';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+import { DataType } from '../../../modules/list/data/data-type';
 
 @Component({
   selector: 'app-item',
@@ -64,6 +68,8 @@ export class ItemComponent extends TeamcraftPageComponent {
 
   modifiedList: List;
 
+  dataTypes = DataType;
+
   constructor(private route: ActivatedRoute, private xivapi: XivapiService,
               private gt: DataService, private l12n: LocalizedDataService,
               private i18n: I18nToolsService, private translate: TranslateService,
@@ -72,7 +78,8 @@ export class ItemComponent extends TeamcraftPageComponent {
               private progressService: ProgressPopupService, private listManager: ListManagerService,
               private notificationService: NzNotificationService, private rotationPicker: RotationPickerService,
               private attt: ATTTService, private lazyData: LazyDataService, private sanitizer: DomSanitizer,
-              private dialog: NzModalService, public settings: SettingsService, seo: SeoService) {
+              private dialog: NzModalService, public settings: SettingsService,
+              private apollo: Apollo, seo: SeoService) {
     super(seo);
 
     this.route.paramMap.subscribe(params => {
@@ -106,6 +113,7 @@ export class ItemComponent extends TeamcraftPageComponent {
         return this.xivapi.get(XivapiEndpoint.Item, +itemId);
       }),
       switchMap((item) => {
+        item.IsFish = this.lazyData.data.fishes.indexOf(item.ID) > -1;
         // If it's a  consumable, get item action details and put it inside item action itself.
         if (item.ItemAction && [844, 845, 846].indexOf(item.ItemAction.Type) > -1) {
           return this.xivapi.get(XivapiEndpoint.ItemFood, item.ItemAction.Data1).pipe(
@@ -253,23 +261,7 @@ export class ItemComponent extends TeamcraftPageComponent {
         return this.handleAdditionalData(item, data, xivapiItem);
       }),
       tap(item => {
-        this.noData = (item.craftedBy === undefined || item.craftedBy.length === 0)
-          && (item.tradeSources === undefined || item.tradeSources.length === 0)
-          && (item.vendors === undefined || item.vendors.length === 0)
-          && (item.reducedFrom === undefined || item.reducedFrom.length === 0)
-          && (item.desynths === undefined || item.desynths.length === 0)
-          && (item.instances === undefined || item.instances.length === 0)
-          && (!item.gardening)
-          && (item.voyages === undefined || item.voyages.length === 0)
-          && (item.drops === undefined || item.drops.length === 0)
-          && (item.ventures === undefined || item.ventures.length === 0)
-          && (!item.gatheredBy)
-          && (item.alarms === undefined || item.alarms.length === 0)
-          && (item.tripleTriadDuels === undefined || item.tripleTriadDuels.length === 0)
-          && (item.treasures === undefined || item.treasures.length === 0)
-          && (item.fates === undefined || item.fates.length === 0)
-          && (item.quests === undefined || item.quests.length === 0)
-          && !item.tripleTriadPack;
+        this.noData = item.sources.length === 0;
       })
     );
 
@@ -289,16 +281,17 @@ export class ItemComponent extends TeamcraftPageComponent {
         ];
         if (!xivapiItem.IsUntradable) {
           links.push({
-            title: 'Mogboard',
-            icon: 'https://mogboard.com/i/mog/mog.png',
-            url: `https://mogboard.com/market/${xivapiItem.ID}`
+            title: 'Universalis',
+            icon: 'https://universalis.app/i/universalis/universalis.png',
+            url: `https://universalis.app/market/${xivapiItem.ID}`
           });
         }
-        if (listRow.gardening) {
+        const gardening = getItemSource(listRow, DataType.GARDENING);
+        if (Number.isInteger(gardening)) {
           links.push({
             title: 'FFXIV Gardening',
             icon: './assets/icons/Gardening.png',
-            url: `https://${this.translate.currentLang === 'en' ? 'www' : this.translate.currentLang}.ffxivgardening.com/seed-details.php?SeedID=${listRow.gardening}`
+            url: `http://${this.translate.currentLang === 'en' ? 'www' : this.translate.currentLang}.ffxivgardening.com/seed-details.php?SeedID=${gardening}`
           });
         }
         if (xivapiItem.ItemActionTargetID === 1389) {
@@ -357,6 +350,26 @@ export class ItemComponent extends TeamcraftPageComponent {
     );
 
     this.usedFor$ = combineLatest([this.garlandToolsItem$, this.xivapiItem$]).pipe(
+      switchMap(([data, xivapiItem]) => {
+        if (xivapiItem.ItemSearchCategoryTargetID === 30) {
+          return this.apollo.query<any>({
+            query: gql`
+          query fishData {
+            baits_per_fish(where: {baitId: {_eq: ${xivapiItem.ID}}}) {
+              itemId
+            }
+          }
+          `
+          })
+            .pipe(
+              map(result => {
+                xivapiItem.BaitInfo = result.data.baits_per_fish.filter(bait => bait.id > 0);
+                return [data, xivapiItem];
+              })
+            );
+        }
+        return of([data, xivapiItem]);
+      }),
       map(([data, xivapiItem]) => {
         const usedFor = [];
         if (data.item.ingredient_of !== undefined) {
@@ -369,7 +382,21 @@ export class ItemComponent extends TeamcraftPageComponent {
               .map(itemId => {
                 return {
                   itemId: +itemId,
-                  recipes: this.lazyData.recipes.filter(r => r.result === +itemId)
+                  recipes: this.lazyData.data.recipes.filter(r => r.result === +itemId)
+                };
+              })
+          });
+        }
+        if (xivapiItem.BaitInfo !== undefined && xivapiItem.BaitInfo.length > 0) {
+          usedFor.push({
+            type: UsedForType.FISH_BAIT,
+            flex: '1 1 auto',
+            title: 'DB.FISH.Bait',
+            icon: './assets/icons/classjob/fisher.png',
+            links: xivapiItem.BaitInfo
+              .map(row => {
+                return {
+                  itemId: +row.itemId
                 };
               })
           });
@@ -395,6 +422,15 @@ export class ItemComponent extends TeamcraftPageComponent {
             title: 'DB.Rowena_splendor',
             icon: './assets/icons/status/collectors_glove.png',
             masterpiece: data.item.masterpiece
+          });
+        }
+        if (hwdSupplies[data.item.id] !== undefined) {
+          usedFor.push({
+            type: UsedForType.ISHGARD_RESTORATION,
+            flex: '1 1 auto',
+            title: 'DB.Ishgard_restoration',
+            icon: './assets/icons/status/collectors_glove.png',
+            ishgardRestoration: hwdSupplies[data.item.id]
           });
         }
         if (data.item.desynthedTo !== undefined) {
@@ -430,7 +466,7 @@ export class ItemComponent extends TeamcraftPageComponent {
               return {
                 npcs: ts.npcs.map(npcId => {
                   const npc: TradeNpc = { id: npcId };
-                  const npcEntry = this.lazyData.npcs[npcId];
+                  const npcEntry = this.lazyData.data.npcs[npcId];
                   if (npcEntry.position) {
                     npc.coords = { x: npcEntry.position.x, y: npcEntry.position.y };
                     npc.zoneId = npcEntry.position.zoneid;
@@ -550,7 +586,7 @@ export class ItemComponent extends TeamcraftPageComponent {
               .map(itemId => {
                 return {
                   itemId: +itemId,
-                  recipes: [this.lazyData.recipes.find(r => r.result === +itemId)]
+                  recipes: [this.lazyData.data.recipes.find(r => r.result === +itemId)]
                 };
               })
           });
@@ -561,7 +597,7 @@ export class ItemComponent extends TeamcraftPageComponent {
   }
 
   public openInSimulator(item: ListRow, itemId: number, recipeId: string): void {
-    const entry = item.craftedBy.find(c => c.recipeId === recipeId);
+    const entry = getItemSource(item,  DataType.CRAFTED_BY).find(c => c.recipeId === recipeId);
     const craft: Partial<Craft> = {
       id: recipeId,
       job: entry.jobId,
@@ -630,14 +666,14 @@ export class ItemComponent extends TeamcraftPageComponent {
     );
   }
 
-  public createQuickList(item: SearchResult): void {
+  public createQuickList(item: SearchResult, amount: number): void {
     const list = this.listsFacade.newEphemeralList(this.i18n.getName(this.l12n.getItem(+item.itemId)));
-    const operation$ = this.listManager.addToList(+item.itemId, list, item.recipe ? item.recipe.recipeId : '', item.amount, item.addCrafts)
+    const operation$ = this.listManager.addToList(+item.itemId, list, item.recipe ? item.recipe.recipeId : '', amount, item.addCrafts)
       .pipe(
         tap(resultList => this.listsFacade.addList(resultList)),
         mergeMap(resultList => {
           return this.listsFacade.myLists$.pipe(
-            map(lists => lists.find(l => l.createdAt === resultList.createdAt && l.$key !== undefined)),
+            map(lists => lists.find(l => l.createdAt.toMillis() === resultList.createdAt.toMillis() && l.$key !== undefined)),
             filter(l => l !== undefined),
             first()
           );
@@ -675,7 +711,7 @@ export class ItemComponent extends TeamcraftPageComponent {
         return this.progressService.showProgress(
           combineLatest([this.listsFacade.myLists$, this.listsFacade.listsWithWriteAccess$]).pipe(
             map(([myLists, listsICanWrite]) => [...myLists, ...listsICanWrite]),
-            map(lists => lists.find(l => l.createdAt === list.createdAt && l.$key === list.$key && l.$key !== undefined)),
+            map(lists => lists.find(l => l.createdAt.toMillis() === list.createdAt.toMillis() && l.$key !== undefined)),
             filter(l => l !== undefined),
             first()
           ), 1, 'Saving_in_database');
@@ -698,30 +734,36 @@ export class ItemComponent extends TeamcraftPageComponent {
             .pipe(
               map(card => {
                 if (card.sources.npcs.length > 0) {
-                  item.tripleTriadDuels = card.sources.npcs.map(npc => {
-                    const npcPosition = this.lazyData.npcs[npc.resident_id].position;
-                    const duel: TripleTriadDuel = {
-                      atttNpcId: npc.id,
-                      npcId: npc.resident_id,
-                      mapId: npcPosition ? npcPosition.map : 0,
-                      zoneId: npcPosition ? npcPosition.zoneid : 0,
-                      coords: {
-                        x: npc.location.x,
-                        y: npc.location.y
-                      },
-                      rules: npc.rule_ids
-                    };
-                    if (npc.quest !== undefined) {
-                      duel.unlockingQuestId = npc.quest.id;
-                    }
-                    return duel;
+                  item.sources.push({
+                    type: DataType.TRIPLE_TRIAD_DUELS,
+                    data: card.sources.npcs.map(npc => {
+                      const npcPosition = this.lazyData.data.npcs[npc.resident_id].position;
+                      const duel: TripleTriadDuel = {
+                        atttNpcId: npc.id,
+                        npcId: npc.resident_id,
+                        mapId: npcPosition ? npcPosition.map : 0,
+                        zoneId: npcPosition ? npcPosition.zoneid : 0,
+                        coords: {
+                          x: npc.location.x,
+                          y: npc.location.y
+                        },
+                        rules: npc.rule_ids
+                      };
+                      if (npc.quest !== undefined) {
+                        duel.unlockingQuestId = npc.quest.id;
+                      }
+                      return duel;
+                    })
                   });
                 }
-                if (card.sources.pack !== null) {
-                  item.tripleTriadPack = {
-                    id: [10128, 10129, 10130, 13380, 10077][card.sources.pack.id - 1],
-                    price: card.sources.pack.cost
-                  };
+                if (card.sources.pack) {
+                  item.sources.push({
+                    type: DataType.TRIPLE_TRIAD_DUELS,
+                    data: {
+                      id: [10128, 10129, 10130, 13380, 10077][card.sources.pack.id - 1],
+                      price: card.sources.pack.cost
+                    }
+                  });
                 }
                 return item;
               })
@@ -733,7 +775,10 @@ export class ItemComponent extends TeamcraftPageComponent {
       if (xivapiItem.GameContentLinks.Achievement && xivapiItem.GameContentLinks.Achievement.Item) {
         res$ = res$.pipe(
           map(res => {
-            res.achievements = xivapiItem.GameContentLinks.Achievement.Item;
+            res.sources.push({
+              type: DataType.ACHIEVEMENTS,
+              data: xivapiItem.GameContentLinks.Achievement.Item
+            });
             return res;
           })
         );
@@ -742,7 +787,10 @@ export class ItemComponent extends TeamcraftPageComponent {
     if (gtData.item.quests) {
       res$ = res$.pipe(
         map(res => {
-          res.quests = gtData.item.quests;
+          res.sources.push({
+            type: DataType.QUESTS,
+            data: gtData.item.quests
+          });
           return res;
         })
       );

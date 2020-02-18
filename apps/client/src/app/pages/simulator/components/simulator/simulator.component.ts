@@ -1,19 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, combineLatest, merge, Observable, ReplaySubject, Subject } from 'rxjs';
 import { Craft } from '../../../../model/garland-tools/craft';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  first,
-  map,
-  pairwise,
-  shareReplay,
-  startWith,
-  switchMap,
-  takeUntil,
-  tap
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, first, map, pairwise, shareReplay, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { HtmlToolsService } from '../../../../core/tools/html-tools.service';
 import { AuthFacade } from '../../../../+state/auth.facade';
 import { Item } from '../../../../model/garland-tools/item';
@@ -61,6 +49,7 @@ import {
   CraftingActionsRegistry,
   CraftingJob,
   EffectiveBuff,
+  FinalAppraisal,
   GearSet,
   Simulation,
   SimulationReliabilityReport,
@@ -71,6 +60,7 @@ import { SolverPopupComponent } from '../solver-popup/solver-popup.component';
 import { SettingsService } from '../../../../modules/settings/settings.service';
 import { IpcService } from '../../../../core/electron/ipc.service';
 import { PlatformService } from '../../../../core/tools/platform.service';
+import { SimulationSharePopupComponent } from '../simulation-share-popup/simulation-share-popup.component';
 
 @Component({
   selector: 'app-simulator',
@@ -98,6 +88,9 @@ export class SimulatorComponent implements OnInit, OnDestroy {
 
   @Input()
   public thresholds: number[] = [];
+
+  @Input()
+  public routeStats: { craftsmanship: number, control: number, cp: number, spec: boolean, level: number };
 
   public safeMode$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(localStorage.getItem('simulator:safe-mode') === 'true');
 
@@ -173,6 +166,10 @@ export class SimulatorComponent implements OnInit, OnDestroy {
 
   public dirty = false;
 
+  public savedSet = true;
+
+  private formChangesSubscription: any;
+
   // HQ ingredients
   private hqIngredients$: BehaviorSubject<{ id: number, amount: number }[]> =
     new BehaviorSubject<{ id: number, amount: number }[]>([]);
@@ -196,10 +193,10 @@ export class SimulatorComponent implements OnInit, OnDestroy {
   private stepStates$: BehaviorSubject<{ [index: number]: StepState }> = new BehaviorSubject<{ [index: number]: StepState }>({});
 
   private findActionsRegex: RegExp =
-    new RegExp(/\/(ac|action|aaction|gaction|generalaction)[\s]+((\w|[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B)+|"[^"]+")?.*/, 'i');
+    new RegExp(/\/(ac|action|aaction|gaction|generalaction|statusoff)[\s]+((\w|[éàèç]|[\u3000-\u303F]|[\u3040-\u309F]|[\u30A0-\u30FF]|[\uFF00-\uFFEF]|[\u4E00-\u9FAF]|[\u2605-\u2606]|[\u2190-\u2195]|\u203B)+|"[^"]+")?.*/, 'i');
 
   private findActionsAutoTranslatedRegex: RegExp =
-    new RegExp(/\/(ac|action|aaction|gaction|generalaction)[\s]+([^<]+)?.*/, 'i');
+    new RegExp(/\/(ac|action|aaction|gaction|generalaction|statusoff)[\s]+([^<]+)?.*/, 'i');
 
   private statsFromRotationApplied = false;
 
@@ -295,6 +292,22 @@ export class SimulatorComponent implements OnInit, OnDestroy {
     });
   }
 
+  openSharePopup(rotation: CraftingRotation): void {
+    this.simulation$.pipe(
+      first()
+    ).subscribe(simulation => {
+      this.dialog.create({
+        nzFooter: null,
+        nzContent: SimulationSharePopupComponent,
+        nzComponentParams: {
+          rotation: rotation,
+          simulation: simulation
+        },
+        nzTitle: this.translate.instant('SIMULATOR.Share_button_tooltip')
+      })
+    });
+  }
+
   public openOverlay(rotation: CraftingRotation): void {
     this.ipc.openOverlay(`/rotation-overlay/${rotation.$key}`, '/rotation-overlay', IpcService.ROTATION_DEFAULT_DIMENSIONS);
   }
@@ -372,7 +385,10 @@ export class SimulatorComponent implements OnInit, OnDestroy {
         filter(res => res !== undefined && res !== null && res.length > 0 && res.indexOf('[') > -1),
         map(res => CraftingActionsRegistry.importFromCraftOpt(JSON.parse(res))),
         first()
-      ).subscribe(actions => this.actions$.next(actions));
+      ).subscribe(actions => {
+      this.actions$.next(actions);
+      this.stepStates$.next({});
+    });
   }
 
   openMacroPopup(simulation: Simulation): void {
@@ -413,14 +429,6 @@ export class SimulatorComponent implements OnInit, OnDestroy {
     });
   }
 
-  getLink(rotation: CraftingRotation): string {
-    if (rotation.custom) {
-      return this.linkTools.getLink(`/simulator/custom/${rotation.$key}`);
-    } else {
-      return this.linkTools.getLink(`/simulator/${rotation.defaultItemId}/${rotation.defaultRecipeId}/${rotation.$key}`);
-    }
-  }
-
   afterLinkCopy(): void {
     this.message.success(this.translate.instant('SIMULATOR.Share_link_copied'));
   }
@@ -439,6 +447,12 @@ export class SimulatorComponent implements OnInit, OnDestroy {
             let match = this.findActionsRegex.exec(line);
             if (match !== null && match !== undefined) {
               const skillName = match[2].replace(/"/g, '');
+
+              if (line.startsWith('/statusoff') && skillName === this.i18nTools.getName(this.localizedDataService.getAction(new FinalAppraisal().getIds()[0]))) {
+                actionIds.push(-1);
+                continue;
+              }
+
               // Get translated skill
               try {
                 actionIds
@@ -455,7 +469,6 @@ export class SimulatorComponent implements OnInit, OnDestroy {
                         <Language>this.translate.currentLang));
                   }
                 } catch (ignoredAgain) {
-                  break;
                 }
               }
             }
@@ -464,7 +477,10 @@ export class SimulatorComponent implements OnInit, OnDestroy {
         }),
         map(actionIds => CraftingActionsRegistry.createFromIds(actionIds)),
         first()
-      ).subscribe(actions => this.actions$.next(actions));
+      ).subscribe(actions => {
+      this.actions$.next(actions);
+      this.stepStates$.next({});
+    });
   }
 
   saveRotation(rotation: CraftingRotation): void {
@@ -519,6 +535,11 @@ export class SimulatorComponent implements OnInit, OnDestroy {
       const actions = this.actions$.value;
       actions.splice(index, 0, action);
       this.actions$.next([...actions]);
+      const stepStates = { ...this.stepStates$.value };
+      for (let i = index; i < actions.length; i++) {
+        delete stepStates[i];
+      }
+      this.stepStates$.next(stepStates);
     }
     this.dirty = true;
     this.dirtyFacade.addEntry('simulator', DirtyScope.PAGE);
@@ -550,6 +571,11 @@ export class SimulatorComponent implements OnInit, OnDestroy {
     const actions = this.actions$.value;
     actions.splice(index, 1);
     this.actions$.next([...actions]);
+    const stepStates = { ...this.stepStates$.value };
+    for (let i = index; i < actions.length; i++) {
+      delete stepStates[i];
+    }
+    this.stepStates$.next(stepStates);
     this.dirty = true;
     this.dirtyFacade.addEntry('simulator', DirtyScope.PAGE);
   }
@@ -590,6 +616,7 @@ export class SimulatorComponent implements OnInit, OnDestroy {
       specialist: rawForm.specialist
     };
     this.authFacade.saveSet(set);
+    this.savedSet = true;
   }
 
   saveDefaultConsumables(): void {
@@ -693,16 +720,8 @@ export class SimulatorComponent implements OnInit, OnDestroy {
     return CraftingActionsRegistry.getActionsByType(ActionType.QUALITY);
   }
 
-  getCpRecoveryActions(): CraftingAction[] {
-    return CraftingActionsRegistry.getActionsByType(ActionType.CP_RECOVERY);
-  }
-
   getBuffActions(): CraftingAction[] {
     return CraftingActionsRegistry.getActionsByType(ActionType.BUFF);
-  }
-
-  getSpecialtyActions(): CraftingAction[] {
-    return CraftingActionsRegistry.getActionsByType(ActionType.SPECIALTY);
   }
 
   getRepairActions(): CraftingAction[] {
@@ -710,7 +729,10 @@ export class SimulatorComponent implements OnInit, OnDestroy {
   }
 
   getOtherActions(): CraftingAction[] {
-    return CraftingActionsRegistry.getActionsByType(ActionType.OTHER);
+    return [
+      ...CraftingActionsRegistry.getActionsByType(ActionType.OTHER),
+      ...CraftingActionsRegistry.getActionsByType(ActionType.CP_RECOVERY)
+    ];
   }
 
   saveSafeMode(value: boolean): void {
@@ -722,9 +744,11 @@ export class SimulatorComponent implements OnInit, OnDestroy {
     if (stats.specialist) {
       stats.craftsmanship += 20;
       stats.control += 20;
-    } else if (stats.craftsmanship > 0 && stats.control > 0) {
+      stats.cp += 15;
+    } else if (stats.craftsmanship > 0 && stats.control > 0 && stats.cp > 0) {
       stats.craftsmanship -= 20;
       stats.control -= 20;
+      stats.cp -= 15;
     }
     this.statsForm.patchValue(stats, { emitEvent: false });
   }
@@ -752,6 +776,8 @@ export class SimulatorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.formChangesSubscription.unsubscribe();
+
     this.onDestroy$.next(null);
   }
 
@@ -769,30 +795,17 @@ export class SimulatorComponent implements OnInit, OnDestroy {
         const set = sets.find(s => s.jobId === job);
         const levels = <CrafterLevels>sets.map(s => s.level);
         levels[job - 8] = set.level;
+        if (this.routeStats) {
+          set.craftsmanship = this.routeStats.craftsmanship;
+          set.control = this.routeStats.control;
+          set.cp = this.routeStats.cp;
+          set.level = this.routeStats.level;
+          set.specialist = this.routeStats.spec;
+        }
         return new CrafterStats(set.jobId, set.craftsmanship, set.control, set.cp, set.specialist, set.level, levels);
       }),
       distinctUntilChanged((before, after) => {
         return JSON.stringify(before) === JSON.stringify(after);
-      })
-    );
-
-    const statsFromRotation$ = this.rotation$.pipe(
-      map(rotation => {
-        const stats = rotation.stats;
-        if (rotation.stats) {
-          const levels = [80, 80, 80, 80, 80, 80, 80, 80];
-          levels[stats.jobId - 8] = stats.level;
-          return new CrafterStats(
-            stats.jobId,
-            stats.craftsmanship,
-            stats.control,
-            stats.cp,
-            stats.specialist,
-            stats.level,
-            <CrafterLevels>levels
-          );
-        }
-        return undefined;
       })
     );
 
@@ -805,15 +818,8 @@ export class SimulatorComponent implements OnInit, OnDestroy {
       shareReplay(1)
     );
 
-    this.crafterStats$ = combineLatest([merge(statsFromRecipe$, this.customStats$), statsFromRotation$, this.route.queryParamMap, this.authFacade.userId$, this.rotation$]).pipe(
+    this.crafterStats$ = merge(statsFromRecipe$, this.customStats$).pipe(
       debounceTime(1000),
-      map(([generated, fromRotation, query, userId, rotation]) => {
-        if (!this.statsFromRotationApplied && this.custom && (query.has('includeStats') || (rotation.authorId === userId && rotation.custom))) {
-          this.statsFromRotationApplied = true;
-          return fromRotation || generated;
-        }
-        return generated;
-      }),
       shareReplay(1),
       tap(stats => {
         const levels = stats.levels;
@@ -867,14 +873,15 @@ export class SimulatorComponent implements OnInit, OnDestroy {
     ).subscribe(([rotation, stats, rotationChanged]: [CraftingRotation, CrafterStats, boolean]) => {
       if (this.actions$.value.length === 0 || rotationChanged) {
         this.actions$.next(CraftingActionsRegistry.deserializeRotation(rotation.rotation));
+        this.stepStates$.next({});
       }
-      if (rotation.food && this.selectedFood === undefined) {
+      if (rotation.food && this.selectedFood === undefined && !this.routeStats) {
         this.selectedFood = this.foods.find(f => rotation.food && f.itemId === rotation.food.id && f.hq === rotation.food.hq);
       }
-      if (rotation.medicine && this.selectedMedicine === undefined) {
+      if (rotation.medicine && this.selectedMedicine === undefined && !this.routeStats) {
         this.selectedMedicine = this.medicines.find(m => rotation.medicine && m.itemId === rotation.medicine.id && m.hq === rotation.medicine.hq);
       }
-      if (rotation.freeCompanyActions && this.selectedFreeCompanyActions.length === 0) {
+      if (rotation.freeCompanyActions && this.selectedFreeCompanyActions.length === 0 && !this.routeStats) {
         this.selectedFreeCompanyActions = this.freeCompanyActions.filter(action => rotation.freeCompanyActions.indexOf(action.actionId) > -1);
       }
       this.applyConsumables(stats);
@@ -927,6 +934,10 @@ export class SimulatorComponent implements OnInit, OnDestroy {
         return this.rotationTipsService.getTips(result);
       })
     );
+
+    this.formChangesSubscription = this.statsForm.valueChanges.subscribe(() => {
+      this.savedSet = false;
+    });
   }
 
 }

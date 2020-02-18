@@ -52,16 +52,16 @@ export class ListsComponent {
               private translate: TranslateService, private dialog: NzModalService,
               private workshopsFacade: WorkshopsFacade, private teamsFacade: TeamsFacade,
               private authFacade: AuthFacade) {
-    this.workshops$ = combineLatest([this.workshopsFacade.myWorkshops$, this.listsFacade.compacts$]).pipe(
+    this.workshops$ = combineLatest([this.workshopsFacade.myWorkshops$, this.listsFacade.allListDetails$]).pipe(
       debounceTime(100),
-      map(([workshops, compacts]) => {
+      map(([workshops, lists]) => {
         return workshops
           .map(workshop => {
             return {
               workshop: workshop,
               lists: workshop.listIds
                 .map(key => {
-                  const list = compacts.find(c => c.$key === key);
+                  const list = lists.find(c => c.$key === key);
                   if (list !== undefined) {
                     list.workshopId = workshop.$key;
                   }
@@ -77,24 +77,24 @@ export class ListsComponent {
 
     this.favoriteLists$ = this.authFacade.favorites$.pipe(
       map(favorites => (favorites.lists || [])),
-      tap(lists => lists.forEach(list => this.listsFacade.loadCompact(list))),
+      tap(lists => lists.forEach(list => this.listsFacade.load(list))),
       mergeMap(lists => {
-        return this.listsFacade.compacts$.pipe(
+        return this.listsFacade.allListDetails$.pipe(
           map(compacts => compacts.filter(c => lists.indexOf(c.$key) > -1 && !c.notFound))
         );
       })
     );
 
-    this.sharedWorkshops$ = combineLatest([this.workshopsFacade.sharedWorkshops$, this.listsFacade.compacts$]).pipe(
+    this.sharedWorkshops$ = combineLatest([this.workshopsFacade.sharedWorkshops$, this.listsFacade.allListDetails$]).pipe(
       debounceTime(100),
-      map(([workshops, compacts]) => {
+      map(([workshops, lists]) => {
         return workshops
           .map(workshop => {
             return {
               workshop: workshop,
               lists: workshop.listIds
                 .map(key => {
-                  const list = compacts.find(c => c.$key === key);
+                  const list = lists.find(c => c.$key === key);
                   if (list !== undefined) {
                     list.workshopId = workshop.$key;
                   }
@@ -227,6 +227,9 @@ export class ListsComponent {
   setListIndex(list: List, index: number, lists: List[]): void {
     if (list.workshopId !== undefined) {
       this.workshopsFacade.removeListFromWorkshop(list.$key, list.workshopId);
+    }
+    if (index === list.index) {
+      return;
     }
     // Remove list from the array
     lists = lists.filter(l => l.$key !== list.$key);

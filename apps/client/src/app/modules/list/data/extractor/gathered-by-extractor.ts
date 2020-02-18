@@ -6,7 +6,6 @@ import { LocalizedDataService } from '../../../../core/data/localized-data.servi
 import { HtmlToolsService } from '../../../../core/tools/html-tools.service';
 import { GarlandToolsService } from '../../../../core/api/garland-tools.service';
 import { Item } from '../../../../model/garland-tools/item';
-import * as nodePositions from '../../../../core/data/sources/node-positions.json';
 import { StoredNode } from '../../model/stored-node';
 import { FishingBait } from '../../model/fishing-bait';
 import { spearFishingNodes } from '../../../../core/data/sources/spear-fishing-nodes';
@@ -71,8 +70,13 @@ export class GatheredByExtractor extends AbstractExtractor<GatheredBy> {
             id: +partial.i,
             zoneid: partial.z,
             level: +partial.l,
-            areaid: this.localized.getAreaIdByENName(partial.n)
+            areaid: this.localized.getAreaIdByENName(partial.n),
+            type: partial.t
           };
+          const lazyNode = this.lazyData.data.nodePositions[partial.i.toString()];
+          if (lazyNode && !lazyNode.items.some(row => row === item.id)) {
+            storedNode.hidden = true;
+          }
           if (details !== undefined) {
             const detailsItem = details.items.find(i => i.id === item.id);
             storedNode.slot = detailsItem !== undefined ? detailsItem.slot : '?';
@@ -82,12 +86,12 @@ export class GatheredByExtractor extends AbstractExtractor<GatheredBy> {
             storedNode.coords = details.coords;
           }
           // If we don't have position for this node in data provided by garlandtools,w e might have it inside our data.
-          if (nodePositions[node] !== undefined && nodePositions[node].x && nodePositions[node].y) {
-            storedNode.coords = [nodePositions[node].x, nodePositions[node].y];
+          if (this.lazyData.data.nodePositions[node] !== undefined && this.lazyData.data.nodePositions[node].x && this.lazyData.data.nodePositions[node].y) {
+            storedNode.coords = [this.lazyData.data.nodePositions[node].x, this.lazyData.data.nodePositions[node].y];
           }
           // Set proper map id based on informations we have
-          if (nodePositions[node] && nodePositions[node].map) {
-            storedNode.mapid = nodePositions[node].map;
+          if (this.lazyData.data.nodePositions[node] && this.lazyData.data.nodePositions[node].map) {
+            storedNode.mapid = this.lazyData.data.nodePositions[node].map;
           } else {
             storedNode.mapid = this.localized.getMapId(this.localized.getPlace(partial.z).en);
           }
@@ -112,10 +116,10 @@ export class GatheredByExtractor extends AbstractExtractor<GatheredBy> {
 
             if (spearFishingSpot.predator) {
               storedNode.predators = spearFishingSpot.predator.map(predator => {
-                const itemId = +Object.keys(this.lazyData.items).find(key => this.lazyData.items[key].en === predator.name);
+                const itemId = +Object.keys(this.lazyData.data.items).find(key => this.lazyData.data.items[key].en === predator.name);
                 return {
                   id: itemId,
-                  icon: this.lazyData.icons[itemId],
+                  icon: this.lazyData.data.itemIcons[itemId],
                   amount: predator.predatorAmount
                 };
               });
@@ -141,7 +145,8 @@ export class GatheredByExtractor extends AbstractExtractor<GatheredBy> {
             coords: spot.coords as number[],
             level: spot.lvl,
             fishEyes: spot.fishEyes || fishEyes[item.id] !== undefined,
-            snagging: spot.snagging
+            snagging: spot.snagging,
+            type: 4
           };
           if (spot.during !== undefined) {
             node.time = [spot.during.start];
@@ -186,7 +191,8 @@ export class GatheredByExtractor extends AbstractExtractor<GatheredBy> {
               areaid: partial.obj.z,
               mapid: mapId,
               level: partial.obj.l,
-              coords: [partial.obj.x, partial.obj.y]
+              coords: [partial.obj.x, partial.obj.y],
+              type: 4
             };
             gatheredBy.level = (gatheredBy.level === 0 || gatheredBy.level > partial.obj.l) ? partial.obj.l : gatheredBy.level;
             gatheredBy.nodes.push(node);

@@ -7,24 +7,25 @@ import { listsQuery } from './lists.selectors';
 import {
   CreateList,
   DeleteList,
-  LoadListCompact,
   LoadListDetails,
   LoadMyLists,
   LoadSharedLists,
   LoadTeamLists,
   NeedsVerification,
   OfflineListsLoaded,
+  PinList,
   SelectList,
   SetItemDone,
   ToggleAutocompletion,
-  UnloadListDetails,
+  ToggleCompletionNotification,
+  UnPinList,
   UpdateItem,
   UpdateList,
   UpdateListIndex
 } from './lists.actions';
 import { List } from '../model/list';
 import { NameQuestionPopupComponent } from '../../name-question-popup/name-question-popup/name-question-popup.component';
-import { delay, distinctUntilChanged, filter, first, map, shareReplay, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, first, map, shareReplay, switchMap, throttleTime } from 'rxjs/operators';
 import { NzModalService } from 'ng-zorro-antd';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -36,6 +37,7 @@ import { Team } from '../../../model/team/team';
 import { SettingsService } from '../../settings/settings.service';
 import { environment } from '../../../../environments/environment';
 import { InventoryFacade } from '../../inventory/+state/inventory.facade';
+import { NavigationEnd, Router } from '@angular/router';
 
 declare const gtag: Function;
 
@@ -43,11 +45,20 @@ declare const gtag: Function;
   providedIn: 'root'
 })
 export class ListsFacade {
-  loadingMyLists$ = this.store.select(listsQuery.getCompactsLoading);
-  allListDetails$ = this.store.select(listsQuery.getAllListDetails);
-  compacts$ = this.store.select(listsQuery.getCompacts);
+  loadingMyLists$ = this.store.select(listsQuery.getListsLoading);
+  allListDetails$ = this.store.select(listsQuery.getAllListDetails)
+    .pipe(
+      map(lists => {
+        return lists.filter(list => {
+          return list.finalItems !== undefined
+            && list.items !== undefined
+            && list.isOutDated
+            && typeof list.isOutDated === 'function';
+        });
+      })
+    );
 
-  myLists$ = combineLatest([this.store.select(listsQuery.getCompacts), this.authFacade.userId$]).pipe(
+  myLists$ = combineLatest([this.store.select(listsQuery.getAllListDetails), this.authFacade.userId$]).pipe(
     map(([compacts, userId]) => {
       return compacts.filter(c => c.authorId === userId);
     }),
@@ -60,7 +71,7 @@ export class ListsFacade {
   sharedLists$ = this.authFacade.loggedIn$.pipe(
     switchMap(loggedIn => {
       if (!loggedIn) {
-        return combineLatest([this.store.select(listsQuery.getCompacts), this.authFacade.userId$]).pipe(
+        return combineLatest([this.store.select(listsQuery.getAllListDetails), this.authFacade.userId$]).pipe(
           map(([compacts, userId]) => {
             return compacts.filter(c => {
               return !c.notFound
@@ -71,7 +82,7 @@ export class ListsFacade {
           })
         );
       }
-      return combineLatest([this.store.select(listsQuery.getCompacts), this.authFacade.user$, this.authFacade.userId$, this.authFacade.fcId$]).pipe(
+      return combineLatest([this.store.select(listsQuery.getAllListDetails), this.authFacade.user$, this.authFacade.userId$, this.authFacade.fcId$]).pipe(
         map(([compacts, user, userId, fcId]) => {
           if (user !== null) {
             const idEntry = user.lodestoneIds.find(l => l.id === user.defaultLodestoneId);
@@ -113,19 +124,21 @@ export class ListsFacade {
     })
   );
 
-  selectedList$ = this.store.select(listsQuery.getSelectedList).pipe(
-    filter(list => list !== undefined)
+  selectedList$ = this.store.select(listsQuery.getSelectedList()).pipe(
+    filter(list => list !== undefined),
+    throttleTime<List>(1000),
+    shareReplay(1)
   );
 
   selectedListPermissionLevel$ = this.authFacade.loggedIn$.pipe(
     switchMap(loggedIn => {
-      return combineLatest(
+      return combineLatest([
         this.selectedList$,
         loggedIn ? this.authFacade.user$ : of(null),
         this.authFacade.userId$,
         this.teamsFacade.selectedTeam$,
         loggedIn ? this.authFacade.mainCharacter$.pipe(map(c => c.FreeCompanyId)) : of(null)
-      );
+      ]);
     }),
     filter(([list]) => list !== undefined),
     map(([list, user, userId, team, fcId]) => {
@@ -149,18 +162,36 @@ export class ListsFacade {
 
   autocompleteEnabled$ = this.store.select(listsQuery.getAutocompleteEnabled);
 
+  pinnedList$ = this.store.select(listsQuery.getPinnedListKey());
+
+  completionNotificationEnabled$ = this.store.select(listsQuery.getCompletionNotificationEnabled);
+
+  private overlay: boolean;
+
   constructor(private store: Store<{ lists: ListsState }>, private dialog: NzModalService, private translate: TranslateService, private authFacade: AuthFacade,
-              private teamsFacade: TeamsFacade, private settings: SettingsService, private userInventoryService: InventoryFacade) {
+              private teamsFacade: TeamsFacade, private settings: SettingsService, private userInventoryService: InventoryFacade,
+              private router: Router) {
+    router.events
+      .pipe(
+        distinctUntilChanged((previous: any, current: any) => {
+          if (current instanceof NavigationEnd) {
+            return previous.url === current.url;
+          }
+          return true;
+        })
+      ).subscribe((event: any) => {
+      this.overlay = event.url.indexOf('?overlay') > -1;
+    });
   }
 
   getTeamLists(team: Team): Observable<List[]> {
-    return this.compacts$.pipe(
+    return this.allListDetails$.pipe(
       map(compacts => compacts.filter(compact => compact.teamId === team.$key))
     );
   }
 
   getWorkshopCompacts(keys: string[]): Observable<List[]> {
-    return this.compacts$.pipe(
+    return this.allListDetails$.pipe(
       map(compacts => keys.map(key => compacts.find(compact => compact.$key === key)))
     );
   }
@@ -201,8 +232,8 @@ export class ListsFacade {
     return list;
   }
 
-  setItemDone(itemId: number, itemIcon: number, finalItem: boolean, delta: number, recipeId: string, totalNeeded: number, external = false, fromPacket = false): void {
-    this.store.dispatch(new SetItemDone(itemId, itemIcon, finalItem, delta, recipeId, totalNeeded, external, fromPacket));
+  setItemDone(itemId: number, itemIcon: number, finalItem: boolean, delta: number, recipeId: string, totalNeeded: number, external = false, fromPacket = false, hq = false): void {
+    this.store.dispatch(new SetItemDone(itemId, itemIcon, finalItem, delta, recipeId, totalNeeded, external, fromPacket, hq));
   }
 
   updateItem(item: ListRow, finalItem: boolean): void {
@@ -245,26 +276,24 @@ export class ListsFacade {
     this.store.dispatch(new LoadSharedLists());
   }
 
-  loadCompact(key: string): void {
-    this.store.dispatch(new LoadListCompact(key));
-  }
-
   load(key: string): void {
     this.store.dispatch(new LoadListDetails(key));
   }
 
   unload(key: string): void {
-    this.store.dispatch(new UnloadListDetails(key));
     this.store.dispatch(new SelectList(undefined));
   }
 
   toggleAutocomplete(newValue: boolean): void {
     this.store.dispatch(new ToggleAutocompletion(newValue));
-    if (newValue) {
+    if (newValue && !this.overlay) {
       this.userInventoryService.inventory$.pipe(
         first(),
         filter((inventory) => {
-          return (inventory.lastZone || 0) < environment.startTimestamp;
+          if (!inventory.lastZone) {
+            return true;
+          }
+          return inventory.lastZone.seconds < environment.startTimestamp / 1000;
         }),
         map(() => {
           return this.dialog.create({
@@ -277,7 +306,7 @@ export class ListsFacade {
         }),
         switchMap((modal) => {
           return this.userInventoryService.inventory$.pipe(
-            filter(inventory => (inventory.lastZone || 0) > environment.startTimestamp),
+            filter(inventory => inventory.lastZone.seconds > environment.startTimestamp / 1000),
             first(),
             map(() => modal)
           );
@@ -286,6 +315,10 @@ export class ListsFacade {
         modal.close();
       });
     }
+  }
+
+  toggleCompletionNotification(newValue: boolean): void {
+    this.store.dispatch(new ToggleCompletionNotification(newValue));
   }
 
   setNeedsverification(needed: boolean): void {
@@ -299,7 +332,6 @@ export class ListsFacade {
   loadAndWait(key: string): Observable<List> {
     this.load(key);
     return this.allListDetails$.pipe(
-      delay(500),
       map(details => details.find(l => l.$key === key)),
       filter(list => list !== undefined),
       first()
@@ -308,14 +340,29 @@ export class ListsFacade {
 
   select(key: string): void {
     this.store.dispatch(new SelectList(key));
+    if (this.settings.enableAutofillByDefault) {
+      this.toggleAutocomplete(true);
+    }
+    if (this.settings.enableAutofillNotificationByDefault) {
+      this.store.dispatch(new ToggleCompletionNotification(true));
+    }
+  }
+
+  pin(key: string): void {
+    this.store.dispatch(new PinList(key));
+  }
+
+  unpin(): void {
+    this.store.dispatch(new UnPinList());
   }
 
   sortLists(lists: List[]): List[] {
-    return lists.sort((a, b) => {
-      if (a.index === b.index) {
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      }
-      return a.index - b.index;
-    });
+    return lists
+      .sort((a, b) => {
+        if (a.index === b.index) {
+          return b.createdAt.toMillis() - a.createdAt.toMillis();
+        }
+        return a.index - b.index;
+      });
   }
 }

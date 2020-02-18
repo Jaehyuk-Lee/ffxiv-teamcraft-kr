@@ -36,7 +36,8 @@
     "Reset_filters": "Reset filters",
     "Too_many_results_warning": "This search returned over 100 item. Since our data source is limited to 100 results, you may need additional filters to find a specific item.",
     "Share_url": "Copy search url to your clipboard",
-    "Share_url_copied": "Search url copied to your clipboard"
+    "Share_url_copied": "Search url copied to your clipboard",
+    "Only_craftable": "Only recipes"
   },
   "Use_as_default_character": "Use as default character",
   "Download_desktop_app": "Download desktop app",
@@ -142,7 +143,17 @@
     "User": "User",
     "Tables": "Table",
     "Pie_charts": "Pie charts",
-    "Read_more_on_wiki": "Read more details on wiki"
+    "Read_more_on_wiki": "Read more details on wiki",
+    "Apply": "Apply",
+    "Open_link": "Open website link",
+    "Unknown": "Unknown",
+    "Minimum": "Minimum",
+    "Maximum": "Maximum",
+    "Average": "Average",
+    "Hq": "HQ",
+    "Nq": "NQ",
+    "Share_link_copied": "Share link copied to clipboard",
+    "Copy": "Copy"
   },
   "ALARMS": {
     "Title": "Alarms",
@@ -160,6 +171,7 @@
     "Volume": "Volume",
     "Macro_copied": "Macro copied to your clipboard",
     "Open_overlay": "Open overlay",
+    "Open_alarms_overlay": "Open alarms overlay",
     "More_available": "and {{amount}} more...",
     "Node_content": "Node content",
     "Toggle_collapse": "Toggle groups collapse",
@@ -249,7 +261,7 @@
   "Login": "Login",
   "Disconnect": "Disconnect",
   "Password": "Password",
-  "Password_Confirmation": "Confirmation",
+  "Password_Confirmation": "Confirm Password",
   "Submit": "Submit",
   "Invalid_credentials": "Invalid credentials",
   "Not_verified": "Not verified",
@@ -336,6 +348,8 @@
     "no_panel_borders": "Disable borders around various panels",
     "Desktop": "Desktop",
     "Always_on_top": "Always on top",
+    "Start_minimized": "Start minimized in tray",
+    "Always_quit": "Quit when clicking on close button (instead of minimizing)",
     "Check_for_update": "Check for update",
     "Downloading_update": "Downloading update",
     "No_update_available": "No update available",
@@ -374,8 +388,15 @@
     "Disable_search_debounce": "Disable search debounce (only pressing enter will trigger search)",
     "Enable_packet_capture": "Enabled packet capture (adds realtime inventory features)",
     "Packet_capture_info": "Capturing packets is against ToS, the same reason why ACT is against ToS. But Square Enix tolerates it unless you brag about it to everyone ingame. Just don't and you won't risk anything.",
+    "Enable_autofill_by_default": "Enable autofill by default",
+    "Enable_autofill_notification_by_default": "Enable autofill notification by default",
+    "Enable_autofill_hq_filter": "Only autofill using hq items when item is required as HQ",
     "Contribute_to_universalis": "Contribute to Universalis",
-    "Persist_inventory": "Save inventory in database (to share with web version)",
+    "Track_items_on_sale": "Track items on sale in your retainers (requires restart/refresh)",
+    "Performance_mode": "Performance mode",
+    "Performance_mode_explain": "Removes item images in lists, as well as menus (only keeps buttons) for less stress on the browser and the app",
+    "Change_email": "Change email",
+    "Change_email_success": "Email changed",
     "COLORS": {
       "Background": "Background color",
       "Primary": "Primary color",
@@ -388,6 +409,13 @@
     "COPY_TYPE": {
       "Classic": "Copy item name",
       "Isearch": "Copy /isearch macro"
+    },
+    "CATEGORIES": {
+      "Autofill_completion": "Autofill completion sound",
+      "Packet_capture": "Packet capture",
+      "Theme": "Theme",
+      "Search": "Search",
+      "Other": "Other"
     }
   },
   "PROFILE": {
@@ -464,16 +492,31 @@
     "Copy_list_as_text": "Copy the whole list as text",
     "Copied_as_text": "Content copied in clipboard",
     "Total_price": "Total trades (gils and currencies)",
+    "Ignore_currency": "Ignore this currency (only works if there's another way to buy)",
     "Total_trade_price": "Total: ",
     "Add_all_alarms": "Add all alarms for this list",
     "History": "History",
     "Items_count": "{{amount}} items",
     "Show_craftable_amount": "Show craftable amount",
+    "Show_vendors": "Show first available vendor for each item",
     "Optimized_full_path": "Show full optimized path (cheapest and fastest)",
     "Quick_layout_swap": "Quick layout swap",
     "Offline": "Offline",
     "Offline_help": "Offline lists are stored inside the browser or the app, they are only available inside this instance and can't be shared, but they are faster as they don't require network calls.",
     "Mark_whole_panel_done": "Mark panel content as done",
+    "Set_color": "Set list color",
+    "Go_to_pinned": "Go to pinned list (right click to unpin)",
+    "Reset_panel": "Reset all the items of this panel",
+    "COLORS": {
+      "RED": "Red",
+      "GREEN": "Green",
+      "YELLOW": "Yellow",
+      "BLUE": "Blue",
+      "PURPLE": "Purple",
+      "ORANGE": "Orange",
+      "PINK": "Pink",
+      "NONE": "None"
+    },
     "ROTATION": {
       "Attach": "Attach rotation",
       "Detach": "Detach rotation",
@@ -522,6 +565,8 @@
     "Disable_HQ_suggestions": "Disable automatic HQ flags",
     "Amount_craftable": "You can craft {{amount}}",
     "Add_item": "Add an item",
+    "List_large": "This is a large list",
+    "Enable_performance_mode": "You might want to enable performance mode in settings in order to get faster rendering",
     "List_too_large": "List too large",
     "List_too_large_description": "This list is too large and might hit database size limitations because of all the informations it carries. You aren't allowed to add more items to make sure you won't lose the list.",
     "Add_to_another_list": "Add to another list",
@@ -530,6 +575,13 @@
     "Contributions_popup": "Contributions stats",
     "Autofill_details": "Input progression as you obtain items ingame, using packet capture. This is disabled if you leave the list page, to avoid unwanted inputs.",
     "Autofill": "Autofill",
+    "Autofill_notification_details": "Show a notification when an item is completed with autofill.",
+    "Autofill_notification": "Completion notification",
+    "Autofill_notification_title": "Item completed",
+    "Autofill_notification_body": "{{itemName}} is now completed for list {{listName}}",
+    "Fill_with_inventory": "Fill with inventory (only accounts what you have in personal inventory)",
+    "Filter_items_done": "Ignore completed items",
+    "Inventory_synthesis": "Inventory synthesis (items per inventory)",
     "LAYOUT_DIALOG": {
       "Title": "Layout",
       "Add_panel": "Add Panel",
@@ -567,6 +619,11 @@
       "Order_by": "Sort by",
       "Order": "Order",
       "Tag_filter": "Tag filter"
+    },
+    "OVERLAY": {
+      "Open": "Open list overlay",
+      "No_display": "Open a list in main window to get started",
+      "No_panel_selected": "Select a panel using the buttons above"
     }
   },
   "LIST_TAGS": {
@@ -645,6 +702,7 @@
     "Title": "Optimized navigation route",
     "Steps": "Steps",
     "Loading_path": "Loading optimized path (can take several seconds)",
+    "You_are_here": "You are here",
     "STEP": {
       "Gathering": "Gather {{amount}} (total: {{total}})",
       "Hunting": "Get {{amount}} on monsters (total: {{total}})",
@@ -721,9 +779,11 @@
   },
   "SIMULATOR": {
     "Title": "Crafting simulator",
+    "Include_stats": "Include stats",
     "Fixed_notification_number": "Fixed notification",
     "Starting_echo_number": "Notification #",
     "Break_on_reclaim": "Split macros on Reclaim point-of-no-return",
+    "Break_before_byregots_blessing": "Split macros before Byregot's Blessing",
     "Include_consumables_notification": "Include consumables notification",
     "Consumable_notification": "Use {{buffs}}",
     "Extra_wait": "Extra wait",
@@ -788,6 +848,8 @@
     "Rotation_solver": "Rotation solver",
     "Recipe_picker_placeholder": "Enter the name of the recipe you want to craft",
     "Could_not_find_minstats": "Could not find min stats for this rotation",
+    "Remove_final_appraisal": "Remove Final Appraisal buff",
+    "Total_macro_duration": "Total macro duration: {{duration}}s.",
     "STATE": {
       "Excellent": "Excellent",
       "Good": "Good",
@@ -906,26 +968,20 @@
     "ROTATION_TIPS": {
       "Use_inner_quiet": "Almost all the rotations should include Inner Quiet if your goal is to HQ the item. It provides a really good quality boost and enables actions like Byregot's Blessing.",
       "Use_inner_quiet_before_quality_increase": "You should apply Inner Quiet before any quality increase, not doing that means that you're wasting Inner Quiet stacks.",
-      "Use_ingenuity_I_instead": "You should use Ingenuity I instead of II to lower cost by 8CP, as it will be enough to finish the craft.",
-      "Use_cz_earlier": "You should use Comfort Zone earlier to get the restoration effect sooner",
-      "Use_reclaim": "You have enough remaining CP to use Reclaim, you should add it to the rotation to make sure you get materials back if you fail the craft",
-      "Use_byregot_brow_low_iq_stacks": "You used Byregot's Blessing with less than 6 stacks. Using Byregot's Brow is better in this case as it will produce more quality.",
       "Use_byregot_blessing_high_iq_stacks": "You used Byregot's Brow with more than 6 stacks. Using Byregot's Blessing is better in this case as it will produce more quality.",
-      "Use_sh1_instead": "You used Steady Hand II at step {{index}} while using Steady Hand I would be enough and would cost 3 less CP.",
-      "Use_sh2_instead": "You used Steady Hand I at step {{index}} while using Steady Hand II give you more reliability at the cost of 3 CP.",
-      "Use_pbp_first": "You should use Piece by Piece before any other synthesis action, as it scales on the remaining progress to do",
-      "Use_mume_if_pbp": "You should use Muscle Memory at step 1 in order to replace one Piece by Piece and gain 9 extra CP",
       "Use_observe_before_focused": "You should use Observe before the Focused action at step {{index}} in order to get a free 100% success rate.",
       "Use_durability_restoration_later": "You should use the durability restoration action at step {{index}} later in order to avoid wasting durability restoration.",
       "Use_patient_touch_faster": "You should use Patient Touch before adding Inner Quiet stacks, in order to minimize wasted stacks if the action fails.",
-      "Use_advanced_touch_instead": "You used Basic Touch then Advanced Touch one after another at step {{index}}, you should use two Standard Touches instead to get same potency for 2 less CP.",
       "Do_not_overlap_buffs": "You overlapped the buff applied at step {{overlappedIndex}} with the buff applied at step {{overlappingIndex}}, you should delay the second one in order to get maximum benefits from your buffs.",
       "Use_byregot_brow_5_stacks": "You should use Byregot's Brow instead of Byregot's blessing for the same quality added but 6 less CP used.",
       "Use_ingenuity_before_byregot": "You should use Ingenuity before Byregot's action in order to get a boost on quality gain.",
       "Use_more_quality_actions": "You have remaining durability at the end of the craft, you should probably use it to add more quality-related actions.",
-      "Use_prudent_touch_manipulation": "As you are level 66+, you should use Manipulation II + Prudent Touch combo for quality gain in order to get maximum quality benefit ans more reliability.",
+      "Use_prudent_touch_manipulation": "As you are level 66+, you should use Manipulation + Prudent Touch combo for quality gain in order to get maximum quality benefit ans more reliability.",
       "Use_rapid_synthesis_earlier": "You should not use Rapid Synthesis as a finisher action, putting it earlier in order to be able to handle the fail of the action is better for your rotation's reliability.",
-      "Use_reflect_earlier": "You should use Reflect specialty action earlier in order to boost the following quality actions."
+      "Do_not_use_brand_without_name": "Do not use Brand of the Elements without Name of the Elements active.",
+      "Avoid_using_good_actions": "Avoid using actions that require Good state in a macro, as they can't be predicted",
+      "Requires_reuse_to_proc": "Your rotation requires Reuse to proc in order to work properly, make sure it can work without a reuse proc.",
+      "Use_reuse": "Your rotation reaches 100% HQ and you have enough CP to use Reuse, consider adding it to get extra mats back."
     }
   },
   "PRICING": {
@@ -956,6 +1012,7 @@
     "Global_exp": "Use global exp",
     "More_on_gamerescape": "More details on gamerescape",
     "Deliver_to": "Deliver to {{placename}}",
+    "Hide_large": "Hide large leves",
     "INTRO": {
       "Title": "Levequests",
       "First_line": "This page allows you to search for a given leve or multiple leves to create a list from the result(s)",
@@ -1019,7 +1076,8 @@
       "LIST_PROGRESSION": "List materials progression",
       "FINAL_LIST_PROGRESSION": "List final items progression",
       "USER_ASSIGNMENT": "User assignment",
-      "ITEM_COMPLETION": "Item completion"
+      "ITEM_COMPLETION": "Item completion",
+      "ITEM_PROGRESSION": "Item progression"
     }
   },
   "MARKETBOARD": {
@@ -1068,7 +1126,8 @@
   "UPDATE": {
     "New_update_available": "A new update is available ! ",
     "New_update_available_desktop": "A new update is available !\nClick here to download and install it.",
-    "Web_instructions": "Please reload the page to get the latest version."
+    "Web_instructions": "Please reload the page to get the latest version.",
+    "Downloading_update": "Downloading the update, you'll be prompted to install once the download is done"
   },
   "LOG_TRACKER": {
     "Title": "Log Tracker",
@@ -1289,9 +1348,74 @@
     "Currencies": "Currencies",
     "Rowena_splendor": "Rowena's splendors (Starred = +20% bonus)",
     "Unlocks": "Unlocks",
+    "Jump_to_page": "Quick jump to another page",
+    "Ishgard_restoration": "Ishgardian restoration",
     "ITEM": {
       "Masterpiece_base": "BASE",
       "Masterpiece_bonus": "BONUS"
+    },
+    "FISH": {
+      "Hour": "Hour of the day",
+      "Etime": "Eorzean time",
+      "Misses_popup_title": "Misses for this spot",
+      "Show_misses": "Show misses",
+      "Baits": "Bait used",
+      "Hookset_and_tug": "Hooksets and tugs",
+      "Weathers": "Weathers",
+      "Weather_transitions": "Weather transitions",
+      "Hooksets": "Hooksets",
+      "Tugs": "Tugs",
+      "Seconds": "Seconds",
+      "Bite_time": "Bite time",
+      "Spots": "Spots",
+      "Min_gathering": "Min. gathering",
+      "Min_size": "Min. size",
+      "Max_size": "Max. size",
+      "Avg_size": "Avg. size",
+      "Used_as_mooch_for": "Used as mooch for",
+      "No_known_mooch_usage": "No known mooch usage for this fish",
+      "No_spot_filter": "No spot filter",
+      "Chances_for_transition": "Chances for this transition to happen",
+      "Weather_chances": "Chances for each weather to appear",
+      "Bait": "Fishing bait",
+      "Refresh_data": "Refresh data",
+      "TUG": {
+        "Light": "Light",
+        "Medium": "Medium",
+        "Big": "Big"
+      },
+      "OVERLAY": {
+        "Open": "Open fishing report overlay",
+        "Bait": "Attached bait",
+        "Tug": "Tug",
+        "Hookset": "Hookset",
+        "Fishing": "Fishing",
+        "Mooch": "Last throw was mooch",
+        "Mooch_report": "Mooch",
+        "Current_weather": "Current weather",
+        "Previous_weather": "Previous weather",
+        "Spot": "Spot",
+        "Possible_fish": "Possible fish",
+        "Stats": "Stats",
+        "Statuses": "Statuses",
+        "No_statuses": "No relevant statuses",
+        "Total_reports": "Total reports for this session",
+        "Last_report": "Last report",
+        "Fish": "Fish",
+        "Size": "Size",
+        "ERRORS": {
+          "Unknown_map": "Map unknown, change zone to load it.",
+          "No_bait": "No bait detected, switch bait once to fix."
+        }
+      }
+    },
+    "FISHING_SPOT": {
+      "Next": "Next",
+      "Possible_weathers": "Possible weathers",
+      "Available_fishes": "Available fishes",
+      "Fish_per_weather": "Fish per weather",
+      "Fish_per_bait": "Fish per bait",
+      "Fish_per_tug": "Fish per tug"
     },
     "NODE": {
       "Items": "Items",
@@ -1444,7 +1568,8 @@
     "Status": "Status",
     "Trait": "Trait",
     "Any": "Any",
-    "Achievement": "Achievement"
+    "Achievement": "Achievement",
+    "Fishing-spot": "Fishing spot"
   },
   "SEARCH_FILTERS": {
     "Level": "Level",
@@ -1461,7 +1586,9 @@
     "3D_model": "You can preview 3D model of items inside the database.",
     "Levequests": "You can prepare leve lists and preview exp gains inside the levequests page.",
     "Log_tracker": "You can track your log progression (gathering, crafting, fishing) inside the log tracker page.",
-    "Desktop_app_overlay": "You can have an overlay for alarms when using the desktop app (download link inside the sidebar)."
+    "Desktop_app_overlay": "You can have an overlay for alarms when using the desktop app (download link inside the sidebar).",
+    "Start_desktop_before_game": "Remember to start desktop app before the game to ensure maximum data integrity",
+    "Middle_click_share_button": "On desktop app, middle click on the share button in topbar to open current page in browser"
   },
   "RECIPE_FINDER": {
     "Title": "Recipe finder",
@@ -1475,7 +1602,7 @@
     "Remove_from_basket": "Remove from basket",
     "Search": "Find recipes",
     "Generate_list": "Add to list",
-    "Description": "Input the items you have and click \"Find recipes\" to get a list of possible recipes to craft and resily generate a crafting list from the results.",
+    "Description": "Input the items you have and click \"Find recipes\" to get a list of possible recipes to craft and easily generate a crafting list from the results.",
     "Empty_basket": "Your basket is empty",
     "Add_item": "Add item",
     "Clipboard_content_malformed": "Clipboard content malformed",
@@ -1548,11 +1675,129 @@
     "Click_to_add_to_progression": "Click to add to item progression",
     "Contribute_to_universalis": "Contribute data to universalis",
     "Reset_inventory": "Reset this inventory",
+    "Clean_all": "Reset all your inventories",
+    "Search_for_an_item": "Search for an item",
     "BAG": {
       "SaddleBag": "Chocobo Saddlebag",
       "FC_chest": "FC chest",
       "Bag": "Inventory",
-      "Other": "Other inventory"
+      "Other": "Other inventory",
+      "Armory": "Armory",
+      "RetainerMarket": "On sale by retainers"
     }
+  },
+  "INVENTORY_OPTIMIZER": {
+    "Title": "Inventory optimizer",
+    "Ignore_item": "Ignore this tip for this item",
+    "Remove_ignore_item": "Don't ignore this tip for this item anymore",
+    "Ignore_container": "Ignore this tip for this container",
+    "Remove_ignore_container": "Don't ignore this tip for this container anymore",
+    "Show_ignored": "Show ignored items",
+    "No_optimizations": "No optimizations available",
+    "CAN_BE_BOUGHT": {
+      "Title": "Items that can be bought with gil",
+      "Message": "This item can be bought from NPCs with gil and does not require beast tribe reputation."
+    },
+    "DUPLICATES": {
+      "Title": "Items that are duplicated across multiple containers",
+      "Message": "This item is also present in: {{containers}}."
+    },
+    "HAS_TOO_FEW": {
+      "Title": "Items that you have in very small stacks",
+      "Message": "You only have {{amount}} of this item, is it worth keeping them?",
+      "Threshold_amount": "Threshold value"
+    }
+  },
+  "VERSION_LOCK": {
+    "Outdated": "You are using an outdated version of Teamcraft that cannot work properly anymore",
+    "Refresh_or_download_latest": "If you're using the website, simple press Ctrl + F5 to refresh entirely, if you're using desktop app, download latest here: "
+  },
+  "GEARSETS": {
+    "Title": "Gearsets",
+    "Rename_gearset": "Rename gearset",
+    "View_gearset": "View gearset",
+    "Edit_gearset": "Edit gearset",
+    "generate_list": "Generate a list",
+    "Content": "Content",
+    "Stat_name": "Stat",
+    "Current_value": "Current value",
+    "Cap_value": "Cap",
+    "Add_materia": "Add materia",
+    "No_materia": "No materia",
+    "Value": "Value",
+    "Empty_slot": "Empty slot",
+    "Filters": "Filters",
+    "Total_stats": "Total stats",
+    "Total_materias_needed": "Total materias needed",
+    "Materia": "Materia",
+    "Amount_needed": "Amount",
+    "Modal_editor": "Materias for {{itemName}}",
+    "Unavailable_slot": "Slot not available",
+    "Job_cannot_be_changed": "Cannot be changed after creation",
+    "Pick_a_job": "Pick a job",
+    "New_gearset": "New gearset",
+    "Please_input_ariyala_link": "Please input an ariyala link",
+    "Link_not_supported": "Link not supported",
+    "Compare_gearset": "Compare this gearset with another",
+    "Stats": "Stats",
+    "Materias": "Materias",
+    "Pieces": "Gear pieces",
+    "Import_from_ariyala": "Import from Ariyala",
+    "Import_from_lodestone": "Import from Lodestone",
+    "Import_using_pcap": "Import using packet capture",
+    "Your_gearsets": "Your gearsets",
+    "Delete_gearset": "Delete gearset",
+    "Import_from_pcap_notice": "Switch to the desired gearset with the corresponding job to import it.",
+    "No_food_selected": "No food selected",
+    "Generate_list": "Generate a list",
+    "Clone_gearset": "Copy this on your account",
+    "You_have_no_gearsets": "You have no gearsets",
+    "Favorite_gearsets": "Favorite gearsets",
+    "Update_from_pcap": "Update using packet capture",
+    "Copy_as_text": "Copy this gearset as text",
+    "Include_all_tools": "Include tools for the other jobs too",
+    "Use_in_simulator": "Use these stats in the simulator",
+    "SLOT": {
+      "Body": "Chest",
+      "Ears": "Ears",
+      "Feet": "Feet",
+      "FingerL": "Left finger",
+      "FingerR": "Right finger",
+      "Gloves": "Gloves",
+      "Head": "Head",
+      "Legs": "Legs",
+      "MainHand": "Main Hand",
+      "Neck": "Neck",
+      "OffHand": "Off Hand",
+      "SoulCrystal": "Soul Crystal",
+      "Waist": "Waist",
+      "Wrists": "Wrists"
+    },
+    "COMPARISON": {
+      "Compare_popup_title": "Compare {{setName}} with...",
+      "Error_title": "Could not compare gearsets",
+      "Error_description": "Please make sure the gearset you entered exists and is the same type as the current one (same main stat)",
+      "Type": "Gearset type",
+      "Ariyala": "An ariyala set",
+      "External_gearset": "A Teamcraft gearset from someone else",
+      "Personal_gearset": "One of your gearsets",
+      "Paste_link_step_title": "Link to the gearset",
+      "Pick_your_gearset": "Pick your gearset",
+      "Submit": "Compare",
+      "Your_gearset": "Your gearset",
+      "Other_gearset": "Other gearset",
+      "Diff": "Diff",
+      "Avg_melding_chances": "Avg. overmeld chances"
+    }
+  },
+  "FOLDERS": {
+    "New_folder": "New folder",
+    "Delete_folder": "Delete folder",
+    "Rename_folder": "Rename folder",
+    "View_folder": "Open folder",
+    "Content": "Content",
+    "Folder_not_found": "Folder not found",
+    "Your_folders": "Your folders",
+    "Favorite_folders": "Favorite folders"
   }
 }

@@ -3,18 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SearchIndex, XivapiService } from '@xivapi/angular-client';
 import { NzNotificationService } from 'ng-zorro-antd';
 import { BehaviorSubject, combineLatest, concat, Observable } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  first,
-  map,
-  mergeMap,
-  shareReplay,
-  switchMap,
-  takeUntil,
-  tap
-} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, first, map, mergeMap, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { GarlandToolsService } from '../../../core/api/garland-tools.service';
 import { LocalizedDataService } from '../../../core/data/localized-data.service';
 import { I18nToolsService } from '../../../core/tools/i18n-tools.service';
@@ -29,6 +18,12 @@ import { LazyDataService } from '../../../core/data/lazy-data.service';
 import { AuthFacade } from '../../../+state/auth.facade';
 import { TeamcraftComponent } from '../../../core/component/teamcraft-component';
 import { SettingsService } from '../../../modules/settings/settings.service';
+
+interface ExpObj {
+  exp: number,
+  level: number,
+  totalExp: number
+}
 
 @Component({
   selector: 'app-levequests',
@@ -66,6 +61,10 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
 
   globalExpChange$ = new BehaviorSubject<boolean>(false);
 
+  hideLarge = this.settings.hideLargeLeves;
+
+  hideLargeChange$ = new BehaviorSubject<boolean>(this.settings.hideLargeLeves);
+
   startingExp = 0;
 
   startingLevel = 1;
@@ -85,8 +84,8 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const res$ = this.query$.pipe(
-      tap(query => {
+    const res$ = combineLatest([this.query$, this.job$, this.levelMin$, this.levelMax$]).pipe(
+      tap(([query]) => {
         this.router.navigate([], {
           queryParamsHandling: 'merge',
           queryParams: { query: query.length > 0 ? query : null },
@@ -94,31 +93,33 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
         });
       }),
       debounceTime(500),
-      filter((query) => (query.length > 3 || this.job$.value !== null) && this.levelMin$.value <= this.levelMax$.value),
+      filter(([query, job, levelMin, levelMax]) => {
+        return (query.length > 3 || job !== null) && levelMin <= levelMax;
+      }),
       tap(() => {
         this.showIntro = false;
         this.loading = true;
         this.allSelected = false;
       }),
-      switchMap(query => {
+      switchMap(([query, job, levelMin, levelMax]) => {
         let filters;
 
-        if (this.job$.value) {
-          filters = [{ column: 'ClassJobCategoryTargetID', operator: '=', value: +this.job$.value + 1 }];
+        if (job) {
+          filters = [{ column: 'ClassJobCategoryTargetID', operator: '=', value: +job + 1 }];
         } else {
           filters = [{ column: 'ClassJobCategoryTargetID', operator: '>=', value: 9 },
             { column: 'ClassJobCategoryTargetID', operator: '<=', value: 16 }];
         }
 
-        filters.push({ column: 'ClassJobLevel', operator: '>=', value: this.levelMin$.value },
-          { column: 'ClassJobLevel', operator: '<=', value: this.levelMax$.value });
+        filters.push({ column: 'ClassJobLevel', operator: '>=', value: levelMin },
+          { column: 'ClassJobLevel', operator: '<=', value: levelMax });
 
         return this.xivapi.search({
           indexes: [SearchIndex.LEVE], string: query, filters: filters,
           columns: ['LevelLevemete.Map.ID', 'CraftLeve.Item0TargetID', 'CraftLeve.Item0.Icon',
             'CraftLeve.ItemCount0', 'CraftLeve.ItemCount1', 'CraftLeve.ItemCount2', 'CraftLeve.ItemCount3',
             'CraftLeve.Repeats', 'Name_*', 'GilReward', 'ExpReward', 'ClassJobCategoryTargetID', 'ClassJobLevel',
-            'LevelLevemete.Map.PlaceNameTargetID', 'LevelLevemete.Y', 'PlaceNameStart.ID', 'ID'],
+            'LevelLevemete.Map.PlaceNameTargetID', 'LevelLevemete.Y', 'PlaceNameStart.ID', 'ID', 'AllowanceCost'],
           // 105 is the amount of leves from 1 to 70 for a single job
           limit: 105
         });
@@ -126,8 +127,9 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
       shareReplay(1)
     );
 
-    this.results$ = combineLatest([this.globalExpChange$, res$]).pipe(
-      map(([globalExp, list]) => {
+    this.results$ = combineLatest([this.globalExpChange$, res$, this.hideLargeChange$]).pipe(
+      map(([globalExp, list, hideLarge]) => {
+        this.settings.hideLargeLeves = hideLarge;
         const results: Levequest[] = [];
         (<any>list).Results.forEach(leve => {
           results.push({
@@ -149,11 +151,12 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
               fr: leve.Name_fr,
               de: leve.Name_de,
               ja: leve.Name_ja,
-              ko: this.lazyData.koLeves[leve.ID] ? this.lazyData.koLeves[leve.ID].ko : leve.Name_en
+              ko: this.lazyData.data.koLeves[leve.ID] ? this.lazyData.data.koLeves[leve.ID].ko : leve.Name_en
             },
             startPlaceId: leve.PlaceNameStart.ID,
             deliveryPlaceId: leve.LevelLevemete.Map.PlaceNameTargetID,
-            repeats: leve.CraftLeve.Repeats
+            repeats: leve.CraftLeve.Repeats,
+            allowanceCost: leve.AllowanceCost
           });
         });
 
@@ -163,13 +166,15 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
           } else {
             return a.jobId - b.jobId;
           }
+        }).filter((a) => {
+          return !hideLarge || a.allowanceCost === 1;
         });
       }),
       tap(() => this.loading = false)
     );
 
     combineLatest([this.auth.gearSets$, this.job$]).pipe(
-      distinctUntilChanged(([, a],[, b]) => a === b),
+      distinctUntilChanged(([, a], [, b]) => a === b),
       map(([sets, job]) => {
         return sets.find(set => set.jobId === job);
       }),
@@ -183,38 +188,14 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
     this.route.queryParams
       .subscribe(params => {
         this.query$.next(params.query || '');
-        this.job$.next(params.job ? +params.job : null);
-        this.levelMin$.next(params.min || 1);
-        this.levelMax$.next(params.max || 10);
+        this.job$.next(+params.job ? +params.job : null);
+        this.levelMin$.next(+params.min || 1);
+        this.levelMax$.next(+params.max || 10);
       });
   }
 
   public getMaxExp(level: number): number {
     return this.gt.getMaxXp(level);
-  }
-
-  public getExp(leveExp: number, leves: Levequest[]): { level: number, exp: number, expPercent: number } {
-    let exp: number;
-    if (this.globalExp) {
-      exp = this.startingExp + leves.reduce((total, leve) => this.getLeveExp(leve) + total, 0);
-    } else {
-      exp = this.startingExp + leveExp;
-    }
-    let level = this.startingLevel;
-    while (exp - this.getMaxExp(level) >= 0 && level < 79) {
-      exp -= this.getMaxExp(level);
-      level++;
-    }
-    // Handle special case for lvl 80
-    if (exp >= this.getMaxExp(level) && level >= 79) {
-      level = 80;
-      exp = 0;
-    }
-    return {
-      level: level,
-      expPercent: Math.min(100, Math.floor(100 * exp / this.getMaxExp(level))),
-      exp: Math.min(exp, this.getMaxExp(level))
-    };
   }
 
   public setJob(value: number): void {
@@ -263,7 +244,7 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
       mergeMap(list => {
         // We want to get the list created before calling it a success, let's be pessimistic !
         return this.listsFacade.myLists$.pipe(
-          map(lists => lists.find(l => l.createdAt === list.createdAt && l.$key !== undefined)),
+          map(lists => lists.find(l => l.createdAt.toMillis() === list.createdAt.toMillis() && l.$key !== undefined)),
           filter(l => l !== undefined),
           first()
         );
@@ -287,7 +268,7 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
             tap(resultList => this.listsFacade.addList(resultList)),
             mergeMap(resultList => {
               return this.listsFacade.myLists$.pipe(
-                map(lists => lists.find(l => l.createdAt === resultList.createdAt && l.$key !== undefined)),
+                map(lists => lists.find(l => l.createdAt.toMillis() === resultList.createdAt.toMillis() && l.$key !== undefined)),
                 filter(l => l !== undefined),
                 first()
               );
@@ -302,9 +283,65 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
       });
   }
 
-  public getLeveExp(leve: Levequest): number {
-    const res = leve.exp * this.craftAmount(leve);
-    return leve.hq ? res * 2 : res;
+  public getExp(leve: Levequest, allLeves: Levequest[]): { level: number, exp: number, expPercent: number, totalExp: number } {
+    let expObj = {
+      level: this.startingLevel,
+      exp: this.startingExp,
+      totalExp: 0
+    };
+    if (this.globalExp) {
+      allLeves.forEach(globalLeve => {
+        expObj = this.applyLeveExp(expObj, globalLeve);
+      });
+    } else {
+      expObj = this.applyLeveExp(expObj, leve);
+    }
+    return {
+      level: expObj.level,
+      expPercent: Math.min(100, Math.floor(100 * expObj.exp / this.getMaxExp(expObj.level))),
+      exp: Math.min(expObj.exp, this.getMaxExp(expObj.level)),
+      totalExp: expObj.totalExp
+    };
+  }
+
+  private applyLeveExp(expObj: ExpObj, leve: Levequest): ExpObj {
+    for (let repeat = 0; repeat < leve.amount; repeat++) {
+      for (let i = 0; i < (leve.allDeliveries ? leve.repeats + 1 : 1); i++) {
+        let leveExp = leve.exp;
+        if (leve.hq) {
+          leveExp *= 2;
+        }
+        if (leve.level < 70 && expObj.level >= 70) {
+          leveExp = 3000;
+        }
+        expObj = {
+          ...this.applyExp(expObj.exp, expObj.level, leveExp),
+          totalExp: expObj.totalExp + leveExp
+        };
+      }
+    }
+    return expObj;
+  }
+
+  private applyExp(exp: number, level: number, expToAdd: number): { exp: number, level: number } {
+    exp += expToAdd;
+    while (exp - this.getMaxExp(level) >= 0 && level < 79) {
+      exp -= this.getMaxExp(level);
+      level++;
+    }
+    // Handle special case for lvl 80
+    if (exp >= this.getMaxExp(level) && level >= 79) {
+      level = 80;
+      exp = 0;
+    }
+    return {
+      exp,
+      level
+    };
+  }
+
+  public getLeveExp(leve: Levequest, allLeves: Levequest[]): number {
+    return this.getExp(leve, allLeves).totalExp;
   }
 
   public getLeveGil(leve: Levequest): number {
@@ -326,5 +363,9 @@ export class LevequestsComponent extends TeamcraftComponent implements OnInit {
 
   public updateAllSelected(leves: Levequest[]): void {
     this.allSelected = leves.reduce((res, item) => item.selected && res, true);
+  }
+
+  trackByLeve(index: number, leve: Levequest): number {
+    return leve.id;
   }
 }

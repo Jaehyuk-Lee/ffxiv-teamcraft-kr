@@ -129,7 +129,8 @@ const aggregateAllPages = (endpoint, body, label) => {
   const res$ = new Subject();
   getAllPages(endpoint, body, label).subscribe(page => {
     data.push(...page.Results);
-  },() => {},() => {
+  }, () => {
+  }, () => {
     res$.next(data);
     res$.complete();
   });
@@ -137,11 +138,11 @@ const aggregateAllPages = (endpoint, body, label) => {
 };
 
 
-module.exports.getAllEntries = (endpoint, key, startsAt0) => {
+module.exports.getAllEntries = (endpoint, startsAt0) => {
   let progress;
   const allIds = startsAt0 ? ['0'] : [];
   const index$ = new Subject();
-  getAllPages(addQueryParam(addQueryParam(endpoint, 'key', key), 'columns', 'ID')).subscribe(page => {
+  getAllPages(addQueryParam(endpoint, 'columns', 'ID')).subscribe(page => {
     allIds.push(...page.Results.map(res => res.ID));
   }, null, () => {
     index$.next(0);
@@ -149,7 +150,7 @@ module.exports.getAllEntries = (endpoint, key, startsAt0) => {
   const completeFetch = [];
   return index$.pipe(
     switchMap(index => {
-      return get(addQueryParam(`${endpoint}/${allIds[index]}`, 'key', key)).pipe(
+      return get(`${endpoint}/${allIds[index]}`).pipe(
         tap(result => {
           if (progress === undefined) {
             progress = multi.newBar(`[:bar] :current/:total :etas - ${endpoint.substring(0, 120)}${endpoint.length > 120 ? '...' : ''}`, {

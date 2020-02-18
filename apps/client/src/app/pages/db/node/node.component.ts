@@ -11,7 +11,6 @@ import { LazyDataService } from '../../../core/data/lazy-data.service';
 import { SeoService } from '../../../core/seo/seo.service';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { SeoMetaConfig } from '../../../core/seo/seo-meta-config';
-import * as nodePositions from '../../../core/data/sources/node-positions.json';
 import { gatheringItems } from '../../../core/data/sources/gathering-items';
 import { I18nName } from '../../../model/common/i18n-name';
 import { BellNodesService } from '../../../core/data/bell-nodes.service';
@@ -57,7 +56,7 @@ export class NodeComponent extends TeamcraftPageComponent {
         return this.xivapi.get(XivapiEndpoint.GatheringPointBase, +id);
       }),
       map(base => {
-        base.mappyData = nodePositions[base.ID];
+        base.mappyData = this.lazyData.data.nodePositions[base.ID];
         base.gtNode = this.gtBell.getNode(base.ID);
         if (base.gtNode) {
           base.gtNode.items.forEach(item => {
@@ -134,8 +133,7 @@ export class NodeComponent extends TeamcraftPageComponent {
       map(alarms => {
         return !alarms.some(alarm => {
           return alarm.itemId === generatedAlarm.itemId
-            && alarm.zoneId === generatedAlarm.zoneId
-            && alarm.areaId === generatedAlarm.areaId;
+            && alarm.zoneId === generatedAlarm.zoneId;
         });
       })
     );
@@ -150,7 +148,6 @@ export class NodeComponent extends TeamcraftPageComponent {
       duration: node.uptime / 60,
       mapId: node.mapId,
       zoneId: node.zoneid,
-      areaId: node.areaid,
       type: node.type,
       coords: {
         x: node.x,

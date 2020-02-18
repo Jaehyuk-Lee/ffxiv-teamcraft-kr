@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Craft } from '../../../../model/garland-tools/craft';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Item } from '../../../../model/garland-tools/item';
 import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { RotationsFacade } from '../../../../modules/rotations/+state/rotations.
 import { SeoPageComponent } from '../../../../core/seo/seo-page-component';
 import { SeoService } from '../../../../core/seo/seo.service';
 import { SeoMetaConfig } from '../../../../core/seo/seo-meta-config';
-import { combineLatest } from 'rxjs';
+import { hwdSupplies } from '../../../../core/data/sources/hwd-supplies';
 
 @Component({
   selector: 'app-simulator-page',
@@ -21,6 +21,8 @@ export class SimulatorPageComponent extends SeoPageComponent {
   recipe$: Observable<Craft>;
 
   item$: Observable<Item>;
+
+  stats$: Observable<{ craftsmanship: number, control: number, cp: number, spec: boolean, level: number }>;
 
   thresholds$: Observable<number[]>;
 
@@ -48,6 +50,23 @@ export class SimulatorPageComponent extends SeoPageComponent {
       shareReplay(1)
     );
 
+    this.stats$ = this.route.queryParamMap.pipe(
+      map(query => {
+        return query.get('stats');
+      }),
+      filter(stats => stats !== null),
+      map(statsStr => {
+        const split = statsStr.split('/');
+        return {
+          craftsmanship: +split[0],
+          control: +split[1],
+          cp: +split[2],
+          level: +split[3],
+          spec: +split[3] === 1
+        };
+      })
+    );
+
     this.thresholds$ = this.item$.pipe(
       map(item => {
         if (item.collectable === 1) {
@@ -57,6 +76,13 @@ export class SimulatorPageComponent extends SeoPageComponent {
             return item.satisfaction[0].rating.map(r => r * 10);
           } else if (item.masterpiece !== undefined) {
             return item.masterpiece.rating.map(r => r * 10);
+          } else if (hwdSupplies[item.id] !== undefined) {
+            const supply = hwdSupplies[item.id];
+            return [
+              supply.base.rating * 10,
+              supply.mid.rating * 10,
+              supply.high.rating * 10
+            ];
           }
         }
         return [];
@@ -71,17 +97,18 @@ export class SimulatorPageComponent extends SeoPageComponent {
               this.router.navigate([item.craft[0].id], { relativeTo: this.route });
               return item.craft.find(c => c.id.toString() === params.get('recipeId'));
             }
-            return item.craft.find(c => c.id.toString() === params.get('recipeId'));
+            return item.craft.find(c => c.id.toString() === params.get('recipeId')) || item.craft[0];
           })
         );
-      })
+      }),
+      shareReplay(1)
     );
   }
 
 
   protected getSeoMeta(): Observable<Partial<SeoMetaConfig>> {
     return combineLatest([this.rotationsFacade.selectedRotation$, this.recipe$, this.item$]).pipe(
-      filter(([,recipe]) => recipe !== undefined),
+      filter(([, recipe]) => recipe !== undefined),
       map(([rotation, recipe, item]) => {
         return {
           title: rotation.getName(),

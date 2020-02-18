@@ -59,6 +59,14 @@ const routes: Routes = [
     loadChildren: './pages/alarms-overlay/alarms-overlay.module#AlarmsOverlayModule'
   },
   {
+    path: 'fishing-reporter-overlay',
+    loadChildren: './pages/fishing-reporter-overlay/fishing-reporter-overlay.module#FishingReporterOverlayModule'
+  },
+  {
+    path: 'list-panel-overlay',
+    loadChildren: './pages/list-panel-overlay/list-panel-overlay.module#ListPanelOverlayModule'
+  },
+  {
     path: 'rotation-overlay',
     loadChildren: './pages/rotation-overlay/rotation-overlay.module#RotationOverlayModule'
   },
@@ -145,6 +153,22 @@ const routes: Routes = [
   {
     path: 'inventory',
     loadChildren: './pages/inventory/inventory-page.module#InventoryPageModule'
+  },
+  {
+    path: 'inventory-optimizer',
+    loadChildren: './pages/inventory-optimizer/inventory-optimizer.module#InventoryOptimizerModule'
+  },
+  {
+    path: 'gearset',
+    loadChildren: './pages/gearset/gearset.module#GearsetModule'
+  },
+  {
+    path: 'gearset-folder',
+    loadChildren: './pages/gearset-folder/gearset-folder.module#GearsetFolderModule'
+  },
+  {
+    path: 'gearsets',
+    loadChildren: './pages/gearsets-page/gearsets-page.module#GearsetsPageModule'
   },
   {
     path: 'extractor',

@@ -10,6 +10,7 @@ import { LocalizedDataService } from '../data/localized-data.service';
 import { CharacterService } from '../api/character.service';
 import { WebhookSettingType } from '../../model/team/webhook-setting-type';
 import { LazyDataService } from '../data/lazy-data.service';
+import { PermissionLevel } from '../database/permissions/permission-level.enum';
 
 @Injectable()
 export class DiscordWebhookService {
@@ -104,9 +105,14 @@ export class DiscordWebhookService {
     }, this.getIcon(itemId));
   }
 
-  notifyItemChecked(team: Team, list: List, memberId: string, amount: number, itemId: number, totalNeeded: number, finalItem: boolean): void {
+  notifyItemChecked(team: Team, list: List, memberId: string, fcId: string, amount: number, itemId: number, totalNeeded: number, finalItem: boolean): void {
+    if (list.getPermissionLevel(memberId) < PermissionLevel.PARTICIPATE && list.getPermissionLevel(fcId) < PermissionLevel.PARTICIPATE) {
+      return;
+    }
     const row = list.getItemById(itemId, !finalItem, finalItem);
-    if (row.done + amount >= totalNeeded && !team.hasSettingEnabled(WebhookSettingType.ITEM_COMPLETION)) {
+    if (row.done + amount < totalNeeded && !team.hasSettingEnabled(WebhookSettingType.ITEM_PROGRESSION)) {
+      return;
+    } else if (row.done + amount >= totalNeeded && !team.hasSettingEnabled(WebhookSettingType.ITEM_COMPLETION)) {
       return;
     } else if (row.done + amount < totalNeeded) {
       amount = row.done + amount;
@@ -231,7 +237,7 @@ export class DiscordWebhookService {
   }
 
   private getIcon(itemId: number): string {
-    return `https://xivapi.com${this.lazyData.icons[itemId]}`;
+    return `https://xivapi.com${this.lazyData.data.itemIcons[itemId]}`;
   }
 
   oauthUrl(state: string, redirectUri: string): string {

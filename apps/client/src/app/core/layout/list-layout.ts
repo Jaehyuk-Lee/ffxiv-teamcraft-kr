@@ -20,6 +20,8 @@ export class ListLayout extends DataModel {
 
   public showCraftableAmount = false;
 
+  public showVendors = false;
+
   public showInventory = false;
 
   public recipeOrder: LayoutRowOrder = LayoutRowOrder.ASC;
@@ -31,6 +33,8 @@ export class ListLayout extends DataModel {
   public recipeHideZoneDuplicates = false;
 
   public name: string;
+
+  public default = false;
 
   public rowsDisplay: {
     buttons: ItemRowMenuElement[];

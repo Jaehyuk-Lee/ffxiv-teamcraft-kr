@@ -3,10 +3,8 @@ import { NgSerializerService } from '@kaiu/ng-serializer';
 import { PendingChangesService } from './pending-changes/pending-changes.service';
 import { AngularFirestore, DocumentChangeAction } from '@angular/fire/firestore';
 import { FirestoreStorage } from './storage/firestore/firestore-storage';
-import { LogTracking } from '../../model/user/log-tracking';
 import { BlogEntry } from '../../pages/blog/blog-entry';
 import { Observable } from 'rxjs';
-import { CraftingRotationsFolder } from '../../model/other/crafting-rotations-folder';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
@@ -24,7 +22,7 @@ export class BlogService extends FirestoreStorage<BlogEntry> {
         map((snaps: DocumentChangeAction<BlogEntry>[]) => {
           const posts = snaps
             .map((snap: DocumentChangeAction<any>) => {
-              const valueWithKey: BlogEntry = <BlogEntry>{ $key: snap.payload.doc.id, ...snap.payload.doc.data() };
+              const valueWithKey: BlogEntry = <BlogEntry>{ ...snap.payload.doc.data(), $key: snap.payload.doc.id };
               delete snap.payload;
               return valueWithKey;
             });

@@ -12,8 +12,8 @@ import { CustomSimulatorPageComponent } from './components/custom-simulator-page
 import { RotationsPageComponent } from './components/rotations-page/rotations-page.component';
 import { MacroPopupComponent } from './components/macro-popup/macro-popup.component';
 import { ClipboardModule } from 'ngx-clipboard';
-// import {CustomLinksModule} from '../custom-links/custom-links.module';
 import { MaintenanceGuard } from '../maintenance/maintenance.guard';
+import { VersionLockGuard } from '../version-lock/version-lock.guard';
 import { SimulationMinStatsPopupComponent } from './components/simulation-min-stats-popup/simulation-min-stats-popup.component';
 import { ConsumablesService } from './model/consumables.service';
 import { FreeCompanyActionsService } from './model/free-company-actions.service';
@@ -45,57 +45,58 @@ import { CommunityRotationsPageComponent } from './components/community-rotation
 import { CommunityRotationPopupComponent } from './components/community-rotation-popup/community-rotation-popup.component';
 import { SolverPopupComponent } from './components/solver-popup/solver-popup.component';
 import { SimulatorOpenerComponent } from './components/simulator-opener/simulator-opener.component';
+import { SimulationSharePopupComponent } from './components/simulation-share-popup/simulation-share-popup.component';
 
 const routes: Routes = [
   {
     path: 'simulator/custom/:rotationId',
     component: CustomSimulatorPageComponent,
-    canActivate: [MaintenanceGuard],
+    canActivate: [MaintenanceGuard, VersionLockGuard],
     canDeactivate: [DirtyGuard]
   },
   {
     path: 'simulator',
     component: SimulatorOpenerComponent,
-    canActivate: [MaintenanceGuard]
+    canActivate: [MaintenanceGuard, VersionLockGuard]
   },
   {
     path: 'simulator/custom',
     component: CustomSimulatorPageComponent,
-    canActivate: [MaintenanceGuard],
+    canActivate: [MaintenanceGuard, VersionLockGuard],
     canDeactivate: [DirtyGuard]
   },
   {
     path: 'simulator/:itemId/:recipeId',
     component: SimulatorPageComponent,
-    canActivate: [MaintenanceGuard],
+    canActivate: [MaintenanceGuard, VersionLockGuard],
     canDeactivate: [DirtyGuard]
   },
   {
     path: 'simulator/:itemId/:recipeId/:rotationId',
     component: SimulatorPageComponent,
-    canActivate: [MaintenanceGuard],
+    canActivate: [MaintenanceGuard, VersionLockGuard],
     canDeactivate: [DirtyGuard]
   },
   {
     path: 'simulator/:itemId',
     component: SimulatorPageComponent,
-    canActivate: [MaintenanceGuard],
+    canActivate: [MaintenanceGuard, VersionLockGuard],
     canDeactivate: [DirtyGuard]
   },
   {
     path: 'rotations',
     component: RotationsPageComponent,
-    canActivate: [MaintenanceGuard]
+    canActivate: [MaintenanceGuard, VersionLockGuard]
   },
   {
     path: 'community-rotations',
     component: CommunityRotationsPageComponent,
-    canActivate: [MaintenanceGuard]
+    canActivate: [MaintenanceGuard, VersionLockGuard]
   },
   {
     path: 'rotation-folder/:folderId',
     component: RotationFolderPageComponent,
-    canActivate: [MaintenanceGuard]
+    canActivate: [MaintenanceGuard, VersionLockGuard]
   }
 ];
 
@@ -149,7 +150,8 @@ const routes: Routes = [
     CommunityRotationsPageComponent,
     CommunityRotationPopupComponent,
     SolverPopupComponent,
-    SimulatorOpenerComponent
+    SimulatorOpenerComponent,
+    SimulationSharePopupComponent
   ],
   exports: [
     RotationPanelComponent,
@@ -163,7 +165,8 @@ const routes: Routes = [
     StepByStepReportComponent,
     RotationTipsPopupComponent,
     CommunityRotationPopupComponent,
-    SolverPopupComponent
+    SolverPopupComponent,
+    SimulationSharePopupComponent
   ],
   providers: [
     ConsumablesService,

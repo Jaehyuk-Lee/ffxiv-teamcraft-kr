@@ -10,7 +10,6 @@ import { PushNotificationsModule } from 'ng-push';
 import { AbstractNotification } from './notification/abstract-notification';
 import { ListCommentNotification } from '../model/notification/list-comment-notification';
 import { PendingChangesService } from './database/pending-changes/pending-changes.service';
-import { IpcService } from './electron/ipc.service';
 import { PlatformService } from './tools/platform.service';
 import { MathToolsService } from './tools/math-tools';
 import { I18nToolsService } from './tools/i18n-tools.service';
@@ -42,6 +41,8 @@ import { ErrorInterceptor } from './interceptor/error-interceptor';
 import { TeamcraftErrorHandler } from './error-handler/teamcraft-error-handler';
 import { DevGuard } from './guard/dev.guard';
 import { DATA_REPORTERS } from './data-reporting/data-reporters-index';
+import { VersionLockModule } from '../pages/version-lock/version-lock.module';
+import { LazyComponentDirective } from './tools/lazy-component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { DATA_REPORTERS } from './data-reporting/data-reporters-index';
     AngularFireDatabaseModule,
     PushNotificationsModule,
     MaintenanceModule,
+    VersionLockModule,
     NgZorroAntdModule,
     RouterModule
   ],
@@ -94,7 +96,8 @@ import { DATA_REPORTERS } from './data-reporting/data-reporters-index';
     I18nPipe,
     TimerPipe,
     DbButtonComponent,
-    ItemRarityDirective
+    ItemRarityDirective,
+    LazyComponentDirective
   ],
   exports: [
     I18nPipe,
@@ -106,7 +109,8 @@ import { DATA_REPORTERS } from './data-reporting/data-reporters-index';
     MaintenanceModule,
     TimerPipe,
     DbButtonComponent,
-    ItemRarityDirective
+    ItemRarityDirective,
+    LazyComponentDirective
   ]
 })
 export class CoreModule {
@@ -117,8 +121,8 @@ export class CoreModule {
         GarlandToolsService,
         EorzeanTimeService,
         CharacterService,
-        IpcService,
-        LocalizedDataService, { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+        LocalizedDataService,
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
       ]
     };
   }

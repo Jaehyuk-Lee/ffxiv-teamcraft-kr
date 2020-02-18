@@ -5,6 +5,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { SettingsService } from '../../../modules/settings/settings.service';
 import { TranslateService } from '@ngx-translate/core';
 import { isPlatformServer } from '@angular/common';
+import { DataService } from '../../../core/api/data.service';
 
 @Component({
   selector: 'app-db',
@@ -17,7 +18,7 @@ export class DbComponent extends TeamcraftComponent {
 
   constructor(private route: ActivatedRoute, private settings: SettingsService,
               private translate: TranslateService, private router: Router,
-              @Inject(PLATFORM_ID) private platform: Object) {
+              private data: DataService, @Inject(PLATFORM_ID) private platform: Object) {
     super();
     this.route.paramMap.pipe(
       map(params => params.get('language')),

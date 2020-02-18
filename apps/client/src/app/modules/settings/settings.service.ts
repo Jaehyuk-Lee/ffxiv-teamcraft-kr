@@ -40,6 +40,14 @@ export class SettingsService {
     this.setSetting('auto-open-in-desktop', open.toString());
   }
 
+  public get removeDoneInInventorSynthesis(): boolean {
+    return this.getSetting('remove-done-in-synthesis', 'false') === 'true';
+  }
+
+  public set removeDoneInInventorSynthesis(remove: boolean) {
+    this.setSetting('remove-done-in-synthesis', remove.toString());
+  }
+
 
   public get preferredCopyType(): string {
     return this.getSetting('copy-type', 'classic');
@@ -97,12 +105,34 @@ export class SettingsService {
     this.setSetting('compact-sidebar', compact.toString());
   }
 
+  public get sidebarState(): {[index:string]:boolean} {
+    return JSON.parse(this.getSetting('sidebar-state', JSON.stringify({
+      general: true,
+      sharing: true,
+      gathering: true,
+      helpers: false,
+      other: false
+    })));
+  }
+
+  public set sidebarState(state: {[index:string]:boolean}) {
+    this.setSetting('sidebar-state', JSON.stringify(state));
+  }
+
   public get autoMarkAsCompleted(): boolean {
     return this.getSetting('auto-mark-as-completed', 'false') === 'true';
   }
 
   public set autoMarkAsCompleted(markAsCompleted: boolean) {
     this.setSetting('auto-mark-as-completed', markAsCompleted.toString());
+  }
+
+  public get onlyRecipesInPicker(): boolean {
+    return this.getSetting('only-recipes-in-picker', 'false') === 'true';
+  }
+
+  public set onlyRecipesInPicker(onlyRecipes: boolean) {
+    this.setSetting('only-recipes-in-picker', onlyRecipes.toString());
   }
 
   public get clickthroughOverlay(): boolean {
@@ -127,6 +157,22 @@ export class SettingsService {
 
   public set compactAlarms(compact: boolean) {
     this.setSetting('compact-alarms', compact.toString());
+  }
+
+  public get performanceMode(): boolean {
+    return this.getSetting('lists:perf-mode', 'false') === 'true';
+  }
+
+  public set performanceMode(enabled: boolean) {
+    this.setSetting('lists:perf-mode', enabled.toString());
+  }
+
+  public get hideLargeListMessage(): boolean {
+    return this.getSetting('lists:hide-large-list-message', 'false') === 'true';
+  }
+
+  public set hideLargeListMessage(hidden: boolean) {
+    this.setSetting('lists:hide-large-list-message', hidden.toString());
   }
 
   public get disableSearchHistory(): boolean {
@@ -158,7 +204,7 @@ export class SettingsService {
     if (themeName === 'CUSTOM') {
       return this.customTheme;
     }
-    return Theme.byName(themeName);
+    return Theme.byName(themeName) || Theme.byName('DEFAULT');
   }
 
   public set theme(theme: Theme) {
@@ -188,6 +234,22 @@ export class SettingsService {
 
   public set alarmVolume(volume: number) {
     this.setSetting('alarm:volume', volume.toString());
+  }
+
+  public get autofillCompletionSound(): string {
+    return this.getSetting('autofill:completion:sound', 'Full_Party');
+  }
+
+  public set autofillCompletionSound(sound: string) {
+    this.setSetting('autofill:completion:sound', sound);
+  }
+
+  public get autofillCompletionVolume(): number {
+    return +this.getSetting('autofill:completion:volume', '0.5');
+  }
+
+  public set autofillCompletionVolume(volume: number) {
+    this.setSetting('autofill:completion:volume', volume.toString());
   }
 
   public get alarmsMuted(): boolean {
@@ -254,20 +316,36 @@ export class SettingsService {
     this.setSetting('machina:hide-banner', hide.toString());
   }
 
+  public get enableAutofillByDefault(): boolean {
+    return this.getSetting('autofill:enable-by-default', 'false') === 'true';
+  }
+
+  public set enableAutofillByDefault(enable: boolean) {
+    this.setSetting('autofill:enable-by-default', enable.toString());
+  }
+
+  public get enableAutofillNotificationByDefault(): boolean {
+    return this.getSetting('autofill:enable-notification-by-default', 'false') === 'true';
+  }
+
+  public set enableAutofillNotificationByDefault(enable: boolean) {
+    this.setSetting('autofill:enable-notification-by-default', enable.toString());
+  }
+
+  public get enableAutofillHQFilter(): boolean {
+    return this.getSetting('autofill:enable-hq-filter', 'false') === 'true';
+  }
+
+  public set enableAutofillHQFilter(enabled: boolean) {
+    this.setSetting('autofill:enable-hq-filter', enabled.toString());
+  }
+
   public get enableUniversalisSourcing(): boolean {
     return this.getSetting('universalis:enable-sourcing', 'false') === 'true';
   }
 
   public set enableUniversalisSourcing(enabled: boolean) {
     this.setSetting('universalis:enable-sourcing', enabled.toString());
-  }
-
-  public get persistInventory(): boolean {
-    return this.getSetting('inventory:persist', 'false') === 'true';
-  }
-
-  public set persistInventory(enabled: boolean) {
-    this.setSetting('inventory:persist', enabled.toString());
   }
 
   public get customTheme(): Theme {
@@ -280,6 +358,70 @@ export class SettingsService {
   public set customTheme(theme: Theme) {
     this.themeChange$.next({ previous: this.customTheme, next: theme });
     this.setSetting('customTheme', JSON.stringify(theme));
+  }
+
+  public get hideLargeLeves(): boolean {
+    return this.getSetting('hideLargeLeves', 'false') === 'true';
+  }
+
+  public set hideLargeLeves(hideLargeLeves: boolean) {
+    this.setSetting('hideLargeLeves', hideLargeLeves.toString());
+  }
+
+  public get macroExtraWait(): number {
+    return Math.max(0, Math.floor(+this.getSetting('macroExtraWait', '0')));
+  }
+
+  public set macroExtraWait(extraWait: number) {
+    this.setSetting('macroExtraWait', extraWait.toString());
+  }
+
+  public get macroEchoSeNumber(): number {
+    return Math.min(16, Math.max(1, Math.floor(+this.getSetting('macroEchoSeNumber', '0'))));
+  }
+
+  public set macroEchoSeNumber(echoSeNumber: number) {
+    this.setSetting('macroEchoSeNumber', echoSeNumber.toString());
+  }
+
+  public get macroEcho(): boolean {
+    return this.getSetting('macroEcho', 'true') === 'true';
+  }
+
+  public set macroEcho(echo: boolean) {
+    this.setSetting('macroEcho', echo.toString());
+  }
+
+  public get macroFixedEcho(): boolean {
+    return this.getSetting('macroFixedEcho', 'false') === 'true';
+  }
+
+  public set macroFixedEcho(fixedEcho: boolean) {
+    this.setSetting('macroFixedEcho', fixedEcho.toString());
+  }
+
+  public get macroLock(): boolean {
+    return this.getSetting('macroLock', 'false') === 'true';
+  }
+
+  public set macroLock(lock: boolean) {
+    this.setSetting('macroLock', lock.toString());
+  }
+
+  public get macroConsumables(): boolean {
+    return this.getSetting('macroConsumables', 'true') === 'true';
+  }
+
+  public set macroConsumables(addConsumables: boolean) {
+    this.setSetting('macroConsumables', addConsumables.toString());
+  }
+
+  public get macroBreakBeforeByregot(): boolean {
+    return this.getSetting('macroBreakBeforeByregot', 'false') === 'true';
+  }
+
+  public set macroBreakBeforeByregot(breakBeforeByregot: boolean) {
+    this.setSetting('macroBreakBeforeByregot', breakBeforeByregot.toString());
   }
 
   private getSetting(name: string, defaultValue: string): string {

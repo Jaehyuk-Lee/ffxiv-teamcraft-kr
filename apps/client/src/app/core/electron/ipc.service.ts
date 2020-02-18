@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { PlatformService } from '../tools/platform.service';
-import { IpcRenderer } from 'electron';
+import { IpcRenderer, IpcRendererEvent } from 'electron';
 import { Router } from '@angular/router';
 import { Vector2 } from '../tools/vector2';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { ofPacketType } from '../rxjs/of-packet-type';
+import { Store } from '@ngrx/store';
 
-@Injectable()
+type EventCallback = (event: IpcRendererEvent, ...args: any[]) => void;
+
+@Injectable({
+  providedIn: 'root'
+})
 export class IpcService {
 
   public static readonly ROTATION_DEFAULT_DIMENSIONS = { x: 600, y: 200 };
@@ -28,6 +33,18 @@ export class IpcService {
 
   public get worldId$(): Observable<any> {
     return this.packets$.pipe(ofPacketType('playerSpawn'), map(packet => packet.currentWorldId));
+  }
+
+  public get marketTaxRatePackets$(): Observable<any> {
+    return this.packets$.pipe(ofPacketType('marketTaxRates'));
+  }
+
+  public get marketBoardSearchResult$(): Observable<any> {
+    return this.packets$.pipe(ofPacketType('marketBoardSearchResult'));
+  }
+
+  public get marketboardListingCount$(): Observable<any> {
+    return this.packets$.pipe(ofPacketType('marketBoardItemListingCount'));
   }
 
   public get marketboardListing$(): Observable<any> {
@@ -59,19 +76,27 @@ export class IpcService {
   }
 
   public get actorControlPackets$(): Observable<any> {
-    return this.packets$.pipe(ofPacketType('actorControl'))
+    return this.packets$.pipe(ofPacketType('actorControl'));
   }
 
   public packets$: Subject<any> = new Subject<any>();
 
   public machinaToggle: boolean;
 
-  constructor(private platformService: PlatformService, private router: Router) {
+  public fishingState$: ReplaySubject<any> = new ReplaySubject<any>();
+
+  public mainWindowState$: ReplaySubject<any> = new ReplaySubject<any>();
+
+  private stateSubscription: Subscription;
+
+  constructor(private platformService: PlatformService, private router: Router,
+              private store: Store<any>) {
     // Only load ipc if we're running inside electron
     if (platformService.isDesktop()) {
       if (window.require) {
         try {
           this._ipc = window.require('electron').ipcRenderer;
+          this._ipc.setMaxListeners(0);
           this.connectListeners();
         } catch (e) {
           throw e;
@@ -90,11 +115,18 @@ export class IpcService {
 
   public set overlayUri(uri: string) {
     this._overlayUri = uri;
+    this.handleOverlayChange();
   }
 
-  public on(channel: string, cb: Function): void {
+  public on(channel: string, cb: EventCallback): void {
     if (this._ipc !== undefined) {
       this._ipc.on(channel, cb);
+    }
+  }
+
+  public once(channel: string, cb: EventCallback): void {
+    if (this._ipc !== undefined) {
+      this._ipc.once(channel, cb);
     }
   }
 
@@ -127,6 +159,7 @@ export class IpcService {
       }
       this.router.navigate(url.split('/'));
     });
+    this.on('fishing-state', (event, data) => this.fishingState$.next(data));
     // If we don't get a ping for an entire minute, something is wrong.
     this.packets$.pipe(
       ofPacketType('ping'),
@@ -137,17 +170,48 @@ export class IpcService {
         data: 'No ping received from the server during 60 seconds'
       });
     });
+    this.handleOverlayChange();
   }
 
-  private handlePacket(packet: any): void {
-    this.packets$.next(packet);
-    if ((<any>window).debugPackets) {
-      // tslint:disable-next-line:no-console
-      console.info(packet.type, packet);
+  private handleOverlayChange(): void {
+    if (this.overlayUri) {
+      if (this.stateSubscription) {
+        this.stateSubscription.unsubscribe();
+        delete this.stateSubscription;
+      }
+      this.on('app-state', (event, state) => {
+        this.mainWindowState$.next(state);
+      });
+      this.send('app-state:get');
+    } else {
+      this._ipc.removeAllListeners('app-state');
+      this.stateSubscription = this.store
+        .pipe(
+          distinctUntilChanged((a, b) => {
+            return a.lists.selectedId === b.lists.selectedId
+              && a.layouts.selectedKey === b.layouts.selectedKey;
+          }),
+          debounceTime(250)
+        )
+        .subscribe(state => {
+          this.send('app-state:set', state);
+        });
     }
   }
 
-  public log(...args: any[]):void{
+  private handlePacket(packet: any): void {
+    // If we're inside an overlay, don't do anything with the packet, we don't care.
+    if (!this.overlayUri) {
+      this.packets$.next(packet);
+      const debugPackets = (<any>window).debugPackets;
+      if (debugPackets === true || (typeof debugPackets === 'function' && debugPackets(packet))) {
+        // tslint:disable-next-line:no-console
+        console.info(packet.type, packet);
+      }
+    }
+  }
+
+  public log(...args: any[]): void {
     this.send('log', args);
   }
 }

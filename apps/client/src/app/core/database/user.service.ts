@@ -2,7 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { EMPTY, Observable, of } from 'rxjs';
 import { NgSerializerService } from '@kaiu/ng-serializer';
 import { PendingChangesService } from './pending-changes/pending-changes.service';
-import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { catchError, filter, map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 import { TeamcraftUser } from '../../model/user/teamcraft-user';
 import { FirestoreStorage } from './storage/firestore/firestore-storage';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -10,6 +10,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpClient } from '@angular/common/http';
 import { LogTrackingService } from './log-tracking.service';
 import { CharacterResponse, XivapiService } from '@xivapi/angular-client';
+import * as firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
@@ -26,9 +27,26 @@ export class UserService extends FirestoreStorage<TeamcraftUser> {
     super(firestore, serializer, zone, pendingChangesService);
   }
 
+  public cacheCharacter(charResponse: CharacterResponse): void {
+    localStorage.setItem(`character:${charResponse.Character.ID}`, JSON.stringify(charResponse));
+  }
+
+  public getCachedCharacter(id: number): CharacterResponse | null {
+    const data = localStorage.getItem(`character:${id}`);
+    if (data) {
+      return JSON.parse(data);
+    }
+    return null;
+  }
+
   public getCharacter(id: number): Observable<CharacterResponse> {
     if (this.characterCache[id] === undefined) {
-      this.characterCache[id] = this.xivapi.getCharacter(id).pipe(shareReplay(1));
+      this.characterCache[id] = this.xivapi.getCharacter(id).pipe(
+        tap(char => this.cacheCharacter(char)),
+        startWith(this.getCachedCharacter(id)),
+        filter(res => res !== null),
+        shareReplay(1)
+      );
     }
     return this.characterCache[id];
   }
@@ -51,7 +69,7 @@ export class UserService extends FirestoreStorage<TeamcraftUser> {
           } else {
             delete user.notFound;
           }
-          user.createdAt = new Date(user.createdAt);
+          user.createdAt = firebase.firestore.Timestamp.now();
           if (user.patreonToken === undefined) {
             user.patron = false;
             return of(user);
@@ -85,6 +103,14 @@ export class UserService extends FirestoreStorage<TeamcraftUser> {
             );
           }
           return of(user);
+        }),
+        map(user => {
+          if (typeof user.createdAt !== 'object') {
+            user.createdAt = firebase.firestore.Timestamp.fromDate(new Date(user.createdAt));
+          } else if (!(user.createdAt instanceof firebase.firestore.Timestamp)) {
+            user.createdAt = new firebase.firestore.Timestamp((user.createdAt as any).seconds, (user.createdAt as any).nanoseconds);
+          }
+          return user;
         }),
         shareReplay(1)
       );
@@ -125,26 +151,12 @@ export class UserService extends FirestoreStorage<TeamcraftUser> {
       );
   }
 
-  /**
-   * Updates email associated with a given account.
-   * @param {string} currentMail
-   * @param {string} password
-   * @param {string} newMail
-   * @returns {Promise<void>}
-   */
-  public changeEmail(currentMail: string, password: string, newMail: string): Promise<void> {
-    return this.af.auth.signInWithEmailAndPassword(currentMail, password).then(user => {
-      user.user.updateEmail(newMail)
-        .then(() => user.user.sendEmailVerification());
-    });
-  }
-
   public getUsersByLodestoneId(id: number): Observable<TeamcraftUser[]> {
     return this.firestore.collection(this.getBaseUri(), ref => ref.where('defaultLodestoneId', '==', id))
       .snapshotChanges()
       .pipe(
         map((snaps: any[]) => {
-          const valueWithKey: TeamcraftUser[] = snaps.map(snap => ({ $key: snap.payload.doc.id, ...snap.payload.doc.data() }));
+          const valueWithKey: TeamcraftUser[] = snaps.map(snap => ({ ...snap.payload.doc.data(), $key: snap.payload.doc.id }));
           return this.serializer.deserialize<TeamcraftUser>(valueWithKey, [this.getClass()]);
         })
       );

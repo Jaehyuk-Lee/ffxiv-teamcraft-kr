@@ -385,8 +385,8 @@ export const aetherytes = [
     "map": 3,
     "placenameid": 53,
     "nameid": 0,
-    "x": 8.2,
-    "y": 10.9,
+    "x": 8.3,
+    "y": 11,
     "type": 1
   },
   {
